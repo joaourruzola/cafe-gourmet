@@ -9,9 +9,11 @@ import fs from "fs";
 import indexRoute from "./routes/index.mjs";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
+import dotenv from "dotenv";
 
 const port = process.env.PORT || 8080;
 const app = Express();
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
