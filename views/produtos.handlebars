@@ -1,0 +1,165 @@
+<main>
+  <nav class="navbar">
+    <div class="nav-logo">
+      <a href="/produtos">Café Gourmet</a>
+    </div>
+
+    <div class="nav-search">
+      <input type="text" placeholder="Pesquisa..." />
+    </div>
+
+    <div class="nav-actions">
+      <a href="/login" class="login">Login / Cadastre-se</a>
+      <a href="#" class="cart">
+        🛒
+        <span class="cart-count">2</span>
+
+        <div class="cart-popup">
+          <h4>Meu Carrinho</h4>
+          <div class="cart-item">
+            <img src="https://via.placeholder.com/40" alt="Produto" />
+            <div class="cart-item-info">
+              <p class="cart-item-name">Café Premium 500g</p>
+              <p class="cart-item-price">R$ 32,90</p>
+            </div>
+          </div>
+          <div class="cart-total">
+            Total:
+            <strong>R$ 32,90</strong>
+          </div>
+          <a href="#" class="checkout-btn">Finalizar Compra</a>
+        </div>
+      </a>
+    </div>
+  </nav>
+
+  <section class="hero-carousel">
+    <div class="carousel-track">
+      <div class="slide active">
+        <img
+          src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Café 1"
+        />
+        <div class="slide-content">
+          <h1>Café Gourmet</h1>
+          <p>O sabor que desperta o melhor do seu dia.</p>
+        </div>
+      </div>
+      <div class="slide">
+        <img
+          src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Café 2"
+        />
+        <div class="slide-content">
+          <h1>Blend Especial</h1>
+          <p>Intensidade e aroma em perfeita harmonia.</p>
+        </div>
+      </div>
+      <div class="slide">
+        <img
+          src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Café 3"
+        />
+        <div class="slide-content">
+          <h1>Momento Perfeito</h1>
+          <p>Desfrute cada xícara com quem você ama.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Setas -->
+    <button class="carousel-btn prev">❮</button>
+    <button class="carousel-btn next">❯</button>
+  </section>
+
+  <div class="container">
+    <div class="row">
+      {{#each produtos}}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card">
+            <img src="/images/{{imagem}}" alt="{{nome}}" />
+            <div class="textos">
+              <p>
+                {{nome}}<br />
+                {{formatCurrency valor}}
+              </p>
+            </div>
+
+            <!-- Seleção de quantidade -->
+            <input
+              type="number"
+              min="1"
+              max="{{estoque}}"
+              value="1"
+              id="quantidade-{{id_produto}}"
+              class="form-control mb-2"
+            />
+
+            <!-- Botão comprar -->
+            {{#if estoque}}
+              <button class="btn btn-success">Comprar</button>
+            {{else}}
+              <button class="btn btn-success" disabled>Sem estoque</button>
+            {{/if}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-section">
+        <h3>FORMAS DE PAGAMENTO</h3>
+        <div class="payment-methods">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+            alt="Visa"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+            alt="Mastercard"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Elo_card_association_logo_-_black_text.svg/1024px-Elo_card_association_logo_-_black_text.svg.png"
+            alt="Elo"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg"
+            alt="Amex"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo%E2%80%94pix_powered_by_Banco_Central_%28Brazil%2C_2020%29.svg"
+            alt="Pix"
+          />
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>CERTIFICADO E SEGURANÇA</h3>
+        <img
+          src="https://letsencrypt.org/images/LE-logo-standard.svg"
+          alt="Let's Encrypt"
+          class="security-logo"
+        />
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>Copyright © 2023. Todos os direitos reservados.<br />
+        Todas as marcas e suas imagens são de propriedade de seus respectivos
+        donos.<br />
+        É vedada a reprodução, total ou parcial, de qualquer conteúdo sem
+        expressa autorização.
+      </p>
+
+      <p>
+        <strong>Café Gourmet</strong>
+        12.345.678/0001-23 / Av. das Nações Unidas, 100 - 100º andar - Big Tower
+        - Jardim Europa - São Paulo-SP
+      </p>
+    </div>
+  </footer>
+</main>
+<script src="/js/cart.js"></script>
+<script src="/js/carousel.js"></script>

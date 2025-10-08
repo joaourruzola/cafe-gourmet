@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #13161c;
+  font-family: "lato", sans-serif;
+}
+
+body {
+  font-family: "lato", sans-serif;
+  font-weight: 700;
+}
+
+.container {
+  margin-bottom: 10px;
+}
+
+form {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.btn-number {
+  background-color: #fff;
+}
+
+form input {
+  margin-bottom: 10px;
+}
+
+form input[type="submit"] {
+  margin-top: 10px;
+}
+
+form img {
+  width: 200px;
+  margin-bottom: 40px;
+}
+
+.card {
+  margin-top: 10px;
+}
+
+.card img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  max-height: 350px;
+}
+
+.card a {
+  margin-top: 5px;
+}
+
+.textos {
+  background-color: #13161c;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-top: solid 1px #fff;
+  font-weight: bold;
+  color: #fff;
+}
