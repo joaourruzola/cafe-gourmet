@@ -15,3 +15,78 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	});
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+	document.querySelectorAll(".btn.btn-success").forEach((button) => {
+		button.addEventListener("click", async (e) => {
+			const card = e.target.closest(".card");
+			const id_produto = card
+				.querySelector("input[type='number']")
+				.id.split("-")[1];
+			const quantidade = card.querySelector("input[type='number']").value;
+
+			try {
+				const response = await fetch("/carrinho/adicionar", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ id_produto, quantidade }),
+				});
+
+				const data = await response.json();
+
+				console.log(data);
+
+				if (data.success) {
+					alert("✅ " + data.message);
+				} else {
+					alert("❌ Erro: " + (data.message || "Falha ao adicionar"));
+				}
+			} catch (err) {
+				alert("⚠️ Erro de rede ou servidor");
+				console.error(err);
+			}
+		});
+	});
+});
+
+async function atualizarCarrinho() {
+	try {
+		const response = await fetch("/carrinho/atual");
+		const data = await response.json();
+
+		if (!data.success) return;
+
+		const cartItemsEl = document.querySelector(".cart-items");
+
+		cartItemsEl.innerHTML = "";
+		let total = 0;
+
+		data.items.forEach((item) => {
+			total += item.valor_unitario * item.quantidade;
+
+			const div = document.createElement("div");
+			div.classList.add("cart-item");
+			div.innerHTML = `
+            <img src="/images/${item.imagem}" alt="${item.nome}" />
+            <div class="cart-item-info">
+                <p class="cart-item-name">${item.nome}</p>
+                <p class="cart-item-price">
+                    ${item.quantidade}x R$ ${parseFloat(
+				item.valor_unitario
+			).toFixed(2)}
+                </p>
+            </div>`;
+
+			cartItemsEl.appendChild(div);
+		});
+
+		const totalEl = document.querySelector(".cart-total strong");
+		if (totalEl) {
+			totalEl.textContent = `R$ ${total.toFixed(2)}`;
+		}
+	} catch (err) {
+		console.error("Erro ao atualizar carrinho:", err);
+	}
+}
+
+document.addEventListener("DOMContentLoaded", atualizarCarrinho);

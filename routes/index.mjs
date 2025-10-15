@@ -39,6 +39,32 @@ router.get("/produtos", (req, res) => {
 	});
 });
 
+router.get("/carrinho/atual", (req, res) => {
+	const id_usuario = 1; // TEMP: replace with session later
+
+	connection.query(
+		`SELECT 
+  carrinho_itens.id_item,
+  carrinho_itens.id_produto,
+  produtos.nome,
+  produtos.imagem,
+  carrinho_itens.quantidade,
+  carrinho_itens.valor_unitario
+FROM carrinho_itens
+JOIN carrinhos ON carrinho_itens.id_carrinho = carrinhos.id_carrinho
+JOIN produtos ON carrinho_itens.id_produto = produtos.id_produto
+WHERE carrinhos.id_usuario = ? AND carrinhos.ativo = 1;
+`,
+		[id_usuario],
+		(err, results) => {
+			if (err)
+				return res.status(500).json({ success: false, error: err });
+			res.json({ success: true, items: results });
+			console.log(res.json);
+		}
+	);
+});
+
 // ===== Rota de login/registro de usuário =====
 
 router.get("/login", (req, res) => {
@@ -47,43 +73,102 @@ router.get("/login", (req, res) => {
 
 // ===== Rotas POST =====
 
-router.post("/carrinho/adicionar", async (req, res) => {
+router.post("/carrinho/adicionar", (req, res) => {
 	const { id_produto, quantidade } = req.body;
-	const id_usuario = req.session.userId; // suposição de sessão
+	const id_usuario = 1; // TEMP: replace with session user ID later
 
-	// Pegar ou criar carrinho ativo
-	let carrinho = await db.query(
-		"SELECT * FROM carrinhos WHERE id_usuario = ? AND ativo = 1",
-		[id_usuario]
-	);
-	if (carrinho.length === 0) {
-		const result = await db.query(
-			"INSERT INTO carrinhos (id_usuario, ativo) VALUES (?, 1)",
-			[id_usuario]
-		);
-		carrinho = { id_carrinho: result.insertId };
-	} else {
-		carrinho = carrinho[0];
+	if (!id_produto || !quantidade) {
+		return res
+			.status(400)
+			.json({ success: false, message: "Dados inválidos" });
 	}
 
-	// Inserir ou atualizar item
-	const itemExistente = await db.query(
-		"SELECT * FROM carrinho_itens WHERE id_carrinho = ? AND id_produto = ?",
-		[carrinho.id_carrinho, id_produto]
-	);
-	if (itemExistente.length > 0) {
-		await db.query(
-			"UPDATE carrinho_itens SET quantidade = quantidade + ? WHERE id_item = ?",
-			[quantidade, itemExistente[0].id_item]
-		);
-	} else {
-		await db.query(
-			"INSERT INTO carrinho_itens (id_carrinho, id_produto, quantidade) VALUES (?, ?, ?)",
-			[carrinho.id_carrinho, id_produto, quantidade]
-		);
-	}
+	// 1️⃣ Verifica se o usuário já tem carrinho ativo
+	connection.query(
+		"SELECT id_carrinho FROM carrinhos WHERE id_usuario = ? AND ativo = 1 LIMIT 1",
+		[id_usuario],
+		(err, results) => {
+			if (err)
+				return res.status(500).json({ success: false, error: err });
 
-	res.json({ success: true });
+			let id_carrinho;
+
+			if (results.length > 0) {
+				id_carrinho = results[0].id_carrinho;
+				adicionarItem();
+			} else {
+				// Cria novo carrinho
+				connection.query(
+					"INSERT INTO carrinhos (id_usuario, ativo) VALUES (?, 1)",
+					[id_usuario],
+					(err, insertRes) => {
+						if (err)
+							return res
+								.status(500)
+								.json({ success: false, error: err });
+						id_carrinho = insertRes.insertId;
+						adicionarItem();
+					}
+				);
+			}
+
+			function adicionarItem() {
+				// Verifica se item já existe
+				connection.query(
+					"SELECT * FROM carrinho_itens WHERE id_carrinho = ? AND id_produto = ?",
+					[id_carrinho, id_produto],
+					(err, itemRes) => {
+						if (err)
+							return res
+								.status(500)
+								.json({ success: false, error: err });
+
+						if (itemRes.length > 0) {
+							// Atualiza quantidade
+							connection.query(
+								"UPDATE carrinho_itens SET quantidade = quantidade + ? WHERE id_carrinho = ? AND id_produto = ?",
+								[quantidade, id_carrinho, id_produto],
+								(err) => {
+									if (err)
+										return res.status(500).json({
+											success: false,
+											error: err,
+										});
+									res.json({
+										success: true,
+										message:
+											"Quantidade atualizada no carrinho",
+									});
+								}
+							);
+						} else {
+							// Insere novo item
+							connection.query(
+								"INSERT INTO carrinho_itens (id_carrinho, id_produto, quantidade, valor_unitario) VALUES (?, ?, ?, (SELECT valor FROM produtos WHERE id_produto = ?))",
+								[
+									id_carrinho,
+									id_produto,
+									quantidade,
+									id_produto,
+								],
+								(err) => {
+									if (err)
+										return res.status(500).json({
+											success: false,
+											error: err,
+										});
+									res.json({
+										success: true,
+										message: "Item adicionado ao carrinho",
+									});
+								}
+							);
+						}
+					}
+				);
+			}
+		}
+	);
 });
 
 router.post("/register", (req, res) => {
