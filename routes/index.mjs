@@ -1,8 +1,6 @@
 import path from "path";
 import Express from "express";
 import connection from "../models/db.js";
-import { engine } from "express-handlebars";
-import fileUpload from "express-fileupload";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";

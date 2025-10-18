@@ -6,7 +6,6 @@ import { engine } from "express-handlebars";
 import fileUpload from "express-fileupload";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import fs from "fs";
 import indexRoute from "./routes/index.mjs";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
