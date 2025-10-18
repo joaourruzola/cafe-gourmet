@@ -15,19 +15,19 @@ const __dirname = dirname(__filename);
 // ===== Rotas principais =====
 
 router.get("/", (req, res) => {
-	const sql = `SELECT * FROM produtos`;
-
-	connection.query(sql, (erro, retorno) => {
-		res.render("form", { produtos: retorno });
-	});
-});
-
-router.get("/landing", (req, res) => {
 	res.render("landing", {
 		layout: false,
 		title: "Bem-vindo à Loja de Café Gourmet",
 		subtitle: "O melhor café direto para sua casa",
 		callToAction: "Ver produtos",
+	});
+});
+
+router.get("/painel", (req, res) => {
+	const sql = `SELECT * FROM produtos`;
+
+	connection.query(sql, (erro, retorno) => {
+		res.render("form", { produtos: retorno });
 	});
 });
 

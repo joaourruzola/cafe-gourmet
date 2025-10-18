@@ -9,7 +9,7 @@
 /* Navbar Container */
 .navbar {
   width: 100%;
-  height: 70px;
+  height: 6.5rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
@@ -134,9 +134,9 @@
 /* Popup container */
 .cart-popup {
   position: absolute;
-  top: 40px;
-  right: 0;
-  width: 280px;
+  top: 5em;
+  right: 1em;
+  width: 320px;
   max-height: 380px; /* limite de altura */
   overflow-y: auto; /* adiciona rolagem */
   scrollbar-width: thin;
@@ -160,6 +160,7 @@
 
 .cart-popup.active {
   display: flex;
+  background-color: inherit;
 }
 
 /* Popup header */
