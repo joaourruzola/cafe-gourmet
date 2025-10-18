@@ -1,4 +1,6 @@
 <main>
+
+  <!-- Formulário de cadastro -->
   <div class="container">
     <div class="row">
       <div class="col-6 offset-3">
@@ -28,6 +30,7 @@
     </div>
   </div>
 
+  <!-- Lista de produtos -->
   <div class="container">
     <div class="row">
       {{#each produtos}}
@@ -41,7 +44,7 @@
               </p>
             </div>
             <a
-              href="/edit-form/{{id_produto}}"
+              href="/alterar-produtos/{{id_produto}}"
               class="btn btn-warning"
             >Alterar</a>
             <a

@@ -44,17 +44,17 @@ router.get("/carrinho/atual", (req, res) => {
 
 	connection.query(
 		`SELECT 
-  carrinho_itens.id_item,
-  carrinho_itens.id_produto,
-  produtos.nome,
-  produtos.imagem,
-  carrinho_itens.quantidade,
-  carrinho_itens.valor_unitario
-FROM carrinho_itens
-JOIN carrinhos ON carrinho_itens.id_carrinho = carrinhos.id_carrinho
-JOIN produtos ON carrinho_itens.id_produto = produtos.id_produto
-WHERE carrinhos.id_usuario = ? AND carrinhos.ativo = 1;
-`,
+    carrinho_itens.id_item,
+    carrinho_itens.id_produto,
+    produtos.nome,
+    produtos.imagem,
+    carrinho_itens.quantidade,
+    carrinho_itens.valor_unitario
+    FROM carrinho_itens
+    JOIN carrinhos ON carrinho_itens.id_carrinho = carrinhos.id_carrinho
+    JOIN produtos ON carrinho_itens.id_produto = produtos.id_produto
+    WHERE carrinhos.id_usuario = ? AND carrinhos.ativo = 1;
+    `,
 		[id_usuario],
 		(err, results) => {
 			if (err)
@@ -277,13 +277,13 @@ router.get("/remove/:id_produto&:imagem", (req, res) => {
 	res.redirect(303, "/");
 });
 
-router.get("/edit-form/:id_produto", (req, res) => {
+router.get("/alterar-produtos/:id_produto", (req, res) => {
 	let sql = `SELECT * FROM produtos WHERE id_produto = ${req.params.id_produto}`;
 
 	connection.query(sql, (erro, retorno) => {
 		if (erro) throw erro;
 
-		res.render("edit-form", { produto: retorno[0] });
+		res.render("alterar-produtos", { produto: retorno[0] });
 	});
 });
 
