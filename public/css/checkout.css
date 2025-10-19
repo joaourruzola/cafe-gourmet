@@ -1,0 +1,288 @@
+body {
+  background-color: inherit;
+}
+
+h2 {
+  padding: 20px;
+}
+
+h4 {
+  background-color: inherit;
+  color: #fff;
+}
+
+p {
+  color: #fff;
+}
+
+.cart-summary > strong {
+  background-color: #13161c;
+}
+
+.payment-form > p {
+  color: #f0f0f0;
+  background-color: #1b212a;
+}
+
+.payment-form > strong {
+  color: #f0f0f0;
+  background-color: #1b212a;
+}
+
+/* --- Layout da Página de Checkout --- */
+.checkout-page {
+  width: 100%;
+}
+
+.checkout-content {
+  display: flex;
+  flex-wrap: wrap; /* Permite quebrar em telas menores */
+  gap: 30px; /* Espaço entre as colunas */
+}
+
+.cart-summary,
+.payment-section {
+  background-color: #1b212a;
+  border: 1px solid #2a313d;
+  border-radius: 8px;
+  padding: 25px;
+}
+
+.cart-summary {
+  flex: 1; /* Ocupa 1 parte do espaço */
+  min-width: 300px; /* Largura mínima antes de quebrar */
+}
+
+.payment-section {
+  flex: 1.5; /* Ocupa 1.5 partes (mais espaço para o form) */
+  min-width: 300px;
+}
+
+/* --- Resumo do Carrinho --- */
+.checkout-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #2a313d;
+}
+
+.checkout-item:last-of-type {
+  border-bottom: none;
+}
+
+.checkout-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.checkout-item p {
+  margin: 4px 0;
+}
+
+.checkout-item p strong {
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.cart-summary h3 {
+  /* Total */
+  padding: 5px;
+  text-align: left;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #28a745; /* Verde para destaque */
+  margin-top: 20px;
+  border: 1px solid #2a313d;
+  border-radius: 5px;
+}
+
+/* --- Seção de Pagamento (Formulários) --- */
+.payment-section h4 {
+  margin-bottom: 25px;
+}
+
+/* Esconde os forms de pagamento por padrão */
+.payment-form.hidden {
+  display: none;
+}
+
+.payment-form {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #2a313d;
+  background-color: #1b212a !important;
+}
+
+/* --- Estilo Moderno para Radio Buttons --- */
+#payment-form > label {
+  display: block;
+  background: #2a313d;
+  border: 2px solid #4a515d;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #f0f0f0;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+#payment-form {
+  background-color: #1b212a !important;
+}
+
+#payment-form > label:hover {
+  border-color: #6a717d;
+}
+
+/* Esconde o input de rádio original */
+#payment-form input[type="radio"] {
+  display: none;
+}
+
+/* Adiciona um indicador de rádio personalizado */
+#payment-form > label::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #6a717d;
+  border-radius: 50%;
+  margin-right: 15px;
+  vertical-align: middle;
+  background-color: #13161c;
+  transition: all 0.2s ease;
+}
+
+/* Estilo do indicador quando selecionado */
+#payment-form input[type="radio"]:checked + label::before {
+  border-color: #28a745;
+  background-color: #28a745;
+  box-shadow: 0 0 0 3px #13161c, 0 0 0 5px #28a745; /* Efeito de anel */
+}
+
+/* Estilo do label container quando selecionado */
+#payment-form input[type="radio"]:checked + label {
+  border-color: #28a745;
+  background-color: #1c2b20; /* Fundo com leve tom verde */
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* --- Forms Específicos (PIX, Cartão, Boleto) --- */
+#pix-form {
+  text-align: center;
+}
+
+#pix-form img.qr-pix {
+  width: 220px;
+  height: 220px;
+  background-color: white; /* QR Code precisa de fundo branco */
+  padding: 15px;
+  border-radius: 5px;
+  margin: 15px auto;
+  display: block;
+}
+
+/* --- Inputs e Botões --- */
+.payment-form label,
+#cartao-form label {
+  /* Reseta o estilo de label do cartão */
+  display: block;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 8px;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #f0f0f0;
+}
+
+.payment-form input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background-color: #13161c; /* Fundo igual ao body */
+  border: 1px solid #3a414d;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.payment-form input[type="text"]:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+}
+
+.btn.checkout {
+  display: inline-block;
+  width: 100%; /* Botão com largura total */
+  padding: 14px 25px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 800px) {
+  .checkout-content {
+    flex-direction: column; /* Empilha as colunas */
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+/* 1. Alinhamento do cabeçalho */
+.container-flex {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente o botão e o título */
+  justify-content: space-between; /* Coloca o botão à esquerda e o título à direita */
+  padding: 10px 0; /* Espaçamento superior/inferior */
+}
+
+/* 2. Estilo Moderno para o Botão "Voltar" (<a>) */
+.btn-back {
+  /* Estilo de Botão Ghost/Outline */
+  display: inline-block;
+  text-decoration: none;
+  color: #f0f0f0; /* Cor do texto claro */
+  background-color: transparent;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 2px solid #2a313d; /* Borda sutil do tema escuro */
+  border-radius: 8px; /* Cantos mais arredondados */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0; /* Remove margens desnecessárias */
+}
+
+.btn-back:hover {
+  color: #ffffff; /* Texto branco no hover */
+  background-color: #1b212a; /* Levemente mais escuro */
+  border-color: #28a745; /* Borda destacada com a cor primária */
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.2); /* Sombra suave */
+}
+
+/* --- Responsividade (Mantido) --- */
+@media (max-width: 800px) {
+  .checkout-content {
+    flex-direction: column;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}

@@ -1,0 +1,71 @@
+<div class="checkout-page container">
+  <div class="container-flex">
+    <a class="btn-back" href="/produtos">Voltar</a>
+    <h2>Finalizar Compra</h2>
+  </div>
+  {{#if vazio}}
+    <p>Seu carrinho está vazio.</p>
+  {{else}}
+    <div class="checkout-content">
+      <div class="cart-summary">
+        <h4>Itens do Carrinho</h4>
+        {{#each items}}
+          <div class="checkout-item">
+            <img src="/images/{{this.imagem}}" alt="{{this.nome}}" />
+            <div>
+              <p><strong>{{this.nome}}</strong></p>
+              <p>{{this.quantidade}} x R$ {{this.valor_unitario}}</p>
+              <p>Subtotal: R$ {{this.subtotal}}</p>
+            </div>
+          </div>
+        {{/each}}
+
+        <h3>Total: R$ {{total}}</h3>
+      </div>
+
+      <div class="payment-section">
+        <h4>Formas de Pagamento</h4>
+
+        <form id="payment-form">
+          <label>
+            <input type="radio" name="payment" value="pix" checked />
+            PIX
+          </label>
+          <label>
+            <input type="radio" name="payment" value="cartao" />
+            Cartão de Crédito
+          </label>
+          <label>
+            <input type="radio" name="payment" value="boleto" />
+            Boleto Bancário
+          </label>
+
+          <div id="pix-form" class="payment-form">
+            <p>Escaneie o QR Code abaixo para pagar via PIX:</p>
+            <img src="{{qrCodeDataURL}}" alt="QR Code PIX" class="qr-pix" />
+            <p><strong style="background-color: #1b212a">Valor: R$
+                {{total}}</strong></p>
+          </div>
+
+          <div id="cartao-form" class="payment-form hidden">
+            <label>Número do Cartão:</label>
+            <input type="text" name="numero_cartao" maxlength="19" />
+            <label>Validade:</label>
+            <input type="text" name="validade" placeholder="MM/AA" />
+            <label>CVV:</label>
+            <input type="text" name="cvv" maxlength="3" />
+            <button
+              type="submit"
+              class="btn checkout btn-success"
+            >Pagar</button>
+          </div>
+
+          <div id="boleto-form" class="payment-form hidden">
+            <p>O boleto será gerado após confirmar o pedido.</p>
+            <button type="submit" class="btn checkout btn-success">Gerar Boleto</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {{/if}}
+</div>

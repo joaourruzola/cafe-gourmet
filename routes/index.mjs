@@ -4,6 +4,7 @@ import connection from "../models/db.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import QRCode from "qrcode";
 
 const router = Express.Router();
 
@@ -294,6 +295,56 @@ router.get("/alterar-produtos/:id_produto", (req, res) => {
 
 		res.render("alterar-produtos", { produto: retorno[0] });
 	});
+});
+
+router.get("/checkout", async (req, res) => {
+	const id_usuario = 1; // temporário
+
+	try {
+		connection.query(
+			`SELECT 
+                ci.id_produto, p.nome, p.imagem, ci.quantidade, ci.valor_unitario,
+                (ci.quantidade * ci.valor_unitario) AS subtotal
+             FROM carrinho_itens ci
+             JOIN carrinhos c ON ci.id_carrinho = c.id_carrinho
+             JOIN produtos p ON ci.id_produto = p.id_produto
+             WHERE c.id_usuario = ? AND c.ativo = 1`,
+			[id_usuario],
+			async (err, items) => {
+				if (err) {
+					console.error(err);
+					return res.status(500).send("Erro ao buscar carrinho");
+				}
+
+				let totalCalculado = 0;
+				let totalFormatado = "0.00";
+
+				if (items.length > 0) {
+					totalCalculado = items.reduce(
+						(sum, item) => sum + (parseFloat(item.subtotal) || 0),
+						0
+					);
+					totalFormatado = totalCalculado.toFixed(2);
+				}
+
+				console.log("Total (Número):", totalCalculado);
+				console.log("Total (String):", totalFormatado);
+
+				const pixPayload = `00020126360014BR.GOV.BCB.PIX0114+558199999999520400005303986540${totalFormatado}5802BR5920Minha Loja Online6009SAO PAULO62070503***6304`;
+				const qrCodeDataURL = await QRCode.toDataURL(pixPayload);
+
+				res.render("checkout", {
+					items,
+					total: totalFormatado,
+					qrCodeDataURL,
+					vazio: items.length === 0,
+				});
+			}
+		);
+	} catch (error) {
+		console.error(error);
+		res.status(500).send("Erro interno no servidor");
+	}
 });
 
 // ===== Rota dinâmica catch-all =====
