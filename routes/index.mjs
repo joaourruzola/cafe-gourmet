@@ -5,6 +5,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import QRCode from "qrcode";
+import isAdmin from "../public/js/admin.js";
 
 const router = Express.Router();
 
@@ -23,7 +24,7 @@ router.get("/", (req, res) => {
 	});
 });
 
-router.get("/painel", (req, res) => {
+router.get("/painel", isAdmin, (req, res) => {
 	const sql = `SELECT * FROM produtos`;
 
 	connection.query(sql, (erro, retorno) => {
@@ -343,9 +344,6 @@ router.get("/checkout", async (req, res) => {
 					totalFormatado = totalCalculado.toFixed(2);
 				}
 
-				console.log("Total (Número):", totalCalculado);
-				console.log("Total (String):", totalFormatado);
-
 				const pixPayload = `00020126360014BR.GOV.BCB.PIX0114+558199999999520400005303986540${totalFormatado}5802BR5920Minha Loja Online6009SAO PAULO62070503***6304`;
 				const qrCodeDataURL = await QRCode.toDataURL(pixPayload);
 
@@ -364,22 +362,42 @@ router.get("/checkout", async (req, res) => {
 	}
 });
 
-// ===== Rota dinâmica catch-all =====
+// ===== ROTAS DE MENSAGEM EXPLÍCITAS (Substituem a rota dinâmica) =====
 
-router.get("/:returnMessage", (req, res) => {
+function renderFormWithMessage(res, returnMessage) {
 	const sql = `SELECT * FROM produtos`;
-
 	connection.query(sql, (erro, retorno) => {
+		if (erro) {
+			console.error("Erro ao buscar produtos para o formulário:", erro);
+			return res.status(500).send("Erro interno ao carregar formulário.");
+		}
 		res.render("form", {
 			produtos: retorno,
-			returnMessage: req.params.returnMessage,
+			returnMessage: returnMessage,
+			pageStyles: ["/css/style.css"],
 		});
 	});
+}
+
+router.get("/registerSuccess", (req, res) => {
+	renderFormWithMessage(res, "registerSuccess");
+});
+
+router.get("/registerFail", (req, res) => {
+	renderFormWithMessage(res, "registerFail");
+});
+
+router.get("/editSuccess", (req, res) => {
+	renderFormWithMessage(res, "editSuccess");
+});
+
+router.get("/editFail", (req, res) => {
+	renderFormWithMessage(res, "editFail");
 });
 
 // ===== Rotas DELETE =====
 
-router.delete("/carrinho/remover/:id_produto", (req, res) => {
+router.delete("/carrinho/remover/:id_produto", isAdmin, (req, res) => {
 	const { id_produto } = req.params;
 	const id_usuario = 1; // TEMP — substitua depois pela sessão do usuário
 

@@ -35,6 +35,28 @@ app.use("./css", Express.static("./public/css"));
 app.use("/bootstrap", Express.static("./node_modules/bootstrap/dist"));
 app.use("/", indexRoute);
 
+app.use((req, res, next) => {
+	const error = new Error(`A rota ${req.originalUrl} não foi encontrada.`);
+	error.status = 404;
+	next(error);
+});
+
+app.use((err, req, res, next) => {
+	const status = err.status || 500;
+	const is404 = status === 404;
+
+	console.error(`Erro ${status}: ${err.message}`);
+
+	// Renderiza uma página de erro 404 ou 500, dependendo do status
+	res.status(status).render(is404 ? "404" : "error", {
+		layout: "main",
+		pageTitle: is404 ? "Página Não Encontrada (404)" : "Erro Interno",
+		errorMessage: err.message,
+		// Garante que pelo menos o CSS base seja carregado para a página de erro
+		pageStyles: ["/css/globals.css"],
+	});
+});
+
 app.engine(
 	"handlebars",
 	engine({
