@@ -40,7 +40,11 @@ router.get("/produtos", (req, res) => {
 	connection.query(sql, (erro, retorno) => {
 		res.render("produtos", {
 			produtos: retorno,
-			pageStyles: ["/css/style.css", "/css/hero-carousel.css"],
+			pageStyles: [
+				"/css/style.css",
+				"/css/hero-carousel.css",
+				"/css/cart-popup.css",
+			],
 		});
 	});
 });
@@ -293,7 +297,7 @@ router.get("/remove/:id_produto&:imagem", (req, res) => {
 		);
 	});
 
-	res.redirect(303, "/");
+	res.redirect(303, "/painel");
 });
 
 router.get("/alterar-produtos/:id_produto", (req, res) => {
