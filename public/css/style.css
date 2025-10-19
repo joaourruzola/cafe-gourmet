@@ -1,17 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: #13161c;
-  font-family: "lato", sans-serif;
-}
-
-body {
-  font-family: "lato", sans-serif;
-  font-weight: 700;
-}
+/* style.css */
 
 .container {
   margin-bottom: 10px;
@@ -23,7 +10,7 @@ form {
 }
 
 .btn-number {
-  background-color: #fff;
+  background-color: var(--color-text-light); /* Fundo branco para botão numérico */
 }
 
 form input {
@@ -41,6 +28,10 @@ form img {
 
 .card {
   margin-top: 10px;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary); /* Adiciona borda para visibilidade */
+  border-radius: 8px;
+  padding: 10px; /* Adiciona padding para o conteúdo */
 }
 
 .card img {
@@ -48,6 +39,7 @@ form img {
   object-fit: cover;
   border-radius: 5px;
   max-height: 350px;
+  background-color: transparent;
 }
 
 .card a {
@@ -55,11 +47,11 @@ form img {
 }
 
 .textos {
-  background-color: #13161c;
+  background-color: var(--color-bg-primary); /* Fundo principal */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  border-top: solid 1px #fff;
+  border-top: solid 1px var(--color-text-light);
   font-weight: bold;
-  color: #fff;
+  color: var(--color-text-light);
 }

@@ -1,5 +1,6 @@
+/* footer.css */
 .footer {
-  background: #0f1115;
+  background: #0f1115; /* Manter este fundo ligeiramente diferente */
   color: #d8d8d8;
   font-family: "lato", sans-serif;
   padding-top: 2rem;
@@ -23,7 +24,7 @@
 
 .footer-section h3 {
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--color-text-light); /* Variável */
   margin-bottom: 1rem;
   letter-spacing: 0.5px;
 }
@@ -62,7 +63,7 @@
 }
 
 .footer-bottom strong {
-  color: #fff;
+  color: var(--color-text-light); /* Variável */
 }
 
 .footer-bottom p + p {

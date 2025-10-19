@@ -19,6 +19,7 @@ router.get("/", (req, res) => {
 		title: "Bem-vindo à Loja de Café Gourmet",
 		subtitle: "O melhor café direto para sua casa",
 		callToAction: "Ver produtos",
+		pageStyles: ["/css/style.css", "/css/landing.css"],
 	});
 });
 
@@ -26,7 +27,10 @@ router.get("/painel", (req, res) => {
 	const sql = `SELECT * FROM produtos`;
 
 	connection.query(sql, (erro, retorno) => {
-		res.render("form", { produtos: retorno });
+		res.render("form", {
+			produtos: retorno,
+			pageStyles: ["/css/style.css", "/css/hero-carousel.css"],
+		});
 	});
 });
 
@@ -34,7 +38,10 @@ router.get("/produtos", (req, res) => {
 	const sql = `SELECT * FROM produtos`;
 
 	connection.query(sql, (erro, retorno) => {
-		res.render("produtos", { produtos: retorno });
+		res.render("produtos", {
+			produtos: retorno,
+			pageStyles: ["/css/style.css", "/css/hero-carousel.css"],
+		});
 	});
 });
 
@@ -67,7 +74,9 @@ router.get("/carrinho/atual", (req, res) => {
 // ===== Rota de login/registro de usuário =====
 
 router.get("/login", (req, res) => {
-	res.render("login");
+	res.render("login", {
+		pageStyles: ["/css/login-form.css"],
+	});
 });
 
 // ===== Rotas POST =====
@@ -293,7 +302,10 @@ router.get("/alterar-produtos/:id_produto", (req, res) => {
 	connection.query(sql, (erro, retorno) => {
 		if (erro) throw erro;
 
-		res.render("alterar-produtos", { produto: retorno[0] });
+		res.render("alterar-produtos", {
+			produto: retorno[0],
+			pageStyles: ["/css/style.css", "/css/hero-carousel.css"],
+		});
 	});
 });
 
@@ -338,6 +350,7 @@ router.get("/checkout", async (req, res) => {
 					total: totalFormatado,
 					qrCodeDataURL,
 					vazio: items.length === 0,
+					pageStyles: ["/css/style.css", "/css/checkout.css"],
 				});
 			}
 		);

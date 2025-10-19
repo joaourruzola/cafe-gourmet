@@ -1,0 +1,89 @@
+/* --------------------------------------
+   1. VARIÁVEIS DE COR
+   -------------------------------------- */
+:root {
+  /* Cores Principais (Tema Escuro) */
+  --color-bg-primary: #13161c;
+  --color-bg-secondary: #1b212a;
+  --color-text-light: #ffffff;
+  --color-text-secondary: #f0f0f0;
+  --color-text-placeholder: #888;
+  --color-border-primary: #2b2f38;
+  --color-border-secondary: #2a313d;
+
+  /* Cores de Ação (Acentuação/Interativa) */
+  --color-accent-blue: #00b3ff;
+  --color-accent-green: #28a745; /* Usado no checkout/sucesso */
+  --color-accent-red: #ff4d4f; /* Usado no contador do carrinho */
+
+  /* Cor do Tema (Café/Marrom) - Usado em botões principais */
+  --color-theme-primary: #6f4e37;
+  --color-theme-hover: #5a3f2c;
+
+  /* Sombras/Transparência */
+  --shadow-navbar: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------
+   2. FONTES
+   -------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&display=swap");
+
+/* --------------------------------------
+   3. RESET GLOBAL
+   -------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Define a família de fontes base a partir das importações */
+  font-family: "Lato", sans-serif;
+}
+
+/* --------------------------------------
+   4. ESTILOS DE CORPO E BASE
+   -------------------------------------- */
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-text-light);
+}
+
+/* --------------------------------------
+   5. BOTÕES DE TEMA (Ex: Checkout, Landing Page)
+   -------------------------------------- */
+.btn,
+.checkout-btn,
+.btn-success {
+  display: inline-block;
+  text-align: center;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  /* Cor do Tema Padrão */
+  background: var(--color-theme-primary);
+  color: var(--color-text-light);
+  border: 1px solid var(--color-theme-primary);
+}
+
+.btn:hover,
+.checkout-btn:hover,
+.btn-success:hover {
+  background: var(--color-theme-hover);
+  border-color: var(--color-theme-hover);
+}
