@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				console.log(data);
 
 				if (data.success) {
+					await atualizarCarrinho();
 					alert("✅ " + data.message);
 				} else {
 					alert("❌ Erro: " + (data.message || "Falha ao adicionar"));
@@ -71,10 +72,12 @@ async function atualizarCarrinho() {
             <div class="cart-item-info">
                 <p class="cart-item-name">${item.nome}</p>
                 <p class="cart-item-price">
-                    ${item.quantidade}x R$ ${parseFloat(
+                    ${item.quantidade} x R$ ${parseFloat(
 				item.valor_unitario
 			).toFixed(2)}
-                </p>
+                </p> <a href="#" class="btn btn-secondary remover-item" data-id="${
+					item.id_produto
+				}">Remover</a>
             </div>`;
 
 			cartItemsEl.appendChild(div);
@@ -88,5 +91,29 @@ async function atualizarCarrinho() {
 		console.error("Erro ao atualizar carrinho:", err);
 	}
 }
+
+document.querySelector(".cart-items").addEventListener("click", async (e) => {
+	// verifica se clicou em um botão com a classe .remover-item
+	if (e.target.classList.contains("remover-item")) {
+		e.preventDefault();
+		const id_produto = e.target.dataset.id;
+
+		try {
+			const response = await fetch(`/carrinho/remover/${id_produto}`, {
+				method: "DELETE",
+			});
+			const result = await response.json();
+
+			if (result.success) {
+				atualizarCarrinho();
+				alert("✅ " + result.message);
+			} else {
+				alert(result.message || "Erro ao remover item");
+			}
+		} catch (err) {
+			console.error("Erro ao remover item:", err);
+		}
+	}
+});
 
 document.addEventListener("DOMContentLoaded", atualizarCarrinho);

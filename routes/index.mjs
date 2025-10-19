@@ -298,4 +298,54 @@ router.get("/:returnMessage", (req, res) => {
 	});
 });
 
+// ===== Rotas DELETE =====
+
+router.delete("/carrinho/remover/:id_produto", (req, res) => {
+	const { id_produto } = req.params;
+	const id_usuario = 1; // TEMP — substitua depois pela sessão do usuário
+
+	// Pega o carrinho ativo
+	connection.query(
+		"SELECT id_carrinho FROM carrinhos WHERE id_usuario = ? AND ativo = 1 LIMIT 1",
+		[id_usuario],
+		(err, results) => {
+			if (err)
+				return res.status(500).json({ success: false, error: err });
+
+			if (results.length === 0)
+				return res
+					.status(400)
+					.json({
+						success: false,
+						message: "Carrinho não encontrado",
+					});
+
+			const id_carrinho = results[0].id_carrinho;
+
+			// Remove o item específico
+			connection.query(
+				"DELETE FROM carrinho_itens WHERE id_carrinho = ? AND id_produto = ?",
+				[id_carrinho, id_produto],
+				(err, deleteRes) => {
+					if (err)
+						return res
+							.status(500)
+							.json({ success: false, error: err });
+
+					if (deleteRes.affectedRows === 0)
+						return res.json({
+							success: false,
+							message: "Item não encontrado no carrinho",
+						});
+
+					res.json({
+						success: true,
+						message: "Item removido do carrinho",
+					});
+				}
+			);
+		}
+	);
+});
+
 export default router;
