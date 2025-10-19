@@ -58,12 +58,16 @@ async function atualizarCarrinho() {
 		if (!data.success) return;
 
 		const cartItemsEl = document.querySelector(".cart-items");
+		const totalEl = document.querySelector(".cart-total strong");
+		const countEl = document.querySelector(".cart-count");
 
 		cartItemsEl.innerHTML = "";
 		let total = 0;
+		let totalItens = 0;
 
 		data.items.forEach((item) => {
 			total += item.valor_unitario * item.quantidade;
+			totalItens += item.quantidade;
 
 			const div = document.createElement("div");
 			div.classList.add("cart-item");
@@ -83,9 +87,12 @@ async function atualizarCarrinho() {
 			cartItemsEl.appendChild(div);
 		});
 
-		const totalEl = document.querySelector(".cart-total strong");
 		if (totalEl) {
 			totalEl.textContent = `R$ ${total.toFixed(2)}`;
+		}
+
+		if (countEl) {
+			countEl.textContent = totalItens > 0 ? totalItens : 0;
 		}
 	} catch (err) {
 		console.error("Erro ao atualizar carrinho:", err);

@@ -183,17 +183,28 @@ router.post("/register", (req, res) => {
 		let sql = `INSERT INTO produtos (nome, valor, imagem, estoque) VALUES ('${nome}', ${valor}, '${imagem}', ${estoque})`;
 
 		connection.query(sql, (erro, retorno) => {
-			if (erro) throw erro;
+			if (erro) {
+				console.error("Erro no MySQL:", erro);
+				return res.redirect("/registerFail");
+			}
 
-			req.files.imagem.mv(
-				__dirname + "/public/images/" + req.files.imagem.name
+			const imagePath = path.join(
+				__dirname,
+				"../public/images",
+				req.files.imagem.name
 			);
-			console.log(retorno);
-		});
 
-		res.redirect(303, "/registerSuccess");
-		return;
+			req.files.imagem.mv(imagePath, (err) => {
+				if (err) {
+					console.error("Erro ao mover imagem:", err);
+					return res.redirect("/registerFail");
+				}
+				console.log("Imagem salva em:", imagePath);
+				res.redirect(303, "/registerSuccess");
+			});
+		});
 	} catch (error) {
+		console.error("Erro inesperado:", error);
 		res.redirect("/registerFail");
 	}
 });
@@ -313,12 +324,10 @@ router.delete("/carrinho/remover/:id_produto", (req, res) => {
 				return res.status(500).json({ success: false, error: err });
 
 			if (results.length === 0)
-				return res
-					.status(400)
-					.json({
-						success: false,
-						message: "Carrinho não encontrado",
-					});
+				return res.status(400).json({
+					success: false,
+					message: "Carrinho não encontrado",
+				});
 
 			const id_carrinho = results[0].id_carrinho;
 
