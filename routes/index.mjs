@@ -91,7 +91,7 @@ router.post("/carrinho/adicionar", (req, res) => {
 			.json({ success: false, message: "Dados inválidos" });
 	}
 
-	// 1️⃣ Verifica se o usuário já tem carrinho ativo
+	// Verifica se o usuário já tem carrinho ativo
 	connection.query(
 		"SELECT id_carrinho FROM carrinhos WHERE id_usuario = ? AND ativo = 1 LIMIT 1",
 		[id_usuario],

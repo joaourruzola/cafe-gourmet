@@ -1,5 +1,3 @@
-/* landing.css */
-
 /* Incluir a importação de fontes se o globals.css não for carregado */
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&display=swap");
 
@@ -22,8 +20,6 @@ body {
   font-weight: 700;
   color: var(--color-text-light);
 }
-
-/* ... (O restante dos estilos da Landing Page) ... */
 
 /* Recriar o estilo do botão se globals.css falhar */
 .btn {
@@ -50,7 +46,7 @@ body {
   justify-content: center;
   font-family: "lato", sans-serif;
   font-weight: 700;
-  color: var(--color-text-light); /* Variável */
+  color: var(--color-text-light);
 }
 
 .squares-canvas {
@@ -88,7 +84,6 @@ body {
   color: var(--color-text-secondary);
 }
 
-/* O estilo base do .btn foi movido para globals.css */
 .btn {
   /* Apenas ajustes que não são de cor, se houver */
   padding: 12px 24px;

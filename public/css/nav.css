@@ -4,7 +4,7 @@
 .navbar {
   width: 100%;
   height: 6.5rem;
-  box-shadow: var(--shadow-navbar); /* Variável */
+  box-shadow: var(--shadow-navbar); 
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,22 +35,22 @@
 .nav-search input {
   width: 100%;
   padding: 0.6rem 1rem;
-  border: 1px solid var(--color-border-primary); /* Variável */
+  border: 1px solid var(--color-border-primary); 
   border-radius: 999px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
-  background: var(--color-bg-primary); /* Variável */
-  color: var(--color-text-secondary); /* Variável */
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
 }
 
 .nav-search input::placeholder {
-  color: var(--color-text-placeholder); /* Variável */
+  color: var(--color-text-placeholder);
 }
 
 .nav-search input:focus {
   outline: none;
-  border-color: var(--color-accent-blue); /* Variável */
-  background: #1b1f27; /* Manter ligeiramente mais escuro */
+  border-color: var(--color-accent-blue); 
+  background: #1b1f27;
   box-shadow: 0 0 0 3px rgba(0, 179, 255, 0.2);
 }
 
@@ -70,7 +70,7 @@
 }
 
 .nav-logo a:hover {
-  color: var(--color-theme-primary); /* Cor do tema */
+  color: var(--color-theme-primary); 
 }
 
 .nav-actions a {
@@ -96,7 +96,7 @@
   position: absolute;
   top: -6px;
   right: -10px;
-  background: var(--color-accent-red); /* Variável */
+  background: var(--color-accent-red);
   color: white;
   font-size: 0.7rem;
   font-weight: bold;
@@ -130,8 +130,8 @@
   max-height: 380px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-accent-blue) #111; /* Variável */
-  background: var(--color-bg-secondary); /* Variável */
+  scrollbar-color: var(--color-accent-blue) #111;
+  background: var(--color-bg-secondary); 
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
@@ -188,7 +188,7 @@
 }
 
 .cart-item-price {
-  color: var(--color-accent-blue); /* Variável */
+  color: var(--color-accent-blue); 
   font-size: 0.85rem;
 }
 
@@ -205,7 +205,6 @@
 
 /* Checkout Button (Os estilos base foram movidos para globals.css) */
 .checkout-btn {
-  /* Estilos específicos que não são de cor, mantidos. */
   margin-top: 0.5rem;
   font-size: 0.9rem;
   font-weight: 600;
@@ -232,8 +231,6 @@
   border-radius: 10px;
 }
 .cart-popup::-webkit-scrollbar-thumb {
-  background: var(--color-accent-blue); /* Variável */
+  background: var(--color-accent-blue); 
   border-radius: 10px;
 }
-
-/* Estilos de Botão herdados de globals.css */

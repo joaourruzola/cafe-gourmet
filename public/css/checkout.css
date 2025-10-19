@@ -7,25 +7,25 @@ h2 {
 
 h4 {
   background-color: inherit;
-  color: var(--color-text-light); /* Variável */
+  color: var(--color-text-light);
 }
 
 p {
-  color: var(--color-text-light); /* Variável */
+  color: var(--color-text-light);
 }
 
 .cart-summary > strong {
-  background-color: var(--color-bg-primary); /* Variável */
+  background-color: var(--color-bg-primary);
 }
 
 .payment-form > p {
-  color: var(--color-text-secondary); /* Variável */
-  background-color: var(--color-bg-secondary); /* Variável */
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-secondary);
 }
 
 .payment-form > strong {
-  color: var(--color-text-secondary); /* Variável */
-  background-color: var(--color-bg-secondary); /* Variável */
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-secondary);
 }
 
 /* --- Layout da Página de Checkout --- */
@@ -41,8 +41,8 @@ p {
 
 .cart-summary,
 .payment-section {
-  background-color: var(--color-bg-secondary); /* Variável */
-  border: 1px solid var(--color-border-secondary); /* Variável */
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
   padding: 25px;
 }
@@ -63,7 +63,7 @@ p {
   align-items: center;
   gap: 20px;
   padding: 20px 0;
-  border-bottom: 1px solid var(--color-border-secondary); /* Variável */
+  border-bottom: 1px solid var(--color-border-secondary);
 }
 
 .checkout-item:last-of-type {
@@ -92,9 +92,9 @@ p {
   text-align: left;
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--color-accent-green); /* Variável */
+  color: var(--color-accent-green);
   margin-top: 20px;
-  border: 1px solid var(--color-border-secondary); /* Variável */
+  border: 1px solid var(--color-border-secondary);
   border-radius: 5px;
 }
 
@@ -111,26 +111,26 @@ p {
 .payment-form {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid var(--color-border-secondary); /* Variável */
-  background-color: var(--color-bg-secondary) !important; /* Variável */
+  border-top: 1px solid var(--color-border-secondary);
+  background-color: var(--color-bg-secondary) !important;
 }
 
 /* --- Estilo Moderno para Radio Buttons --- */
 #payment-form > label {
   display: block;
-  background: var(--color-border-secondary); /* Variável */
+  background: var(--color-border-secondary);
   border: 2px solid #4a515d;
   padding: 15px 20px;
   margin-bottom: 10px;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: var(--color-text-secondary); /* Variável */
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
   font-weight: 400;
 }
 #payment-form {
-  background-color: var(--color-bg-secondary) !important; /* Variável */
+  background-color: var(--color-bg-secondary) !important;
 }
 
 #payment-form > label:hover {
@@ -152,20 +152,20 @@ p {
   border-radius: 50%;
   margin-right: 15px;
   vertical-align: middle;
-  background-color: var(--color-bg-primary); /* Variável */
+  background-color: var(--color-bg-primary);
   transition: all 0.2s ease;
 }
 
 /* Estilo do indicador quando selecionado */
 #payment-form input[type="radio"]:checked + label::before {
-  border-color: var(--color-accent-green); /* Variável */
-  background-color: var(--color-accent-green); /* Variável */
-  box-shadow: 0 0 0 3px var(--color-bg-primary), 0 0 0 5px var(--color-accent-green); /* Variável */
+  border-color: var(--color-accent-green);
+  background-color: var(--color-accent-green);
+  box-shadow: 0 0 0 3px var(--color-bg-primary), 0 0 0 5px var(--color-accent-green);
 }
 
 /* Estilo do label container quando selecionado */
 #payment-form input[type="radio"]:checked + label {
-  border-color: var(--color-accent-green); /* Variável */
+  border-color: var(--color-accent-green);
   background-color: #1c2b20; /* Fundo com leve tom verde */
   font-weight: 700;
   color: var(--color-text-light);
@@ -196,14 +196,14 @@ p {
   margin-bottom: 8px;
   font-weight: 400;
   font-size: 1rem;
-  color: var(--color-text-secondary); /* Variável */
+  color: var(--color-text-secondary);
 }
 
 .payment-form input[type="text"] {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
-  background-color: var(--color-bg-primary); /* Variável */
+  background-color: var(--color-bg-primary);
   border: 1px solid #3a414d;
   border-radius: 5px;
   color: var(--color-text-light);
@@ -212,7 +212,7 @@ p {
 
 .payment-form input[type="text"]:focus {
   outline: none;
-  border-color: var(--color-accent-green); /* Variável */
+  border-color: var(--color-accent-green);
   box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
 }
 
@@ -236,12 +236,12 @@ p {
 .btn-back {
   display: inline-block;
   text-decoration: none;
-  color: var(--color-text-secondary); /* Variável */
+  color: var(--color-text-secondary);
   background-color: transparent;
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 500;
-  border: 2px solid var(--color-border-secondary); /* Variável */
+  border: 2px solid var(--color-border-secondary);
   border-radius: 8px; 
   cursor: pointer;
   transition: all 0.3s ease;
@@ -250,8 +250,8 @@ p {
 
 .btn-back:hover {
   color: var(--color-text-light); 
-  background-color: var(--color-bg-secondary); /* Variável */
-  border-color: var(--color-accent-green); /* Variável */
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-accent-green);
   box-shadow: 0 0 10px rgba(40, 167, 69, 0.2); 
 }
 
