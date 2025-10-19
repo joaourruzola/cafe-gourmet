@@ -29,7 +29,7 @@ router.get("/painel", (req, res) => {
 	connection.query(sql, (erro, retorno) => {
 		res.render("form", {
 			produtos: retorno,
-			pageStyles: ["/css/style.css", "/css/hero-carousel.css"],
+			pageStyles: ["/css/style.css"],
 		});
 	});
 });
@@ -308,7 +308,7 @@ router.get("/alterar-produtos/:id_produto", (req, res) => {
 
 		res.render("alterar-produtos", {
 			produto: retorno[0],
-			pageStyles: ["/css/style.css", "/css/hero-carousel.css"],
+			pageStyles: ["/css/style.css"],
 		});
 	});
 });
