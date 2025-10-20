@@ -85,17 +85,42 @@
               </p>
             </div>
             <!-- Seleção de quantidade -->
-            <input
-              type="number"
-              min="1"
-              max="{{estoque}}"
-              value="1"
-              id="quantidade-{{id_produto}}"
-              class="form-control mb-2"
-            />
+            <div class="input-group mb-2 quantity-selector">
+              <button
+                class="btn btn-outline-secondary btn-minus"
+                type="button"
+                data-product-id="{{id_produto}}"
+                data-min="1"
+                {{disableIfNoStock estoque}}
+              >
+                -
+              </button>
+              <input
+                type="number"
+                min="1"
+                max="{{estoque}}"
+                value="1"
+                id="quantidade-{{id_produto}}"
+                class="form-control text-center quantity-input"
+                readonly
+                {{disableIfNoStock estoque}}
+              />
+              <button
+                class="btn btn-outline-secondary btn-plus"
+                type="button"
+                data-product-id="{{id_produto}}"
+                data-max="{{estoque}}"
+                {{disableIfNoStock estoque}}
+              >
+                +
+              </button>
+            </div>
             <!-- Botão comprar -->
             {{#if estoque}}
-              <button class="btn btn-success">Comprar</button>
+              <button
+                class="btn btn-success add-to-cart-btn"
+                data-product-id="{{id_produto}}"
+              >Comprar</button>
             {{else}}
               <button class="btn btn-success" disabled>Sem estoque</button>
             {{/if}}

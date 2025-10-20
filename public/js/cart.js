@@ -17,37 +17,81 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-	document.querySelectorAll(".btn.btn-success").forEach((button) => {
-		button.addEventListener("click", async (e) => {
-			const card = e.target.closest(".card");
-			const id_produto = card
-				.querySelector("input[type='number']")
-				.id.split("-")[1];
-			const quantidade = card.querySelector("input[type='number']").value;
+	const productList = document.getElementById("productList");
 
-			try {
-				const response = await fetch("/carrinho/adicionar", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ id_produto, quantidade }),
-				});
+	// Verifica se o container de produtos existe antes de adicionar o listener
+	if (productList) {
+		productList.addEventListener("click", (event) => {
+			const target = event.target;
 
-				const data = await response.json();
+			// --- LÓGICA PARA OS BOTÕES DE QUANTIDADE (+ e -) ---
+			if (
+				target.classList.contains("btn-plus") ||
+				target.classList.contains("btn-minus")
+			) {
+				const quantitySelector = target.closest(".quantity-selector");
+				if (!quantitySelector) return;
 
-				console.log(data);
+				const quantityInput =
+					quantitySelector.querySelector(".quantity-input");
+				if (!quantityInput) return;
 
-				if (data.success) {
-					await atualizarCarrinho();
-					alert("✅ " + data.message);
-				} else {
-					alert("❌ Erro: " + (data.message || "Falha ao adicionar"));
+				let currentValue = parseInt(quantityInput.value, 10);
+				const max = parseInt(quantityInput.getAttribute("max"), 10);
+				const min = parseInt(quantityInput.getAttribute("min"), 10);
+
+				// Incrementa ou decrementa o valor
+				if (
+					target.classList.contains("btn-plus") &&
+					currentValue < max
+				) {
+					currentValue++;
+				} else if (
+					target.classList.contains("btn-minus") &&
+					currentValue > min
+				) {
+					currentValue--;
 				}
-			} catch (err) {
-				alert("⚠️ Erro de rede ou servidor");
-				console.error(err);
+
+				// Atualiza o valor no input
+				quantityInput.value = currentValue;
+			}
+
+			if (target.classList.contains("add-to-cart-btn")) {
+				const card = target.closest(".card");
+				if (!card) return;
+
+				const id_produto = target.dataset.productId;
+				const quantidade = card.querySelector(".quantity-input").value;
+
+				(async () => {
+					try {
+						const response = await fetch("/carrinho/adicionar", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ id_produto, quantidade }),
+						});
+
+						const data = await response.json();
+						console.log(data);
+
+						if (data.success) {
+							await atualizarCarrinho();
+							alert("✅ " + data.message);
+						} else {
+							alert(
+								"❌ Erro: " +
+									(data.message || "Falha ao adicionar")
+							);
+						}
+					} catch (err) {
+						alert("⚠️ Erro de rede ou servidor");
+						console.error(err);
+					}
+				})();
 			}
 		});
-	});
+	}
 });
 
 async function atualizarCarrinho() {

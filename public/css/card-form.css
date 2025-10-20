@@ -75,3 +75,26 @@ form img {
 .product-card[style*="display: none"] {
   display: none !important;
 }
+
+.quantity-input {
+  -webkit-appearance: none;
+  appearance: none;
+  -moz-appearance: textfield;
+  caret-color: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Para Firefox */
+.quantity-input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+/* Opcional: Para IE */
+.quantity-input::-ms-clear,
+.quantity-input::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}

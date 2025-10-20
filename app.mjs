@@ -74,6 +74,13 @@ app.engine(
 					currency: "BRL",
 				});
 			},
+			disableIfNoStock: function (estoque) {
+				// Se o estoque for 0, null, undefined, ou false, retorna a string 'disabled'
+				if (!estoque || parseInt(estoque) <= 0) {
+					return "disabled";
+				}
+				return "";
+			},
 		},
 	})
 );
