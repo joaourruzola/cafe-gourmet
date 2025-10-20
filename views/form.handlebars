@@ -4,7 +4,11 @@
   <div class="container">
     <div class="row">
       <div class="col-6 offset-3">
-        <form action="/register" method="post" enctype="multipart/form-data">
+        <form
+          action="/admin/register"
+          method="post"
+          enctype="multipart/form-data"
+        >
           <input
             type="text"
             name="nome"
@@ -44,11 +48,11 @@
               </p>
             </div>
             <a
-              href="/alterar-produtos/{{id_produto}}"
+              href="/admin/alterar-produtos/{{id_produto}}"
               class="btn btn-warning"
             >Alterar</a>
             <a
-              href="/remove/{{id_produto}}&{{imagem}}"
+              href="/admin/remove/{{id_produto}}&{{imagem}}"
               class="btn btn-danger"
             >Remover</a>
           </div>

@@ -38,9 +38,10 @@ form img {
 
 .card img {
   width: 100%;
+  height: 250px;
   object-fit: cover;
   border-radius: 5px;
-  max-height: 350px;
+  /* max-height: 350px; */
   background-color: transparent;
 }
 
@@ -56,4 +57,13 @@ form img {
   border-top: solid 1px var(--color-text-light);
   font-weight: bold;
   color: var(--color-text-light);
+}
+
+.textos p {
+  height: 3em;
+  line-height: 1.5em;
+  white-space: nowrap; /* Impede a quebra de linha do texto */
+  overflow: hidden; /* Oculta o texto que excede o contêiner */
+  text-overflow: ellipsis;
+  width: 100%;
 }

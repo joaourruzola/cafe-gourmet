@@ -1,16 +1,7 @@
-import path from "path";
 import Express from "express";
 import connection from "../models/db.js";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import fs from "fs";
-import QRCode from "qrcode";
-
 
 const router = Express.Router();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // ===== Rotas principais =====
 
@@ -38,7 +29,6 @@ router.get("/produtos", (req, res) => {
 		});
 	});
 });
-
 
 // ===== Rota de login/registro de usuário =====
 

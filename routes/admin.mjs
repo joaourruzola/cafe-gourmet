@@ -44,7 +44,7 @@ router.post("/register", (req, res) => {
 		let estoque = req.body.estoque;
 
 		if (nome == "" || valor == "" || isNaN(valor)) {
-			return res.redirect("/registerFail");
+			return res.redirect("/admin/registerFail");
 		}
 
 		let sql = `INSERT INTO produtos (nome, valor, imagem, estoque) VALUES ('${nome}', ${valor}, '${imagem}', ${estoque})`;
@@ -52,7 +52,7 @@ router.post("/register", (req, res) => {
 		connection.query(sql, (erro, retorno) => {
 			if (erro) {
 				console.error("Erro no MySQL:", erro);
-				return res.redirect("/registerFail");
+				return res.redirect("/admin/registerFail");
 			}
 
 			const imagePath = path.join(
@@ -64,15 +64,15 @@ router.post("/register", (req, res) => {
 			req.files.imagem.mv(imagePath, (err) => {
 				if (err) {
 					console.error("Erro ao mover imagem:", err);
-					return res.redirect("/registerFail");
+					return res.redirect("/admin/registerFail");
 				}
 				console.log("Imagem salva em:", imagePath);
-				res.redirect(303, "/registerSuccess");
+				res.redirect(303, "/admin/registerSuccess");
 			});
 		});
 	} catch (error) {
 		console.error("Erro inesperado:", error);
-		res.redirect("/registerFail");
+		res.redirect("/admin/registerFail");
 	}
 });
 
@@ -92,7 +92,7 @@ router.post("/edit", (req, res) => {
 		isNaN(estoqueNum) ||
 		estoqueNum < 0
 	) {
-		return res.redirect("/editFail");
+		return res.redirect("/admin/editFail");
 	}
 
 	try {
@@ -125,12 +125,12 @@ router.post("/edit", (req, res) => {
 						return res.status(500).send("Erro ao salvar imagem");
 					}
 
-					return res.redirect(303, "/editSuccess");
+					return res.redirect(303, "/admin/editSuccess");
 				});
 			});
 		});
 	} catch (error) {
-		return res.redirect(303, "/editFail");
+		return res.redirect(303, "/admin/editFail");
 	}
 });
 
@@ -163,7 +163,7 @@ router.get("/remove/:id_produto&:imagem", (req, res) => {
 		);
 	});
 
-	res.redirect(303, "/painel");
+	res.redirect(303, "/admin/painel");
 });
 
 // ===== ROTAS DE MENSAGEM EXPLÍCITAS (Substituem a rota dinâmica) =====

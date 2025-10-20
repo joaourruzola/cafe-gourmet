@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row">
       <div class="col-6 offset-3">
-        <form action="/edit" method="post" enctype="multipart/form-data">
+        <form action="/admin/edit" method="post" enctype="multipart/form-data">
         <img src="/images/{{produto.imagem}}">
         <input type="hidden" name="nomeImagem" class="btn-number" value="{{produto.imagem}}">
         <input type="hidden" name="id_produto" class="btn-number" value="{{produto.id_produto}}">
@@ -26,7 +26,7 @@
           placeholder="Quantidade no estoque">
           <input type="file" name="imagem" class="form-control" />
           <input type="submit" class="btn btn-primary" value="Alterar" />
-          <a href="/" class="btn btn-secondary">Cancelar</a>
+          <a href="/admin/painel" class="btn btn-secondary">Cancelar</a>
         </form>
       </div>
     </div>
