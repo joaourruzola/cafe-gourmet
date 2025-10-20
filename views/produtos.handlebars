@@ -5,11 +5,11 @@
     <div class="nav-logo">
       <a href="/produtos">Café Gourmet</a>
     </div>
-
+    <!-- Barra de pesquisa -->
     <div class="nav-search">
-      <input type="text" placeholder="Pesquisa..." />
+      <input type="text" id="searchInput" placeholder="Pesquisa..." />
     </div>
-
+    <!-- Botão de login -->
     <div class="nav-actions">
       <a href="/login" class="login">Login / Cadastre-se</a>
       <a href="#" class="cart">
@@ -20,12 +20,10 @@
           <h4>Meu Carrinho</h4>
           <!-- Aqui os itens serão inseridos dinamicamente via JS -->
           <div class="cart-items"></div>
-
           <div class="cart-total">
             Total:
             <strong>R$ 0,00</strong>
           </div>
-
           <a href="/checkout" class="checkout-btn">Finalizar Compra</a>
         </div>
       </a>
@@ -72,10 +70,12 @@
     <button class="carousel-btn next">❯</button>
   </section>
 
-  <div class="container">
+  <!-- Lista de produtos-->
+  <div class="container" id="productList">
     <div class="row">
       {{#each produtos}}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 product-card">
+          <!-- Card de itens -->
           <div class="card">
             <img src="/images/{{imagem}}" alt="{{nome}}" />
             <div class="textos">
@@ -84,7 +84,6 @@
                 {{formatCurrency valor}}
               </p>
             </div>
-
             <!-- Seleção de quantidade -->
             <input
               type="number"
@@ -94,7 +93,6 @@
               id="quantidade-{{id_produto}}"
               class="form-control mb-2"
             />
-
             <!-- Botão comprar -->
             {{#if estoque}}
               <button class="btn btn-success">Comprar</button>
@@ -162,5 +160,6 @@
     </div>
   </footer>
 </main>
+<script src="/js/search.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/carousel.js"></script>
