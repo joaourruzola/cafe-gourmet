@@ -20,7 +20,7 @@ function renderFormWithMessage(res, returnMessage) {
 		res.render("form", {
 			produtos: retorno,
 			returnMessage: returnMessage,
-			pageStyles: ["/css/style.css"],
+			pageStyles: ["/css/card-form.css"],
 		});
 	});
 }
@@ -31,7 +31,7 @@ router.get("/painel", isAdmin, (req, res) => {
 	connection.query(sql, (erro, retorno) => {
 		res.render("form", {
 			produtos: retorno,
-			pageStyles: ["/css/style.css"],
+			pageStyles: ["/css/card-form.css"],
 		});
 	});
 });
@@ -144,7 +144,7 @@ router.get("/alterar-produtos/:id_produto", (req, res) => {
 
 		res.render("alterar-produtos", {
 			produto: retorno[0],
-			pageStyles: ["/css/style.css"],
+			pageStyles: ["/css/card-form.css"],
 		});
 	});
 });

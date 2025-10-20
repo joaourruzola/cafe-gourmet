@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 		title: "Bem-vindo à Loja de Café Gourmet",
 		subtitle: "O melhor café direto para sua casa",
 		callToAction: "Ver produtos",
-		pageStyles: ["/css/style.css", "/css/landing.css"],
+		pageStyles: ["/css/card-form.css", "/css/landing.css"],
 	});
 });
 
@@ -22,7 +22,7 @@ router.get("/produtos", (req, res) => {
 		res.render("produtos", {
 			produtos: retorno,
 			pageStyles: [
-				"/css/style.css",
+				"/css/card-form.css",
 				"/css/hero-carousel.css",
 				"/css/cart-popup.css",
 			],

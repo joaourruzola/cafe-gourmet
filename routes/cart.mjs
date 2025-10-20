@@ -169,7 +169,7 @@ router.get("/checkout", async (req, res) => {
 					total: totalFormatado,
 					qrCodeDataURL,
 					vazio: items.length === 0,
-					pageStyles: ["/css/style.css", "/css/checkout.css"],
+					pageStyles: ["/css/card-form.css", "/css/checkout.css"],
 				});
 			}
 		);
