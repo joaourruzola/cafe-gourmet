@@ -7,6 +7,8 @@ import fileUpload from "express-fileupload";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import indexRoute from "./routes/index.mjs";
+import adminRoutes from "./routes/admin.mjs";
+import cartRoutes from "./routes/cart.mjs";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 
@@ -34,6 +36,8 @@ app.use(Express.static("public"));
 app.use("./css", Express.static("./public/css"));
 app.use("/bootstrap", Express.static("./node_modules/bootstrap/dist"));
 app.use("/", indexRoute);
+app.use("/admin", adminRoutes);
+app.use("/", cartRoutes);
 
 app.use((req, res, next) => {
 	const error = new Error(`A rota ${req.originalUrl} não foi encontrada.`);
