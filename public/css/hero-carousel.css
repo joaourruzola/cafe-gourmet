@@ -8,7 +8,7 @@
   height: 50vh;
   overflow: hidden;
   margin-top: 0;
-  padding: 0  0 30px 0 ;
+  padding: 0 0 30px 0;
 }
 
 .carousel-track {
@@ -31,8 +31,8 @@
 .slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* garante que a imagem preencha o container sem distorcer */
-  object-position: center; /* centraliza a imagem */
+  object-fit: cover;
+  object-position: center;
   filter: brightness(0.6);
 }
 
@@ -41,7 +41,7 @@
   top: 50%;
   left: 10%;
   transform: translateY(-50%);
-  color: var(--color-text-light); /* Variável */
+  color: var(--color-text-light);
   background: transparent;
 }
 
@@ -50,11 +50,13 @@
   margin-bottom: 0.5rem;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
   background: transparent;
+  color: white;
 }
 
 .slide-content p {
   font-size: 1.1rem;
   color: #ccc;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
   background: transparent;
 }
 
@@ -64,7 +66,7 @@
   top: 50%;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-light); /* Variável */
+  color: var(--color-text-light);
   border: none;
   font-size: 2rem;
   padding: 0.4rem 0.8rem;

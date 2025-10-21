@@ -17,14 +17,27 @@
         <span class="cart-count">2</span>
         <!-- Popup carrinho de compras -->
         <div class="cart-popup">
-          <h4>Meu Carrinho</h4>
-          <!-- Aqui os itens serão inseridos dinamicamente via JS -->
-          <div class="cart-items"></div>
-          <div class="cart-total">
-            Total:
-            <strong>R$ 0,00</strong>
+          <div class="cart-header">
+            <h4>Meu Carrinho</h4>
+            <button class="close-cart-btn">×</button>
           </div>
-          <a href="/checkout" class="checkout-btn">Finalizar Compra</a>
+
+          <div class="free-shipping-tracker">
+            {{! <p>Faltam R$ 100,00 para frete grátis</p> }}
+            <div class="progress-bar-container">
+              <div class="progress-bar"></div>
+            </div>
+          </div>
+
+          <div class="cart-items"></div>
+
+          <div class="cart-summary">
+            <div class="summary-line">
+              <span>Total</span>
+              <span id="cart-total">R$ 0,00</span>
+            </div>
+          </div>
+          <button class="checkout-btn">Checkout</button>
         </div>
       </a>
     </div>
@@ -35,7 +48,7 @@
     <div class="carousel-track">
       <div class="slide active">
         <img
-          src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1469"
           alt="Café 1"
         />
         <div class="slide-content">
@@ -45,7 +58,7 @@
       </div>
       <div class="slide">
         <img
-          src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://images.unsplash.com/photo-1532529202439-0312ecbf3ae9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470"
           alt="Café 2"
         />
         <div class="slide-content">
@@ -55,7 +68,7 @@
       </div>
       <div class="slide">
         <img
-          src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1633"
           alt="Café 3"
         />
         <div class="slide-content">
@@ -85,31 +98,27 @@
               </p>
             </div>
             <!-- Seleção de quantidade -->
-            <div class="input-group mb-2 quantity-selector">
+            <div class="quantity-selector">
               <button
-                class="btn btn-outline-secondary btn-minus"
+                class="quantity-btn btn-minus"
                 type="button"
-                data-product-id="{{id_produto}}"
-                data-min="1"
+                data-id="{{id_produto}}"
                 {{disableIfNoStock estoque}}
               >
                 -
               </button>
               <input
-                type="number"
-                min="1"
-                max="{{estoque}}"
+                type="text"
+                class="quantity-input"
                 value="1"
-                id="quantidade-{{id_produto}}"
-                class="form-control text-center quantity-input"
+                max="{{estoque}}"
                 readonly
                 {{disableIfNoStock estoque}}
               />
               <button
-                class="btn btn-outline-secondary btn-plus"
+                class="quantity-btn btn-plus"
                 type="button"
-                data-product-id="{{id_produto}}"
-                data-max="{{estoque}}"
+                data-id="{{id_produto}}"
                 {{disableIfNoStock estoque}}
               >
                 +
@@ -184,6 +193,7 @@
       </p>
     </div>
   </footer>
+  <div id="toast-container"></div>
 </main>
 <script src="/js/search.js"></script>
 <script src="/js/cart.js"></script>

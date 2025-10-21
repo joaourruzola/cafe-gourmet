@@ -50,7 +50,7 @@ form img {
 }
 
 .textos {
-  background-color: var(--color-bg-primary);
+  background-color: var(--color-bg-secondary);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -76,25 +76,59 @@ form img {
   display: none !important;
 }
 
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da; /* Cor de borda padrão do Bootstrap */
+    border-radius: 0.25rem; /* Borda arredondada */
+    overflow: hidden; /* Garante que os filhos não passem da borda arredondada */
+    width: fit-content; /* Faz o container ter a largura do conteúdo */
+    margin-bottom: 0.5rem; /* Equivalente ao mb-2 que foi removido */
+}
+
+/* Estilo para os botões de mais e menos */
+.quantity-btn {
+    background-color: #f8f9fa; /* Cor de fundo clara */
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.9rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #495057;
+    line-height: 1.2; /* Melhora o alinhamento vertical */
+    transition: background-color 0.2s;
+}
+
+.quantity-btn:hover {
+    background-color: #e9ecef; /* Escurece um pouco no hover */
+}
+
+.quantity-btn:disabled {
+    cursor: not-allowed;
+    color: #adb5bd;
+    background-color: #f8f9fa;
+}
+
+/* Estilo para o campo de input no meio */
 .quantity-input {
-  -webkit-appearance: none;
-  appearance: none;
-  -moz-appearance: textfield;
-  caret-color: transparent;
-  cursor: pointer;
-  outline: none;
+    width: 45px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    /* Adiciona bordas laterais para separar do botão */
+    border-left: 1px solid #ced4da;
+    border-right: 1px solid #ced4da;
+    padding: 0.5rem 0;
+    background-color: #fff;
+    color: #212529;
 }
 
-/* Para Firefox */
-.quantity-input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
+/* Remove a borda azul que aparece ao focar no input */
+.quantity-input:focus {
+    outline: none;
 }
 
-/* Opcional: Para IE */
-.quantity-input::-ms-clear,
-.quantity-input::-ms-reveal {
-  display: none;
-  width: 0;
-  height: 0;
+.quantity-input:disabled {
+    background-color: #e9ecef;
 }

@@ -1,24 +1,24 @@
 :root {
-  /* Cores Principais (Tema Escuro) */
-  --color-bg-primary: #13161c;
-  --color-bg-secondary: #1b212a;
-  --color-text-light: #ffffff;
-  --color-text-secondary: #f0f0f0;
-  --color-text-placeholder: #888;
-  --color-border-primary: #2b2f38;
-  --color-border-secondary: #2a313d;
+  /* Cores Principais (Tema Claro) */
+  --color-bg-primary: #ffffff; /* Fundo principal claro */
+  --color-bg-secondary: #f0f0f0; /* Fundo secundário (ex: cards, barras) */
+  --color-text-light: #13161c; /* Texto principal (escuro no fundo claro) */
+  --color-text-secondary: #444444; /* Texto secundário/levemente mais claro */
+  --color-text-placeholder: #aaaaaa; /* Cor para placeholder */
+  --color-border-primary: #dddddd; /* Borda sutil */
+  --color-border-secondary: #cccccc; /* Borda mais destacada */
 
-  /* Cores de Ação (Acentuação/Interativa) */
-  --color-accent-blue: #00b3ff;
+  /* Cores de Ação (Acentuação/Interativa) - Não mudam, pois são cores fixas */
+  --color-accent-blue: #007bff;
   --color-accent-green: #28a745;
-  --color-accent-red: #ff4d4f; /* Usado no contador do carrinho */
+  --color-accent-red: #dc3545;
 
   /* Cor do Tema (Café/Marrom) - Usado em botões principais */
   --color-theme-primary: #6f4e37;
   --color-theme-hover: #5a3f2c;
 
   /* Sombras/Transparência */
-  --shadow-navbar: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-navbar: 0 2px 12px rgba(0, 0, 0, 0.1); /* Sombra mais sutil para fundo claro */
 }
 
 /* 2. FONTES */
@@ -74,4 +74,45 @@ a:hover {
 .btn-success:hover {
   background: var(--color-theme-hover);
   border-color: var(--color-theme-hover);
+}
+
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse; /* Mostra os novos toasts por cima */
+}
+
+.custom-toast {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.5s;
+  transform: translateY(20px);
+  font-size: 14px;
+  min-width: 250px;
+  cursor: pointer;
+}
+
+.custom-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.custom-toast.success {
+  background-color: #4caf50; /* Verde */
+}
+
+.custom-toast.error {
+  background-color: #f44336; /* Vermelho */
+}
+
+.custom-toast.warning {
+  background-color: #ff9800; /* Laranja */
 }

@@ -17,10 +17,54 @@ const fecharPopup = (popup) => popup.classList.remove("active");
 
 const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
+/**
+ * Exibe uma notificação Toast no canto da tela.
+ * @param {string} message
+ * @param {('success'|'error'|'warning')} type
+ * @param {number} duration
+ */
+
+function showToast(message, type = "success", duration = 3000) {
+	let container = qs("#toast-container");
+
+	// Cria o container se não existir
+	if (!container) {
+		container = document.createElement("div");
+		container.id = "toast-container";
+		document.body.appendChild(container);
+	}
+
+	const toast = document.createElement("div");
+	toast.className = `custom-toast ${type}`;
+	toast.innerHTML = message;
+
+	container.appendChild(toast);
+
+	// Força o reflow para garantir a transição
+	toast.offsetWidth;
+
+	toast.classList.add("show");
+
+	const timeoutId = setTimeout(() => {
+		toast.classList.remove("show");
+		toast.addEventListener("transitionend", () => toast.remove());
+	}, duration);
+
+	toast.addEventListener("click", () => {
+		clearTimeout(timeoutId);
+		toast.classList.remove("show");
+		toast.addEventListener("transitionend", () => toast.remove(), {
+			once: true,
+		});
+	});
+}
+
 /* --- Popup carrinho de compras --- */
 function inicializarPopupCarrinho() {
 	const cart = qs(".cart");
 	const popup = qs(".cart-popup");
+	const closeBtn = qs(".close-cart-btn");
+
 	if (!cart || !popup) return;
 
 	cart.addEventListener("click", (e) => {
@@ -28,8 +72,25 @@ function inicializarPopupCarrinho() {
 		alternarPopup(popup);
 	});
 
+	if (closeBtn) {
+		closeBtn.addEventListener("click", (e) => {
+			e.preventDefault();
+			fecharPopup(popup);
+		});
+	}
+
 	document.addEventListener("click", (e) => {
-		if (!cart.contains(e.target)) fecharPopup(popup);
+		if (
+			popup.classList.contains("active") &&
+			!cart.contains(e.target) &&
+			!popup.contains(e.target)
+		) {
+			fecharPopup(popup);
+		}
+	});
+
+	popup.addEventListener("click", (e) => {
+		e.stopPropagation();
 	});
 }
 
@@ -65,17 +126,20 @@ async function adicionarCarrinho(id_produto, quantidade) {
 
 		if (data.success) {
 			await atualizarCarrinho();
-			alert("✅ " + data.message);
+			showToast(`✅ ${data.message || "Item adicionado!"}`, "success");
 		} else {
-			alert("❌ Erro: " + (data.message || "Falha ao adicionar"));
+			showToast(
+				`❌ Erro: ${data.message || "Falha ao adicionar"}`,
+				"error"
+			);
 		}
 	} catch (err) {
 		console.error("Erro ao adicionar ao carrinho:", err);
-		alert("⚠️ Erro de rede ou servidor");
+		showToast("⚠️ Erro de rede ou servidor", "error");
 	}
 }
 
-/* --- Renderizar Carrinho --- */
+/* --- Renderiza os itens do carrinho --- */
 function renderizarCarrinho(items) {
 	const cartItemsEl = qs(".cart-items");
 	if (!cartItemsEl) return;
@@ -83,34 +147,58 @@ function renderizarCarrinho(items) {
 	cartItemsEl.innerHTML = "";
 
 	if (!items || items.length === 0) {
-		cartItemsEl.innerHTML = `<p class="empty-cart">Carrinho vazio</p>`;
+		cartItemsEl.innerHTML = `<p class="empty-cart">Seu carrinho está vazio.</p>`;
+
+		qs(".cart-summary").style.display = "none";
+		qs(".checkout-btn").style.display = "none";
 		return;
 	}
 
-	items.forEach((item) => {
-		const div = document.createElement("div");
-		div.className = "cart-item";
+	qs(".cart-summary").style.display = "block";
+	qs(".checkout-btn").style.display = "block";
 
-		div.innerHTML = `
-            <img src="/images/${item.imagem}" alt="${item.nome}" />
-            <div class="cart-item-info">
-                <p class="cart-item-name">${item.nome}</p>
-                <p class="cart-item-price">${item.quantidade} x ${formatarMoeda(
-			item.valor_unitario
-		)}</p>
-                <a href="#" class="btn btn-secondary remover-item" data-id="${
-					item.id_produto
-				}">Remover</a>
+	items.forEach((item) => {
+		const itemEl = document.createElement("div");
+		itemEl.className = "cart-item";
+		itemEl.dataset.itemId = item.id_produto; // Adiciona ID ao elemento principal
+
+		itemEl.innerHTML = `
+            <img src="/images/${item.imagem}" alt="${
+			item.nome
+		}" class="cart-item-image" />
+            <div class="cart-item-details">
+                <div class="cart-item-header">
+                    <span class="cart-item-name">${item.nome}</span>
+                    <span class="cart-item-price">${formatarMoeda(
+						item.valor_unitario * item.quantidade
+					)}</span>
+                </div>
+                <div class="cart-item-controls">
+                    <div class="quantity-selector">
+                        <button class="quantity-btn btn-minus" data-id="${
+							item.id_produto
+						}">-</button>
+                        <input type="text" class="quantity-input" value="${
+							item.quantidade
+						}" readonly />
+                        <button class="quantity-btn btn-plus" data-id="${
+							item.id_produto
+						}">+</button>
+                    </div>
+                    <button class="remove-btn" data-id="${
+						item.id_produto
+					}">Remover</button>
+                </div>
             </div>
         `;
 
-		cartItemsEl.appendChild(div);
+		cartItemsEl.appendChild(itemEl);
 	});
 }
 
 /* --- Atualizar total e contagem --- */
 function atualizarTotalandQuantidade(items) {
-	const totalEl = qs(".cart-total strong");
+	const totalEl = qs("#cart-total");
 	const countEl = qs(".cart-count");
 
 	let total = 0;
@@ -152,12 +240,13 @@ async function removerItemCarrinho(target) {
 
 		if (result.success) {
 			await atualizarCarrinho();
-			alert("✅ " + result.message);
+			showToast(`✅ ${result.message || "Item removido!"}`, "success");
 		} else {
-			alert(result.message || "Erro ao remover item");
+			showToast(result.message || "❌ Erro ao remover item", "error");
 		}
 	} catch (err) {
 		console.error("Erro ao remover item:", err);
+		showToast("⚠️ Erro de rede ou servidor", "error");
 	}
 }
 
@@ -191,15 +280,97 @@ function listarProdutos() {
 }
 
 /* --- Remover itens do carrinho --- */
-function removerItensCarrinho() {
+function handlerRemover() {
 	const cartItems = qs(".cart-items");
 	if (!cartItems) return;
 
 	cartItems.addEventListener("click", async (e) => {
 		const target = e.target;
-		if (target.classList.contains("remover-item")) {
+		if (target.classList.contains("remove-btn")) {
 			e.preventDefault();
 			await removerItemCarrinho(target);
+		}
+	});
+}
+
+function redirectToCheckout() {
+	const checkout = qs(".checkout-btn");
+	if (!checkout) return;
+	if (checkout) {
+		checkout.addEventListener("click", (e) => {
+			e.preventDefault();
+			window.location.href = "/checkout";
+		});
+	}
+}
+
+/* --- Atualizar quantidade do item no carrinho (servidor) --- */
+async function atualizarQuantidadeCarrinho(id_produto, quantidade) {
+	try {
+		const data = await fetchJSON("/carrinho/atualizar", {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ id_produto, quantidade }),
+		});
+
+		if (data.success) {
+			await atualizarCarrinho();
+		} else {
+			showToast(
+				`❌ Erro ao atualizar: ${
+					data.message || "Falha ao atualizar quantidade"
+				}`,
+				"error"
+			);
+			await atualizarCarrinho();
+		}
+	} catch (err) {
+		console.error("Erro ao atualizar quantidade do carrinho:", err);
+		showToast("⚠️ Erro de rede ou servidor", "error");
+		await atualizarCarrinho();
+	}
+}
+
+/* --- Handler para botões de quantidade no Popup do Carrinho --- */
+function handlerQuantidadePopup() {
+	const cartItems = qs(".cart-items");
+	if (!cartItems) return;
+
+	cartItems.addEventListener("click", async (e) => {
+		const target = e.target;
+
+		if (
+			!target.classList.contains("btn-plus") &&
+			!target.classList.contains("btn-minus")
+		) {
+			return;
+		}
+
+		e.preventDefault();
+
+		const quantitySelector = target.closest(".quantity-selector");
+		if (!quantitySelector) return;
+
+		const input = qs(".quantity-input", quantitySelector);
+		const id_produto = target.dataset.id;
+
+		if (!input || !id_produto) return;
+
+		let val = parseInt(input.value || "0", 10);
+		let novaQuantidade = val;
+
+		// Calcula a nova quantidade
+		if (target.classList.contains("btn-plus")) {
+			novaQuantidade = val + 1;
+		} else if (target.classList.contains("btn-minus")) {
+			novaQuantidade = clamp(val - 1, 1, Infinity);
+		}
+
+		// Se a quantidade mudou, chama a API
+		if (novaQuantidade !== val) {
+			input.value = novaQuantidade;
+
+			await atualizarQuantidadeCarrinho(id_produto, novaQuantidade);
 		}
 	});
 }
@@ -208,6 +379,8 @@ function removerItensCarrinho() {
 document.addEventListener("DOMContentLoaded", () => {
 	inicializarPopupCarrinho();
 	listarProdutos();
-	removerItensCarrinho();
+	handlerRemover();
+	handlerQuantidadePopup();
 	atualizarCarrinho();
+	redirectToCheckout();
 });

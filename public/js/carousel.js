@@ -6,7 +6,7 @@ let currentSlide = 0;
 
 // Atualiza a posição do track
 function updateTrack() {
-	track.style.transform = `translateX(-${currentSlide * 33}%)`;
+	track.style.transform = `translateX(-${currentSlide * 33.33}%)`;
 	slides.forEach((slide, i) => {
 		slide.classList.toggle("active", i === currentSlide);
 	});
