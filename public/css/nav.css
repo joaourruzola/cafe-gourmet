@@ -62,7 +62,7 @@
 
 .nav-logo a {
   text-decoration: none;
-  color: #e4e6eb;
+  color: var(--color-text-light);
   font-weight: 500;
   font-size: 1.45rem;
   transition: color 0.2s ease;
@@ -74,14 +74,14 @@
 
 .nav-actions a {
   text-decoration: none;
-  color: #e4e6eb;
+  color: var(--color-text-light);
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.2s ease;
 }
 
 .nav-actions a:hover {
-  color: var(--color-text-light);
+  color: var(--color-theme-hover);
 }
 
 /* Cart Icon */

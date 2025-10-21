@@ -17,6 +17,48 @@ const fecharPopup = (popup) => popup.classList.remove("active");
 
 const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
+/**
+ * Exibe uma notificação Toast no canto da tela.
+ * @param {string} message
+ * @param {('success'|'error'|'warning')} type
+ * @param {number} duration
+ */
+
+function showToast(message, type = "success", duration = 3000) {
+	let container = qs("#toast-container");
+
+	// Cria o container se não existir
+	if (!container) {
+		container = document.createElement("div");
+		container.id = "toast-container";
+		document.body.appendChild(container);
+	}
+
+	const toast = document.createElement("div");
+	toast.className = `custom-toast ${type}`;
+	toast.innerHTML = message;
+
+	container.appendChild(toast);
+
+	// Força o reflow para garantir a transição
+	toast.offsetWidth;
+
+	toast.classList.add("show");
+
+	const timeoutId = setTimeout(() => {
+		toast.classList.remove("show");
+		toast.addEventListener("transitionend", () => toast.remove());
+	}, duration);
+
+	toast.addEventListener("click", () => {
+		clearTimeout(timeoutId);
+		toast.classList.remove("show");
+		toast.addEventListener("transitionend", () => toast.remove(), {
+			once: true,
+		});
+	});
+}
+
 /* --- Popup carrinho de compras --- */
 function inicializarPopupCarrinho() {
 	const cart = qs(".cart");
@@ -84,13 +126,16 @@ async function adicionarCarrinho(id_produto, quantidade) {
 
 		if (data.success) {
 			await atualizarCarrinho();
-			alert("✅ " + data.message);
+			showToast(`✅ ${data.message || "Item adicionado!"}`, "success");
 		} else {
-			alert("❌ Erro: " + (data.message || "Falha ao adicionar"));
+			showToast(
+				`❌ Erro: ${data.message || "Falha ao adicionar"}`,
+				"error"
+			);
 		}
 	} catch (err) {
 		console.error("Erro ao adicionar ao carrinho:", err);
-		alert("⚠️ Erro de rede ou servidor");
+		showToast("⚠️ Erro de rede ou servidor", "error");
 	}
 }
 
@@ -195,12 +240,13 @@ async function removerItemCarrinho(target) {
 
 		if (result.success) {
 			await atualizarCarrinho();
-			alert("✅ " + result.message);
+			showToast(`✅ ${result.message || "Item removido!"}`, "success");
 		} else {
-			alert(result.message || "Erro ao remover item");
+			showToast(result.message || "❌ Erro ao remover item", "error");
 		}
 	} catch (err) {
 		console.error("Erro ao remover item:", err);
+		showToast("⚠️ Erro de rede ou servidor", "error");
 	}
 }
 
@@ -270,15 +316,17 @@ async function atualizarQuantidadeCarrinho(id_produto, quantidade) {
 		if (data.success) {
 			await atualizarCarrinho();
 		} else {
-			alert(
-				"❌ Erro ao atualizar: " +
-					(data.message || "Falha ao atualizar quantidade")
+			showToast(
+				`❌ Erro ao atualizar: ${
+					data.message || "Falha ao atualizar quantidade"
+				}`,
+				"error"
 			);
 			await atualizarCarrinho();
 		}
 	} catch (err) {
 		console.error("Erro ao atualizar quantidade do carrinho:", err);
-		alert("⚠️ Erro de rede ou servidor");
+		showToast("⚠️ Erro de rede ou servidor", "error");
 		await atualizarCarrinho();
 	}
 }

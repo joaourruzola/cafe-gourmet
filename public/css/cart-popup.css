@@ -4,7 +4,7 @@
 .cart-popup {
     position: fixed; /* Fixed para ficar na tela mesmo com scroll */
     top: 1.5rem;
-    right: 1.5rem;
+    right: 1.3rem;
     width: 420px; /* Mais largo */
     max-height: 90vh; /* Usa a altura da tela como referência */
     background: #ffffff; /* Fundo branco */
