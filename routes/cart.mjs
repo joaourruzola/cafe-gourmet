@@ -179,6 +179,70 @@ router.get("/checkout", async (req, res) => {
 	}
 });
 
+// ===== Rotas PUT =====
+
+router.put("/carrinho/atualizar", (req, res) => {
+	const { id_produto, quantidade } = req.body;
+	const id_usuario = 1; // TEMP: replace with session user ID later
+
+	const quantidadeNum = parseInt(quantidade, 10);
+
+	if (!id_produto || isNaN(quantidadeNum) || quantidadeNum <= 0) {
+		return res
+			.status(400)
+			.json({
+				success: false,
+				message: "Dados inválidos: id_produto ou quantidade inválida.",
+			});
+	}
+
+	// Encontrar o carrinho ativo do usuário
+	connection.query(
+		"SELECT id_carrinho FROM carrinhos WHERE id_usuario = ? AND ativo = 1 LIMIT 1",
+		[id_usuario],
+		(err, results) => {
+			if (err)
+				return res.status(500).json({ success: false, error: err });
+
+			if (results.length === 0)
+				return res
+					.status(404)
+					.json({
+						success: false,
+						message: "Carrinho ativo não encontrado.",
+					});
+
+			const id_carrinho = results[0].id_carrinho;
+
+			// Atualizar a quantidade do item no carrinho_itens
+			connection.query(
+				"UPDATE carrinho_itens SET quantidade = ? WHERE id_carrinho = ? AND id_produto = ?",
+				[quantidadeNum, id_carrinho, id_produto],
+				(err, updateRes) => {
+					if (err)
+						return res
+							.status(500)
+							.json({ success: false, error: err });
+
+					if (updateRes.affectedRows === 0)
+						return res
+							.status(404)
+							.json({
+								success: false,
+								message:
+									"Item não encontrado no carrinho para atualização.",
+							});
+
+					res.json({
+						success: true,
+						message: "Quantidade do item atualizada com sucesso.",
+					});
+				}
+			);
+		}
+	);
+});
+
 // ===== Rotas DELETE =====
 
 router.delete("/carrinho/remover/:id_produto", isAdmin, (req, res) => {
