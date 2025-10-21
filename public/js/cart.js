@@ -268,21 +268,17 @@ async function atualizarQuantidadeCarrinho(id_produto, quantidade) {
 		});
 
 		if (data.success) {
-			// Atualiza a interface do carrinho com os novos dados
 			await atualizarCarrinho();
-			// Não exibe um alerta, pois a atualização visual já é o feedback
 		} else {
 			alert(
 				"❌ Erro ao atualizar: " +
 					(data.message || "Falha ao atualizar quantidade")
 			);
-			// Força uma atualização para reverter o estado visual em caso de falha
 			await atualizarCarrinho();
 		}
 	} catch (err) {
 		console.error("Erro ao atualizar quantidade do carrinho:", err);
 		alert("⚠️ Erro de rede ou servidor");
-		// Força uma atualização para reverter o estado visual em caso de falha
 		await atualizarCarrinho();
 	}
 }
@@ -295,7 +291,6 @@ function handlerQuantidadePopup() {
 	cartItems.addEventListener("click", async (e) => {
 		const target = e.target;
 
-		// Verifica se o clique foi em um dos botões de quantidade
 		if (
 			!target.classList.contains("btn-plus") &&
 			!target.classList.contains("btn-minus")
@@ -305,7 +300,6 @@ function handlerQuantidadePopup() {
 
 		e.preventDefault();
 
-		// Encontra o seletor de quantidade
 		const quantitySelector = target.closest(".quantity-selector");
 		if (!quantitySelector) return;
 
@@ -321,21 +315,15 @@ function handlerQuantidadePopup() {
 		if (target.classList.contains("btn-plus")) {
 			novaQuantidade = val + 1;
 		} else if (target.classList.contains("btn-minus")) {
-			// Se for tentar diminuir para 0, o botão "Remover" deve ser usado,
-			// então definimos o mínimo como 1 para este handler.
 			novaQuantidade = clamp(val - 1, 1, Infinity);
 		}
 
 		// Se a quantidade mudou, chama a API
 		if (novaQuantidade !== val) {
-			// Atualiza visualmente *antes* da chamada para dar uma resposta mais rápida ao usuário (otimista)
 			input.value = novaQuantidade;
 
-			// Chama a função que comunica com o servidor e atualiza o carrinho.
 			await atualizarQuantidadeCarrinho(id_produto, novaQuantidade);
 		}
-		// Se a nova quantidade for igual à anterior (ex: tentou ir para 0 no btn-minus),
-		// nenhuma ação é tomada (o item deve ser removido pelo botão "Remover").
 	});
 }
 
