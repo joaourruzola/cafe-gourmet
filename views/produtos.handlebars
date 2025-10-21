@@ -17,14 +17,32 @@
         <span class="cart-count">2</span>
         <!-- Popup carrinho de compras -->
         <div class="cart-popup">
-          <h4>Meu Carrinho</h4>
-          <!-- Aqui os itens serão inseridos dinamicamente via JS -->
-          <div class="cart-items"></div>
-          <div class="cart-total">
-            Total:
-            <strong>R$ 0,00</strong>
+          <div class="cart-header">
+            <h4>SHOPPING BAG</h4>
+            <button class="close-cart-btn">×</button>
           </div>
-          <a href="/checkout" class="checkout-btn">Finalizar Compra</a>
+
+          <div class="free-shipping-tracker">
+            <p>Faltam R$ XX,XX para frete grátis</p>
+            <div class="progress-bar-container">
+              <div class="progress-bar"></div>
+            </div>
+          </div>
+
+          <div class="cart-items"></div>
+
+          <div class="cart-summary">
+            <div class="summary-line">
+              <span>Subtotal</span>
+              <span id="cart-subtotal">R$ 0,00</span>
+            </div>
+            <div class="summary-line">
+              <span>Total Estimado</span>
+              <span id="cart-total">R$ 0,00</span>
+            </div>
+          </div>
+
+          <button class="checkout-btn">Checkout</button>
         </div>
       </a>
     </div>
@@ -85,31 +103,27 @@
               </p>
             </div>
             <!-- Seleção de quantidade -->
-            <div class="input-group mb-2 quantity-selector">
+            <div class="quantity-selector">
               <button
-                class="btn btn-outline-secondary btn-minus"
+                class="quantity-btn btn-minus"
                 type="button"
-                data-product-id="{{id_produto}}"
-                data-min="1"
+                data-id="{{id_produto}}"
                 {{disableIfNoStock estoque}}
               >
                 -
               </button>
               <input
-                type="number"
-                min="1"
-                max="{{estoque}}"
+                type="text"
+                class="quantity-input"
                 value="1"
-                id="quantidade-{{id_produto}}"
-                class="form-control text-center quantity-input"
+                max="{{estoque}}"
                 readonly
                 {{disableIfNoStock estoque}}
               />
               <button
-                class="btn btn-outline-secondary btn-plus"
+                class="quantity-btn btn-plus"
                 type="button"
-                data-product-id="{{id_produto}}"
-                data-max="{{estoque}}"
+                data-id="{{id_produto}}"
                 {{disableIfNoStock estoque}}
               >
                 +

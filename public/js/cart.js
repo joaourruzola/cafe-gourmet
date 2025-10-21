@@ -76,36 +76,51 @@ async function adicionarCarrinho(id_produto, quantidade) {
 }
 
 /* --- Renderizar Carrinho --- */
+/* --- Renderiza os itens do carrinho --- */
 function renderizarCarrinho(items) {
-	const cartItemsEl = qs(".cart-items");
-	if (!cartItemsEl) return;
+    const cartItemsEl = qs(".cart-items"); // Use um seletor mais específico se necessário
+    if (!cartItemsEl) return;
 
-	cartItemsEl.innerHTML = "";
+    cartItemsEl.innerHTML = ""; // Limpa a lista antes de renderizar
 
-	if (!items || items.length === 0) {
-		cartItemsEl.innerHTML = `<p class="empty-cart">Carrinho vazio</p>`;
-		return;
-	}
+    if (!items || items.length === 0) {
+        cartItemsEl.innerHTML = `<p class="empty-cart">Seu carrinho está vazio.</p>`;
+        // Ocultar o rodapé se o carrinho estiver vazio
+        qs('.cart-summary').style.display = 'none';
+        qs('.checkout-btn').style.display = 'none';
+        return;
+    }
 
-	items.forEach((item) => {
-		const div = document.createElement("div");
-		div.className = "cart-item";
+    // Mostrar o rodapé se houver itens
+    qs('.cart-summary').style.display = 'block';
+    qs('.checkout-btn').style.display = 'block';
 
-		div.innerHTML = `
-            <img src="/images/${item.imagem}" alt="${item.nome}" />
-            <div class="cart-item-info">
-                <p class="cart-item-name">${item.nome}</p>
-                <p class="cart-item-price">${item.quantidade} x ${formatarMoeda(
-			item.valor_unitario
-		)}</p>
-                <a href="#" class="btn btn-secondary remover-item" data-id="${
-					item.id_produto
-				}">Remover</a>
+    items.forEach((item) => {
+        const itemEl = document.createElement("div");
+        itemEl.className = "cart-item";
+        itemEl.dataset.itemId = item.id_produto; // Adiciona ID ao elemento principal
+
+        // Nova estrutura HTML inspirada no exemplo
+        itemEl.innerHTML = `
+            <img src="/images/${item.imagem}" alt="${item.nome}" class="cart-item-image" />
+            <div class="cart-item-details">
+                <div class="cart-item-header">
+                    <span class="cart-item-name">${item.nome}</span>
+                    <span class="cart-item-price">${formatarMoeda(item.valor_unitario * item.quantidade)}</span>
+                </div>
+                <div class="cart-item-controls">
+                    <div class="quantity-selector">
+                        <button class="quantity-btn btn-minus" data-id="${item.id_produto}">-</button>
+                        <input type="text" class="quantity-input" value="${item.quantidade}" readonly />
+                        <button class="quantity-btn btn-plus" data-id="${item.id_produto}">+</button>
+                    </div>
+                    <button class="remove-btn" data-id="${item.id_produto}">Remover</button>
+                </div>
             </div>
         `;
 
-		cartItemsEl.appendChild(div);
-	});
+        cartItemsEl.appendChild(itemEl);
+    });
 }
 
 /* --- Atualizar total e contagem --- */
