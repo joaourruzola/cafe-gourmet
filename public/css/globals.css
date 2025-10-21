@@ -1,24 +1,24 @@
 :root {
-  /* Cores Principais (Tema Escuro) */
-  --color-bg-primary: #13161c;
-  --color-bg-secondary: #1b212a;
-  --color-text-light: #ffffff;
-  --color-text-secondary: #f0f0f0;
-  --color-text-placeholder: #888;
-  --color-border-primary: #2b2f38;
-  --color-border-secondary: #2a313d;
+  /* Cores Principais (Tema Claro) */
+  --color-bg-primary: #ffffff; /* Fundo principal claro */
+  --color-bg-secondary: #f0f0f0; /* Fundo secundário (ex: cards, barras) */
+  --color-text-light: #13161c; /* Texto principal (escuro no fundo claro) */
+  --color-text-secondary: #444444; /* Texto secundário/levemente mais claro */
+  --color-text-placeholder: #aaaaaa; /* Cor para placeholder */
+  --color-border-primary: #dddddd; /* Borda sutil */
+  --color-border-secondary: #cccccc; /* Borda mais destacada */
 
-  /* Cores de Ação (Acentuação/Interativa) */
-  --color-accent-blue: #00b3ff;
-  --color-accent-green: #28a745;
-  --color-accent-red: #ff4d4f; /* Usado no contador do carrinho */
+  /* Cores de Ação (Acentuação/Interativa) - Não mudam, pois são cores fixas */
+  --color-accent-blue: #007bff; /* Azul vibrante (ajustei para um tom mais padrão de claro) */
+  --color-accent-green: #28a745; 
+  --color-accent-red: #dc3545; /* Vermelho vibrante (ajustei para um tom mais padrão de claro) */
 
   /* Cor do Tema (Café/Marrom) - Usado em botões principais */
-  --color-theme-primary: #6f4e37;
-  --color-theme-hover: #5a3f2c;
+  --color-theme-primary: #6f4e37; /* Mantido, pois é a cor de acentuação do tema */
+  --color-theme-hover: #5a3f2c; /* Mantido */
 
   /* Sombras/Transparência */
-  --shadow-navbar: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-navbar: 0 2px 12px rgba(0, 0, 0, 0.1); /* Sombra mais sutil para fundo claro */
 }
 
 /* 2. FONTES */

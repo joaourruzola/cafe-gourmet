@@ -21,6 +21,8 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 function inicializarPopupCarrinho() {
 	const cart = qs(".cart");
 	const popup = qs(".cart-popup");
+	const closeBtn = qs(".close-cart-btn");
+
 	if (!cart || !popup) return;
 
 	cart.addEventListener("click", (e) => {
@@ -28,8 +30,25 @@ function inicializarPopupCarrinho() {
 		alternarPopup(popup);
 	});
 
+	if (closeBtn) {
+		closeBtn.addEventListener("click", (e) => {
+			e.preventDefault();
+			fecharPopup(popup);
+		});
+	}
+
 	document.addEventListener("click", (e) => {
-		if (!cart.contains(e.target)) fecharPopup(popup);
+		if (
+			popup.classList.contains("active") &&
+			!cart.contains(e.target) &&
+			!popup.contains(e.target)
+		) {
+			fecharPopup(popup);
+		}
+	});
+
+	popup.addEventListener("click", (e) => {
+		e.stopPropagation();
 	});
 }
 
@@ -78,54 +97,66 @@ async function adicionarCarrinho(id_produto, quantidade) {
 /* --- Renderizar Carrinho --- */
 /* --- Renderiza os itens do carrinho --- */
 function renderizarCarrinho(items) {
-    const cartItemsEl = qs(".cart-items"); // Use um seletor mais específico se necessário
-    if (!cartItemsEl) return;
+	const cartItemsEl = qs(".cart-items"); // Use um seletor mais específico se necessário
+	if (!cartItemsEl) return;
 
-    cartItemsEl.innerHTML = ""; // Limpa a lista antes de renderizar
+	cartItemsEl.innerHTML = ""; // Limpa a lista antes de renderizar
 
-    if (!items || items.length === 0) {
-        cartItemsEl.innerHTML = `<p class="empty-cart">Seu carrinho está vazio.</p>`;
-        // Ocultar o rodapé se o carrinho estiver vazio
-        qs('.cart-summary').style.display = 'none';
-        qs('.checkout-btn').style.display = 'none';
-        return;
-    }
+	if (!items || items.length === 0) {
+		cartItemsEl.innerHTML = `<p class="empty-cart">Seu carrinho está vazio.</p>`;
+		// Ocultar o rodapé se o carrinho estiver vazio
+		qs(".cart-summary").style.display = "none";
+		qs(".checkout-btn").style.display = "none";
+		return;
+	}
 
-    // Mostrar o rodapé se houver itens
-    qs('.cart-summary').style.display = 'block';
-    qs('.checkout-btn').style.display = 'block';
+	// Mostrar o rodapé se houver itens
+	qs(".cart-summary").style.display = "block";
+	qs(".checkout-btn").style.display = "block";
 
-    items.forEach((item) => {
-        const itemEl = document.createElement("div");
-        itemEl.className = "cart-item";
-        itemEl.dataset.itemId = item.id_produto; // Adiciona ID ao elemento principal
+	items.forEach((item) => {
+		const itemEl = document.createElement("div");
+		itemEl.className = "cart-item";
+		itemEl.dataset.itemId = item.id_produto; // Adiciona ID ao elemento principal
 
-        // Nova estrutura HTML inspirada no exemplo
-        itemEl.innerHTML = `
-            <img src="/images/${item.imagem}" alt="${item.nome}" class="cart-item-image" />
+		// Nova estrutura HTML inspirada no exemplo
+		itemEl.innerHTML = `
+            <img src="/images/${item.imagem}" alt="${
+			item.nome
+		}" class="cart-item-image" />
             <div class="cart-item-details">
                 <div class="cart-item-header">
                     <span class="cart-item-name">${item.nome}</span>
-                    <span class="cart-item-price">${formatarMoeda(item.valor_unitario * item.quantidade)}</span>
+                    <span class="cart-item-price">${formatarMoeda(
+						item.valor_unitario * item.quantidade
+					)}</span>
                 </div>
                 <div class="cart-item-controls">
                     <div class="quantity-selector">
-                        <button class="quantity-btn btn-minus" data-id="${item.id_produto}">-</button>
-                        <input type="text" class="quantity-input" value="${item.quantidade}" readonly />
-                        <button class="quantity-btn btn-plus" data-id="${item.id_produto}">+</button>
+                        <button class="quantity-btn btn-minus" data-id="${
+							item.id_produto
+						}">-</button>
+                        <input type="text" class="quantity-input" value="${
+							item.quantidade
+						}" readonly />
+                        <button class="quantity-btn btn-plus" data-id="${
+							item.id_produto
+						}">+</button>
                     </div>
-                    <button class="remove-btn" data-id="${item.id_produto}">Remover</button>
+                    <button class="remove-btn" data-id="${
+						item.id_produto
+					}">Remover</button>
                 </div>
             </div>
         `;
 
-        cartItemsEl.appendChild(itemEl);
-    });
+		cartItemsEl.appendChild(itemEl);
+	});
 }
 
 /* --- Atualizar total e contagem --- */
 function atualizarTotalandQuantidade(items) {
-	const totalEl = qs(".cart-total strong");
+	const totalEl = qs("#cart-total");
 	const countEl = qs(".cart-count");
 
 	let total = 0;
@@ -206,23 +237,35 @@ function listarProdutos() {
 }
 
 /* --- Remover itens do carrinho --- */
-function removerItensCarrinho() {
+function handlerRemover() {
 	const cartItems = qs(".cart-items");
 	if (!cartItems) return;
 
 	cartItems.addEventListener("click", async (e) => {
 		const target = e.target;
-		if (target.classList.contains("remover-item")) {
+		if (target.classList.contains("remove-btn")) {
 			e.preventDefault();
 			await removerItemCarrinho(target);
 		}
 	});
 }
 
+function redirectToCheckout() {
+	const checkout = qs(".checkout-btn");
+	if (!checkout) return;
+	if (checkout) {
+		checkout.addEventListener("click", (e) => {
+			e.preventDefault();
+			window.location.href = "/checkout";
+		});
+	}
+}
+
 /* --- Inicializar helpers depois de carregado DOM --- */
 document.addEventListener("DOMContentLoaded", () => {
 	inicializarPopupCarrinho();
 	listarProdutos();
-	removerItensCarrinho();
+	handlerRemover();
 	atualizarCarrinho();
+    redirectToCheckout();
 });
