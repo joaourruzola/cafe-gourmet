@@ -251,8 +251,8 @@ p {
 .btn-back:hover {
   color: var(--color-text-light); 
   background-color: var(--color-bg-secondary);
-  border-color: var(--color-accent-green);
-  box-shadow: 0 0 10px rgba(40, 167, 69, 0.2); 
+  border-color: var(--color-theme-hover);
+  box-shadow: 0 0 10px rgba(110, 85, 16, 0.2); 
 }
 
 /* --- Responsividade (Mantido) --- */

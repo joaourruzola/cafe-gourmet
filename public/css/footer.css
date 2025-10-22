@@ -24,7 +24,7 @@
 
 .footer-section h3 {
   font-size: 1rem;
-  color: var(--color-text-light); /* Variável */
+  color: #aaa;
   margin-bottom: 1rem;
   letter-spacing: 0.5px;
 }
