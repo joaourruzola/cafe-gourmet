@@ -19,7 +19,6 @@
             </div>
           </div>
         {{/each}}
-
         <h3>Total: R$ {{total}}</h3>
       </div>
 
@@ -27,19 +26,26 @@
         <h4>Formas de Pagamento</h4>
 
         <form id="payment-form">
-          <label>
-            <input type="radio" name="payment" value="pix" checked />
+          <input
+            type="radio"
+            name="payment"
+            value="pix"
+            id="radio-pix"
+            checked
+          />
+          <label for="radio-pix">
             PIX
           </label>
-          <label>
-            <input type="radio" name="payment" value="cartao" />
+
+          <input type="radio" name="payment" value="cartao" id="radio-cartao" />
+          <label for="radio-cartao">
             Cartão de Crédito
           </label>
-          <label>
-            <input type="radio" name="payment" value="boleto" />
+
+          <input type="radio" name="payment" value="boleto" id="radio-boleto" />
+          <label for="radio-boleto">
             Boleto Bancário
           </label>
-
           <div id="pix-form" class="payment-form">
             <p>Escaneie o QR Code abaixo para pagar via PIX:</p>
             <img src="{{qrCodeDataURL}}" alt="QR Code PIX" class="qr-pix" />
@@ -69,3 +75,4 @@
     </div>
   {{/if}}
 </div>
+<script src="/js/checkout.js"></script>

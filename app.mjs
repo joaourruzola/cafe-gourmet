@@ -34,6 +34,7 @@ app.use(
 app.use(connectLivereload());
 app.use(Express.static("public"));
 app.use("./css", Express.static("./public/css"));
+app.use("./js", Express.static("./public/js"));
 app.use("/bootstrap", Express.static("./node_modules/bootstrap/dist"));
 app.use("/", indexRoute);
 app.use("/admin", adminRoutes);

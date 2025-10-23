@@ -1,6 +1,5 @@
 /* checkout.css */
 
-/* Reajustes de elementos globais (alguns foram movidos para globals.css) */
 h2 {
   padding: 20px;
 }
@@ -166,7 +165,7 @@ p {
 /* Estilo do label container quando selecionado */
 #payment-form input[type="radio"]:checked + label {
   border-color: var(--color-accent-green);
-  background-color: #1c2b20; /* Fundo com leve tom verde */
+  background-color: #75c089;
   font-weight: 700;
   color: var(--color-text-light);
 }
@@ -217,14 +216,12 @@ p {
 }
 
 .btn.checkout {
-  /* Estilo base movido para globals.css, apenas ajustes de tamanho aqui */
   width: 100%;
   padding: 14px 25px;
   font-size: 1.1rem;
   margin-top: 10px;
 }
 
-/* 1. Alinhamento do cabeçalho */
 .container-flex {
   display: flex;
   align-items: center; 
@@ -232,7 +229,6 @@ p {
   padding: 10px 0; 
 }
 
-/* 2. Estilo Moderno para o Botão "Voltar" (<a>) */
 .btn-back {
   display: inline-block;
   text-decoration: none;
