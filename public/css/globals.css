@@ -1,7 +1,7 @@
 :root {
   /* Cores Principais (Tema Claro) */
   --color-bg-primary: #ffffff; /* Fundo principal claro */
-  --color-bg-secondary: #f0f0f0; /* Fundo secundário (ex: cards, barras) */
+  --color-bg-secondary: #f0f0f0; /* Fundo secundário (cards, barras) */
   --color-text-light: #13161c; /* Texto principal (escuro no fundo claro) */
   --color-text-secondary: #444444; /* Texto secundário/levemente mais claro */
   --color-text-placeholder: #aaaaaa; /* Cor para placeholder */
@@ -82,7 +82,7 @@ a:hover {
   right: 20px;
   z-index: 1000;
   display: flex;
-  flex-direction: column-reverse; /* Mostra os novos toasts por cima */
+  flex-direction: column-reverse;
 }
 
 .custom-toast {

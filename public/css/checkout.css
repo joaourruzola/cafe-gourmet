@@ -34,8 +34,8 @@ p {
 
 .checkout-content {
   display: flex;
-  flex-wrap: wrap; 
-  gap: 30px; 
+  flex-wrap: wrap;
+  gap: 30px;
 }
 
 .cart-summary,
@@ -47,12 +47,12 @@ p {
 }
 
 .cart-summary {
-  flex: 1; 
-  min-width: 300px; 
+  flex: 1;
+  min-width: 300px;
 }
 
 .payment-section {
-  flex: 1.5; 
+  flex: 1.5;
   min-width: 300px;
 }
 
@@ -91,7 +91,6 @@ p {
   text-align: left;
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--color-accent-green);
   margin-top: 20px;
   border: 1px solid var(--color-border-secondary);
   border-radius: 5px;
@@ -114,11 +113,10 @@ p {
   background-color: var(--color-bg-secondary) !important;
 }
 
-/* --- Estilo Moderno para Radio Buttons --- */
+/* --- Radio Buttons --- */
 #payment-form > label {
   display: block;
   background: var(--color-border-secondary);
-  border: 2px solid #4a515d;
   padding: 15px 20px;
   margin-bottom: 10px;
   border-radius: 5px;
@@ -157,17 +155,16 @@ p {
 
 /* Estilo do indicador quando selecionado */
 #payment-form input[type="radio"]:checked + label::before {
-  border-color: var(--color-accent-green);
-  background-color: var(--color-accent-green);
-  box-shadow: 0 0 0 3px var(--color-bg-primary), 0 0 0 5px var(--color-accent-green);
+  border-color: #6a717d;
+  background-color: var(--color-border-secondary);
 }
 
 /* Estilo do label container quando selecionado */
 #payment-form input[type="radio"]:checked + label {
-  border-color: var(--color-accent-green);
-  background-color: #75c089;
+  border-color: var(--color-theme-primary);
+  background-color: var(--color-theme-hover);
   font-weight: 700;
-  color: var(--color-text-light);
+  color: #fff;
 }
 
 /* --- Forms Específicos (PIX, Cartão, Boleto) --- */
@@ -178,7 +175,7 @@ p {
 #pix-form img.qr-pix {
   width: 220px;
   height: 220px;
-  background-color: white; 
+  background-color: white;
   padding: 15px;
   border-radius: 5px;
   margin: 15px auto;
@@ -224,9 +221,9 @@ p {
 
 .container-flex {
   display: flex;
-  align-items: center; 
-  justify-content: space-between; 
-  padding: 10px 0; 
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
 }
 
 .btn-back {
@@ -238,17 +235,17 @@ p {
   font-size: 1rem;
   font-weight: 500;
   border: 2px solid var(--color-border-secondary);
-  border-radius: 8px; 
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin: 0; 
+  margin: 0;
 }
 
 .btn-back:hover {
-  color: var(--color-text-light); 
+  color: var(--color-text-light);
   background-color: var(--color-bg-secondary);
   border-color: var(--color-theme-hover);
-  box-shadow: 0 0 10px rgba(110, 85, 16, 0.2); 
+  box-shadow: 0 0 10px rgba(110, 85, 16, 0.2);
 }
 
 /* --- Responsividade (Mantido) --- */
