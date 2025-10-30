@@ -21,11 +21,11 @@ Este projeto foi construído sobre uma pilha de tecnologias **JavaScript** e fer
 
 * **Página de Apresentação:** Landing page de redirecionamento.
 * **Catálogo de Produtos:** Listagem completa de todos os cafés disponíveis.
-* **Páginas de Detalhes do Produto:** Informações, descrição e opções de compra para cada café. (Work in Progreess)
+* **Páginas de Detalhes do Produto:** Informações, descrição e opções de compra para cada café. (Work in Progress)
 * **Carrinho de Compras:** Funcionalidade para adicionar, remover e gerenciar itens.
-* **Sistema de Autenticação/Autorização:** Cadastro e Login de usuários/administradores. (Work in Progreess)
+* **Sistema de Autenticação/Autorização:** Cadastro e Login de usuários/administradores. (Work in Progress)
 * **Checkout:** Processo simplificado de finalização de compra.
-* **Painel Administrativo:** CRUD de produtos, gerenciamento de pedidos, etc. (Work in Progreess)
+* **Painel Administrativo:** CRUD de produtos, gerenciamento de pedidos, etc. (Work in Progress)
 
 🧑‍💻 Autor
 
