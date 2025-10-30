@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import indexRoute from "./routes/index.mjs";
 import adminRoutes from "./routes/admin.mjs";
 import cartRoutes from "./routes/cart.mjs";
+import authRoutes from "./routes/auth.mjs";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 
@@ -39,6 +40,7 @@ app.use("/bootstrap", Express.static("./node_modules/bootstrap/dist"));
 app.use("/", indexRoute);
 app.use("/admin", adminRoutes);
 app.use("/", cartRoutes);
+app.use("/auth", authRoutes);
 
 app.use((req, res, next) => {
 	const error = new Error(`A rota ${req.originalUrl} não foi encontrada.`);
@@ -96,7 +98,7 @@ connection.connect((err) => {
 });
 
 app.listen(port, () => {
-	console.log(`Server initialized in localhost:${port}`);
+	console.log(`Server initialized in centerbeam.proxy.rlwy.net:${port}`);
 });
 
 // Atualiza o browser ao salvar arquivos
