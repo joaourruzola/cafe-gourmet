@@ -1,15 +1,21 @@
-<!-- Login form -->
 <div class="login-outer">
   <section class="login-container">
     <div class="form-box">
       <div class="form-value">
-        <form action="/auth/login" method="POST">
-          <h2>Login</h2>
+        <form action="/auth/cadastro" method="POST">
+          <h2>Cadastro</h2>
+
+          <div class="inputbox">
+            <input type="text" id="nome" name="nome" required placeholder=" " />
+            <label for="nome">Nome Completo</label>
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+
           <div class="inputbox">
             <input
               type="email"
-              name="email"
               id="email"
+              name="email"
               required
               placeholder=" "
             />
@@ -20,21 +26,21 @@
           <div class="inputbox">
             <input
               type="password"
-              name="senha"
               id="senha"
+              name="senha"
               required
               placeholder=" "
             />
             <label for="senha">Senha</label>
             <ion-icon name="lock-closed-outline"></ion-icon>
           </div>
-          <div class="forget">
-            <label for=""><input type="checkbox" />Lembrar de mim </label>
-            <a href="#">Esqueceu a senha?</a>
-          </div>
-          <button class="btn login">Entrar</button>
+
+          <button type="submit" class="btn login">Criar Conta</button>
+
           <div class="register">
-            <p>Não tem conta? <a href="/cadastro">Cadastrar</a></p>
+            <p>Já tem conta?
+              <a href="/login">Fazer Login</a>
+            </p>
           </div>
         </form>
       </div>

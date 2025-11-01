@@ -38,4 +38,10 @@ router.get("/login", (req, res) => {
 	});
 });
 
+router.get("/cadastro", (req, res) => {
+	res.render("cadastro", {
+		pageStyles: ["/css/login-form.css"],
+	});
+});
+
 export default router;

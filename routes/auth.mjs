@@ -1,5 +1,5 @@
 import Express from "express";
-import bcrypt from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import connection from "../models/db.js";
 
@@ -9,59 +9,171 @@ router.post("/login", async (req, res) => {
 	try {
 		const { email, senha } = req.body;
 
-		// 1. Validar se os dados vieram
 		if (!email || !senha) {
-			return res
-				.status(400)
-				.json({ erro: "Email e senha são obrigatórios." });
+			return res.status(400).json({
+				status: "erro",
+				codigo: 400,
+				mensagem: "Por favor, preencha seu email e sua senha.",
+			});
 		}
 
-		// 2. Buscar o usuário no banco pelo email
-		// Usamos 'LIMIT 1' por segurança e performance, embora 'email' seja UNIQUE
-		const [rows] = await connection.query(
-			"SELECT * FROM usuarios WHERE email = ? LIMIT 1",
-			[email]
-		);
+		const sql = `SELECT * FROM usuarios WHERE email = ? LIMIT 1`;
 
-		const usuario = rows[0];
+		connection.query(sql, [email], async (erro, retorno) => {
+			if (erro) {
+				console.error("Erro ao buscar usuário:", erro);
+				return res.status(500).json({
+					status: "erro",
+					codigo: 500,
+					mensagem:
+						"Erro ao buscar dados no servidor. Tente novamente.",
+				});
+			}
 
-		// 3. Verificar se o usuário existe
-		if (!usuario) {
-			// Nota de segurança: envie uma mensagem genérica
-			return res.status(401).json({ erro: "Credenciais inválidas." });
-		}
+			const usuario = retorno[0];
 
-		// 4. Comparar a senha enviada com o hash salvo no banco
-		const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+			if (!usuario) {
+				return res.status(401).json({
+					status: "erro",
+					codigo: 401,
+					mensagem: "Email ou senha inválidos. Tente novamente.",
+				});
+			}
 
-		if (!senhaCorreta) {
-			// Mesma mensagem genérica para não informar ao atacante se o email ou a senha estão errados
-			return res.status(401).json({ erro: "Credenciais inválidas." });
-		}
+			const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
 
-		// 5. Usuário autenticado! Gerar um Token JWT
-		// O token é o que mantém o usuário "logado" no frontend
-		const payload = {
-			id: usuario.id_usuario,
-			email: usuario.email,
-			tipo: usuario.tipo_usuario,
-		};
+			if (!senhaCorreta) {
+				return res.status(401).json({
+					status: "erro",
+					codigo: 401,
+					mensagem: "Email ou senha inválidos. Tente novamente.",
+				});
+			}
 
-		// Use uma chave secreta forte, salva no seu .env
-		const token = jwt.sign(
-			payload,
-			process.env.JWT_SECRET,
-			{ expiresIn: "1h" } // Token expira em 1 hora
-		);
+			// Usuário autenticado! Gerar um Token JWT
+			const payload = {
+				id: usuario.id_usuario,
+				email: usuario.email,
+				tipo: usuario.tipo_usuario,
+			};
 
-		// 6. Enviar a resposta de sucesso com o token
-		res.status(200).json({
-			mensagem: `Bem-vindo, ${usuario.nome}!`,
-			token: token,
+			const token = jwt.sign(
+				payload,
+				process.env.JWT_SECRET,
+				{ expiresIn: "1h" } // Token expira em 1 hora
+			);
+
+			res.status(200).json({
+				status: "sucesso",
+				mensagem: `Login realizado com sucesso. Bem-vindo(a), ${
+					usuario.nome.split(" ")[0]
+				}!`,
+				token: token,
+				usuario: {
+					id: usuario.id_usuario,
+					nome: usuario.nome,
+					email: usuario.email,
+					tipo: usuario.tipo_usuario,
+				},
+			});
 		});
 	} catch (error) {
-		console.error("Erro no login:", error);
-		res.status(500).json({ erro: "Ocorreu um erro interno no servidor." });
+		console.error("Erro síncrono no login:", error);
+		res.status(500).json({
+			status: "erro",
+			codigo: 500,
+			mensagem:
+				"Não foi possível realizar o login devido a um erro interno. Tente mais tarde.",
+			detalhe: error.message,
+		});
+	}
+});
+
+router.post("/cadastro", (req, res) => {
+	try {
+		const { nome, email, senha } = req.body;
+
+		if (!nome || !email || !senha) {
+			return res.status(400).json({
+				status: "erro",
+				codigo: 400,
+				mensagem:
+					"Todos os campos (Nome, Email e Senha) são obrigatórios.",
+			});
+		}
+
+		// Checar se o usuário já existe
+		const checkSql =
+			"SELECT id_usuario FROM usuarios WHERE email = ? LIMIT 1";
+
+		connection.query(checkSql, [email], async (err, results) => {
+			if (err) {
+				console.error("Erro ao checar usuário:", err);
+				return res.status(500).json({
+					status: "erro",
+					codigo: 500,
+					mensagem:
+						"Erro ao verificar a disponibilidade do email. Tente novamente.",
+				});
+			}
+
+			const existingUser = results;
+
+			if (existingUser.length > 0) {
+				return res.status(409).json({
+					status: "erro",
+					codigo: 409,
+					mensagem:
+						"Este email já está em uso. Tente outro ou faça login.",
+				});
+			}
+
+			try {
+				const salt = await bcrypt.genSalt(10);
+				const senhaHash = await bcrypt.hash(senha, salt);
+
+				const tipo_usuario = "cliente";
+				const insertSql =
+					"INSERT INTO usuarios (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, ?)";
+
+				connection.query(
+					insertSql,
+					[nome, email, senhaHash, tipo_usuario],
+					(insertErr, insertResult) => {
+						if (insertErr) {
+							console.error(
+								"Erro ao inserir usuário:",
+								insertErr
+							);
+							return res.status(500).json({
+								status: "erro",
+								codigo: 500,
+								mensagem:
+									"Não foi possível finalizar seu cadastro. Por favor, tente novamente.",
+							});
+						}
+
+						res.redirect(303, "/produtos");
+					}
+				);
+			} catch (hashError) {
+				console.error("Erro no hasheamento:", hashError);
+				res.status(500).json({
+					status: "erro",
+					codigo: 500,
+					mensagem:
+						"Ocorreu um erro de segurança interno durante o cadastro. Tente novamente.",
+				});
+			}
+		});
+	} catch (error) {
+		console.error("Erro síncrono no cadastro:", error);
+		res.status(500).json({
+			status: "erro",
+			codigo: 500,
+			mensagem:
+				"Ocorreu um erro interno no servidor durante o cadastro. Tente novamente.",
+		});
 	}
 });
 

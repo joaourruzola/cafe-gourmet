@@ -59,7 +59,6 @@ app.use((err, req, res, next) => {
 		layout: "main",
 		pageTitle: is404 ? "Página Não Encontrada (404)" : "Erro Interno",
 		errorMessage: err.message,
-		// Garante que pelo menos o CSS base seja carregado para a página de erro
 		pageStyles: ["/css/globals.css"],
 	});
 });
@@ -90,12 +89,6 @@ app.engine(
 
 app.set("view engine", "handlebars");
 app.set("views", "./views");
-
-connection.connect((err) => {
-	err
-		? console.error("Connection error:", err)
-		: console.log("Connection success!");
-});
 
 app.listen(port, () => {
 	console.log(`Server initialized in centerbeam.proxy.rlwy.net:${port}`);
