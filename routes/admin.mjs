@@ -47,9 +47,10 @@ router.post("/register", (req, res) => {
 			return res.redirect("/admin/registerFail");
 		}
 
-		let sql = `INSERT INTO produtos (nome, valor, imagem, estoque) VALUES ('${nome}', ${valor}, '${imagem}', ${estoque})`;
+		let sql = `INSERT INTO produtos (nome, valor, imagem, estoque) VALUES (?, ?, ?, ?)`;
+		let valores = [nome, valor, imagem, estoque];
 
-		connection.query(sql, (erro, retorno) => {
+		connection.query(sql, valores, (erro, retorno) => {
 			if (erro) {
 				console.error("Erro no MySQL:", erro);
 				return res.redirect("/admin/registerFail");
@@ -137,9 +138,9 @@ router.post("/edit", (req, res) => {
 // ===== Rotas GET (CRUD) =====
 
 router.get("/alterar-produtos/:id_produto", (req, res) => {
-	let sql = `SELECT * FROM produtos WHERE id_produto = ${req.params.id_produto}`;
+	let sql = `SELECT * FROM produtos WHERE id_produto = ?`;
 
-	connection.query(sql, (erro, retorno) => {
+	connection.query(sql, [req.params.id_produto], (erro, retorno) => {
 		if (erro) throw erro;
 
 		res.render("alterar-produtos", {
@@ -150,9 +151,9 @@ router.get("/alterar-produtos/:id_produto", (req, res) => {
 });
 
 router.get("/remove/:id_produto&:imagem", (req, res) => {
-	let sql = `DELETE FROM produtos WHERE id_produto = ${req.params.id_produto}`;
+	let sql = `DELETE FROM produtos WHERE id_produto = ?`;
 
-	connection.query(sql, (erro, retorno) => {
+	connection.query(sql, [req.params.id_produto], (erro, retorno) => {
 		if (erro) throw erro;
 
 		fs.unlink(
