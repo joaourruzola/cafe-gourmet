@@ -5,8 +5,9 @@ import isAdmin from "../public/js/admin.js";
 
 const router = Express.Router();
 
+// ===== Rota GET =====
 router.get("/carrinho/atual", (req, res) => {
-	const id_usuario = 1; // TEMP: replace with session later
+	const id_usuario = 1;
 
 	connection.query(
 		`SELECT 
@@ -24,109 +25,20 @@ router.get("/carrinho/atual", (req, res) => {
 		[id_usuario],
 		(err, results) => {
 			if (err)
-				return res.status(500).json({ success: false, error: err });
-			res.json({ success: true, items: results });
+				return res.status(500).json({
+					status: "erro",
+					codigo: 500,
+					mensagem: "Erro ao buscar o carrinho no banco de dados.",
+					detalhe: err.message,
+				});
+
+			res.json({
+				status: "sucesso",
+				codigo: 200,
+				mensagem: "Itens do carrinho carregados com sucesso.",
+				itens: results,
+			});
 			console.log(res.json);
-		}
-	);
-});
-
-// ===== Rotas POST =====
-
-router.post("/carrinho/adicionar", (req, res) => {
-	const { id_produto, quantidade } = req.body;
-	const id_usuario = 1; // TEMP: replace with session user ID later
-
-	if (!id_produto || !quantidade) {
-		return res
-			.status(400)
-			.json({ success: false, message: "Dados inválidos" });
-	}
-
-	// Verifica se o usuário já tem carrinho ativo
-	connection.query(
-		"SELECT id_carrinho FROM carrinhos WHERE id_usuario = ? AND ativo = 1 LIMIT 1",
-		[id_usuario],
-		(err, results) => {
-			if (err)
-				return res.status(500).json({ success: false, error: err });
-
-			let id_carrinho;
-
-			if (results.length > 0) {
-				id_carrinho = results[0].id_carrinho;
-				adicionarItem();
-			} else {
-				// Cria novo carrinho
-				connection.query(
-					"INSERT INTO carrinhos (id_usuario, ativo) VALUES (?, 1)",
-					[id_usuario],
-					(err, insertRes) => {
-						if (err)
-							return res
-								.status(500)
-								.json({ success: false, error: err });
-						id_carrinho = insertRes.insertId;
-						adicionarItem();
-					}
-				);
-			}
-
-			function adicionarItem() {
-				// Verifica se item já existe
-				connection.query(
-					"SELECT * FROM carrinho_itens WHERE id_carrinho = ? AND id_produto = ?",
-					[id_carrinho, id_produto],
-					(err, itemRes) => {
-						if (err)
-							return res
-								.status(500)
-								.json({ success: false, error: err });
-
-						if (itemRes.length > 0) {
-							// Atualiza quantidade
-							connection.query(
-								"UPDATE carrinho_itens SET quantidade = quantidade + ? WHERE id_carrinho = ? AND id_produto = ?",
-								[quantidade, id_carrinho, id_produto],
-								(err) => {
-									if (err)
-										return res.status(500).json({
-											success: false,
-											error: err,
-										});
-									res.json({
-										success: true,
-										message:
-											"Quantidade atualizada no carrinho",
-									});
-								}
-							);
-						} else {
-							// Insere novo item
-							connection.query(
-								"INSERT INTO carrinho_itens (id_carrinho, id_produto, quantidade, valor_unitario) VALUES (?, ?, ?, (SELECT valor FROM produtos WHERE id_produto = ?))",
-								[
-									id_carrinho,
-									id_produto,
-									quantidade,
-									id_produto,
-								],
-								(err) => {
-									if (err)
-										return res.status(500).json({
-											success: false,
-											error: err,
-										});
-									res.json({
-										success: true,
-										message: "Item adicionado ao carrinho",
-									});
-								}
-							);
-						}
-					}
-				);
-			}
 		}
 	);
 });
@@ -179,21 +91,139 @@ router.get("/checkout", async (req, res) => {
 	}
 });
 
-// ===== Rotas PUT =====
+// ===== Rota POST =====
 
+router.post("/carrinho/adicionar", (req, res) => {
+	const { id_produto, quantidade } = req.body;
+	const id_usuario = 1;
+
+	if (!id_produto || !quantidade) {
+		return res.status(400).json({
+			status: "erro",
+			codigo: 400,
+			mensagem:
+				"Dados inválidos: ID do produto e quantidade são obrigatórios.",
+		});
+	}
+
+	// Verifica se o usuário já tem carrinho ativo
+	connection.query(
+		"SELECT id_carrinho FROM carrinhos WHERE id_usuario = ? AND ativo = 1 LIMIT 1",
+		[id_usuario],
+		(err, results) => {
+			if (err)
+				return res.status(500).json({
+					status: "erro",
+					codigo: 500,
+					mensagem: "Erro ao verificar carrinho ativo.",
+				});
+
+			let id_carrinho;
+
+			if (results.length > 0) {
+				id_carrinho = results[0].id_carrinho;
+				adicionarItem();
+			} else {
+				// Cria novo carrinho
+				connection.query(
+					"INSERT INTO carrinhos (id_usuario, ativo) VALUES (?, 1)",
+					[id_usuario],
+					(err, insertRes) => {
+						if (err)
+							return res.status(500).json({
+								status: "erro",
+								codigo: 500,
+								mensagem: "Erro ao criar novo carrinho.",
+							});
+						id_carrinho = insertRes.insertId;
+						adicionarItem();
+					}
+				);
+			}
+
+			function adicionarItem() {
+				// Verifica se item já existe
+				connection.query(
+					"SELECT * FROM carrinho_itens WHERE id_carrinho = ? AND id_produto = ?",
+					[id_carrinho, id_produto],
+					(err, itemRes) => {
+						if (err)
+							return res.status(500).json({
+								status: "erro",
+								codigo: 500,
+								mensagem: "Erro ao verificar item no carrinho.",
+							});
+
+						if (itemRes.length > 0) {
+							// Atualiza quantidade
+							connection.query(
+								"UPDATE carrinho_itens SET quantidade = quantidade + ? WHERE id_carrinho = ? AND id_produto = ?",
+								[quantidade, id_carrinho, id_produto],
+								(err) => {
+									if (err)
+										return res.status(500).json({
+											status: "erro",
+											codigo: 500,
+											mensagem:
+												"Erro ao atualizar a quantidade do item.",
+										});
+
+									res.json({
+										status: "sucesso",
+										codigo: 200,
+										mensagem:
+											"Quantidade atualizada no carrinho",
+									});
+								}
+							);
+						} else {
+							// Insere novo item
+							connection.query(
+								"INSERT INTO carrinho_itens (id_carrinho, id_produto, quantidade, valor_unitario) VALUES (?, ?, ?, (SELECT valor FROM produtos WHERE id_produto = ?))",
+								[
+									id_carrinho,
+									id_produto,
+									quantidade,
+									id_produto,
+								],
+								(err) => {
+									if (err)
+										return res.status(500).json({
+											status: "erro",
+											codigo: 500,
+											mensagem:
+												"Erro ao inserir novo item no carrinho. Verifique se o produto existe.",
+										});
+
+									res.json({
+										status: "sucesso",
+										codigo: 201,
+										mensagem: "Item adicionado ao carrinho",
+									});
+								}
+							);
+						}
+					}
+				);
+			}
+		}
+	);
+});
+
+// ===== Rota PUT =====
 router.put("/carrinho/atualizar", (req, res) => {
 	const { id_produto, quantidade } = req.body;
-	const id_usuario = 1; // TEMP: replace with session user ID later
+	const id_usuario = 1;
 
 	const quantidadeNum = parseInt(quantidade, 10);
 
 	if (!id_produto || isNaN(quantidadeNum) || quantidadeNum <= 0) {
-		return res
-			.status(400)
-			.json({
-				success: false,
-				message: "Dados inválidos: id_produto ou quantidade inválida.",
-			});
+		return res.status(400).json({
+			status: "erro",
+			codigo: 400,
+			mensagem:
+				"Dados inválidos: ID do produto ou quantidade não é válida.",
+		});
 	}
 
 	// Encontrar o carrinho ativo do usuário
@@ -202,15 +232,20 @@ router.put("/carrinho/atualizar", (req, res) => {
 		[id_usuario],
 		(err, results) => {
 			if (err)
-				return res.status(500).json({ success: false, error: err });
+				return res.status(500).json({
+					status: "erro",
+					codigo: 500,
+					mensagem: "Erro ao buscar carrinho ativo.",
+					detalhe: err.message,
+				});
 
 			if (results.length === 0)
-				return res
-					.status(404)
-					.json({
-						success: false,
-						message: "Carrinho ativo não encontrado.",
-					});
+				return res.status(404).json({
+					status: "erro",
+					codigo: 404,
+					mensagem:
+						"Carrinho ativo não encontrado para este usuário.",
+				});
 
 			const id_carrinho = results[0].id_carrinho;
 
@@ -220,22 +255,25 @@ router.put("/carrinho/atualizar", (req, res) => {
 				[quantidadeNum, id_carrinho, id_produto],
 				(err, updateRes) => {
 					if (err)
-						return res
-							.status(500)
-							.json({ success: false, error: err });
+						return res.status(500).json({
+							status: "erro",
+							codigo: 500,
+							mensagem: "Erro ao atualizar item no carrinho.",
+							detalhe: err.message,
+						});
 
 					if (updateRes.affectedRows === 0)
-						return res
-							.status(404)
-							.json({
-								success: false,
-								message:
-									"Item não encontrado no carrinho para atualização.",
-							});
+						return res.status(404).json({
+							status: "erro",
+							codigo: 404,
+							mensagem:
+								"Item não encontrado no carrinho para atualização.",
+						});
 
 					res.json({
-						success: true,
-						message: "Quantidade do item atualizada com sucesso.",
+						status: "sucesso",
+						codigo: 200,
+						mensagem: "Quantidade do item atualizada com sucesso.",
 					});
 				}
 			);
@@ -243,11 +281,10 @@ router.put("/carrinho/atualizar", (req, res) => {
 	);
 });
 
-// ===== Rotas DELETE =====
-
+// ===== Rota DELETE =====
 router.delete("/carrinho/remover/:id_produto", isAdmin, (req, res) => {
 	const { id_produto } = req.params;
-	const id_usuario = 1; // TEMP — substitua depois pela sessão do usuário
+	const id_usuario = 1;
 
 	// Pega o carrinho ativo
 	connection.query(
@@ -255,12 +292,18 @@ router.delete("/carrinho/remover/:id_produto", isAdmin, (req, res) => {
 		[id_usuario],
 		(err, results) => {
 			if (err)
-				return res.status(500).json({ success: false, error: err });
+				return res.status(500).json({
+					status: "erro",
+					codigo: 500,
+					mensagem: "Erro ao buscar carrinho para remoção.",
+					detalhe: err.message,
+				});
 
 			if (results.length === 0)
 				return res.status(400).json({
-					success: false,
-					message: "Carrinho não encontrado",
+					status: "erro",
+					codigo: 400,
+					mensagem: "Carrinho ativo não encontrado.",
 				});
 
 			const id_carrinho = results[0].id_carrinho;
@@ -271,19 +314,25 @@ router.delete("/carrinho/remover/:id_produto", isAdmin, (req, res) => {
 				[id_carrinho, id_produto],
 				(err, deleteRes) => {
 					if (err)
-						return res
-							.status(500)
-							.json({ success: false, error: err });
+						return res.status(500).json({
+							status: "erro",
+							codigo: 500,
+							mensagem: "Erro ao remover item do banco de dados.",
+							detalhe: err.message,
+						});
 
 					if (deleteRes.affectedRows === 0)
 						return res.json({
-							success: false,
-							message: "Item não encontrado no carrinho",
+							status: "erro",
+							codigo: 404,
+							mensagem:
+								"Item não encontrado no carrinho para remoção.",
 						});
 
 					res.json({
-						success: true,
-						message: "Item removido do carrinho",
+						status: "sucesso",
+						codigo: 200,
+						mensagem: "Item removido do carrinho",
 					});
 				}
 			);

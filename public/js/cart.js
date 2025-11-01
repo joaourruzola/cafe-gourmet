@@ -4,6 +4,12 @@ const qsa = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 const fetchJSON = async (url, options = {}) => {
 	const res = await fetch(url, options);
 	if (!res.ok) {
+		const errorData = await res.json().catch(() => null);
+
+		if (errorData && errorData.mensagem) {
+			throw new Error(errorData.mensagem);
+		}
+
 		const text = await res.text().catch(() => "");
 		throw new Error(`HTTP ${res.status}: ${text}`);
 	}
@@ -124,18 +130,21 @@ async function adicionarCarrinho(id_produto, quantidade) {
 			body: JSON.stringify({ id_produto, quantidade }),
 		});
 
-		if (data.success) {
+		if (data.status === "sucesso") {
 			await atualizarCarrinho();
-			showToast(`✅ ${data.message || "Item adicionado!"}`, "success");
+			showToast(`✅ ${data.mensagem || "Item adicionado!"}`, "success");
 		} else {
 			showToast(
-				`❌ Erro: ${data.message || "Falha ao adicionar"}`,
+				`❌ Erro: ${data.mensagem || "Falha ao adicionar"}`,
 				"error"
 			);
 		}
 	} catch (err) {
 		console.error("Erro ao adicionar ao carrinho:", err);
-		showToast("⚠️ Erro de rede ou servidor", "error");
+		showToast(
+			`⚠️ Erro: ${err.message || "Erro de rede ou servidor"}`,
+			"error"
+		);
 	}
 }
 
@@ -219,12 +228,24 @@ function atualizarTotalandQuantidade(items) {
 async function atualizarCarrinho() {
 	try {
 		const data = await fetchJSON("/carrinho/atual");
-		if (!data || !data.success) return;
+		if (data.status === "sucesso" && data.itens) {
+			renderizarCarrinho(data.itens);
+			atualizarTotalandQuantidade(data.itens);
+			return;
+		}
 
-		renderizarCarrinho(data.items);
-		atualizarTotalandQuantidade(data.items);
+		if (data.status === "erro") {
+			showToast(`❌ ${data.mensagem}`, "error");
+		}
 	} catch (err) {
 		console.error("Erro ao atualizar carrinho:", err);
+		showToast(
+			`⚠️ Erro ao carregar: ${err.message || "Servidor indisponível"}`,
+			"error"
+		);
+
+		renderizarCarrinho([]);
+		atualizarTotalandQuantidade([]);
 	}
 }
 
@@ -238,15 +259,16 @@ async function removerItemCarrinho(target) {
 			method: "DELETE",
 		});
 
-		if (result.success) {
+		if (result.status === "sucesso") {
 			await atualizarCarrinho();
-			showToast(`✅ ${result.message || "Item removido!"}`, "success");
-		} else {
-			showToast(result.message || "❌ Erro ao remover item", "error");
+			showToast(`✅ ${result.mensagem || "Item removido!"}`, "success");
 		}
 	} catch (err) {
 		console.error("Erro ao remover item:", err);
-		showToast("⚠️ Erro de rede ou servidor", "error");
+		showToast(
+			`⚠️ Erro: ${err.message || "Erro de rede ou servidor"}`,
+			"error"
+		);
 	}
 }
 
@@ -313,20 +335,16 @@ async function atualizarQuantidadeCarrinho(id_produto, quantidade) {
 			body: JSON.stringify({ id_produto, quantidade }),
 		});
 
-		if (data.success) {
-			await atualizarCarrinho();
-		} else {
-			showToast(
-				`❌ Erro ao atualizar: ${
-					data.message || "Falha ao atualizar quantidade"
-				}`,
-				"error"
-			);
+		if (data.status === "sucesso") {
 			await atualizarCarrinho();
 		}
 	} catch (err) {
 		console.error("Erro ao atualizar quantidade do carrinho:", err);
-		showToast("⚠️ Erro de rede ou servidor", "error");
+		showToast(
+			`❌ Erro: ${err.message || "Falha ao atualizar quantidade"}`,
+			"error"
+		);
+
 		await atualizarCarrinho();
 	}
 }

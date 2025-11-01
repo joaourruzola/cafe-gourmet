@@ -76,6 +76,7 @@ router.post("/login", async (req, res) => {
 					tipo: usuario.tipo_usuario,
 				},
 			});
+			res.redirect(303, "/produtos");
 		});
 	} catch (error) {
 		console.error("Erro síncrono no login:", error);
