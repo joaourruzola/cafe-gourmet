@@ -1,0 +1,122 @@
+/* product-details.css */
+
+/* Estilos para a barra de navegação modificada */
+.navbar .search-container {
+  position: relative;
+  /* Ajuste o tamanho da barra de pesquisa */
+  width: 400px;
+}
+
+/* Estilo para o Dropdown Menu de Pesquisa */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Fica logo abaixo do input */
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 10;
+  display: none; /* Inicia oculto e é mostrado via JS */
+}
+
+.dropdown-menu.active {
+  display: block;
+}
+
+.dropdown-item a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-item a:hover {
+  background-color: #f0f0f0;
+}
+
+/* SEÇÃO PRINCIPAL DE INFORMAÇÕES */
+.product-main-info {
+  display: flex;
+  gap: 40px;
+  padding: 40px 0;
+}
+
+.product-image-area {
+  flex: 1;
+  max-width: 500px;
+}
+
+.main-product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-info-area {
+  flex: 1;
+}
+
+.product-price {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: var(--primary-color, #007bff);
+  display: block;
+  margin: 10px 0;
+}
+
+/* Estilos de estoque */
+.stock-status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.in-stock {
+  color: green;
+  background-color: #e6ffe6;
+}
+
+.out-of-stock {
+  color: red;
+  background-color: #ffe6e6;
+}
+
+/* Estilos para o formulário de compra (Seletor de Quantidade) */
+.quantity-and-purchase {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.add-to-cart-btn {
+  padding: 12px 25px;
+  background-color: var(--primary-color, #007bff);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover:not(.disabled) {
+  background-color: #0056b3;
+}
+
+.add-to-cart-btn.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* SEÇÃO DE DESCRIÇÃO COMPLETA */
+.product-description-details {
+  padding: 40px 0;
+  border-top: 1px solid #eee;
+  margin-top: 40px;
+}

@@ -32,6 +32,9 @@ app.use(
 	})
 );
 
+app.set("view engine", "handlebars");
+app.set("views", "./views");
+
 app.use(connectLivereload());
 app.use(Express.static("public"));
 app.use("./css", Express.static("./public/css"));
@@ -86,9 +89,6 @@ app.engine(
 		},
 	})
 );
-
-app.set("view engine", "handlebars");
-app.set("views", "./views");
 
 app.listen(port, () => {
 	console.log(`Server initialized in centerbeam.proxy.rlwy.net:${port}`);
