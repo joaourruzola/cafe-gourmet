@@ -12,6 +12,8 @@ import cartRoutes from "./routes/cart.mjs";
 import authRoutes from "./routes/auth.mjs";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
+import cookieParser from "cookie-parser";
+import authMiddleware from "./middlewares/authMiddleware.mjs";
 
 dotenv.config();
 const port = process.env.PORT || 8080;
@@ -36,6 +38,8 @@ app.set("view engine", "handlebars");
 app.set("views", "./views");
 
 app.use(connectLivereload());
+app.use(cookieParser());
+app.use(authMiddleware);
 app.use(Express.static("public"));
 app.use("./css", Express.static("./public/css"));
 app.use("./js", Express.static("./public/js"));

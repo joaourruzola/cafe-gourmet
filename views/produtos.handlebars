@@ -11,7 +11,22 @@
     </div>
     <!-- Botão de login -->
     <div class="nav-actions">
-      <a href="/login" class="login">Login / Cadastre-se</a>
+
+      {{#if isAuthenticated}}
+        <div class="user-account-dropdown">
+          <a href="#" class="account-btn" onclick="toggleDropdown(event)">
+            Olá,
+            <strong>{{userName}}</strong>!
+          </a>
+          <div class="dropdown-content" id="accountDropdown">
+            <a href="/conta/painel">Minha Conta</a>
+            <a href="/auth/logoff">Sair</a>
+          </div>
+        </div>
+      {{else}}
+        <a href="/login" class="login">Login / Cadastre-se</a>
+      {{/if}}
+
       <a href="#" class="cart">
         🛒
         <span class="cart-count">2</span>

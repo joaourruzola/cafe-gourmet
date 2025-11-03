@@ -60,23 +60,22 @@ router.post("/login", async (req, res) => {
 			const token = jwt.sign(
 				payload,
 				process.env.JWT_SECRET,
-				{ expiresIn: "1h" } // Token expira em 1 hora
+				{ expiresIn: "1d" } // Token expira em 1 hora
 			);
 
-			res.status(200).json({
-				status: "sucesso",
-				mensagem: `Login realizado com sucesso. Bem-vindo(a), ${
-					usuario.nome.split(" ")[0]
-				}!`,
-				token: token,
-				usuario: {
-					id: usuario.id_usuario,
-					nome: usuario.nome,
-					email: usuario.email,
-					tipo: usuario.tipo_usuario,
-				},
+			res.cookie("auth_token", token, {
+				httpOnly: true,
+				secure: process.env.NODE_ENV === "production",
+				maxAge: 24 * 60 * 60 * 1000,
+				sameSite: "strict",
 			});
-			res.redirect(303, "/produtos");
+
+			const redirectPath =
+				usuario.tipo_usuario === "admin"
+					? "/admin/painel"
+					: "/produtos";
+
+			res.status(303).redirect(redirectPath);
 		});
 	} catch (error) {
 		console.error("Erro síncrono no login:", error);
@@ -176,6 +175,12 @@ router.post("/cadastro", (req, res) => {
 				"Ocorreu um erro interno no servidor durante o cadastro. Tente novamente.",
 		});
 	}
+});
+
+router.get("/logoff", (req, res) => {
+	res.clearCookie("auth_token");
+	res.clearCookie("guest_cart_id");
+	res.redirect(303, "/produtos");
 });
 
 export default router;

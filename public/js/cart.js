@@ -28,6 +28,7 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
  * @param {string} message
  * @param {('success'|'error'|'warning')} type
  * @param {number} duration
+ * @param {Event} event O evento de clique.
  */
 
 function showToast(message, type = "success", duration = 3000) {
@@ -98,6 +99,14 @@ function inicializarPopupCarrinho() {
 	popup.addEventListener("click", (e) => {
 		e.stopPropagation();
 	});
+}
+
+function toggleDropdown(event) {
+	event.preventDefault();
+	const dropdown = qs("#accountDropdown");
+	if (dropdown) {
+		dropdown.classList.toggle("show");
+	}
 }
 
 /* --- Seleção de quantidade --- */

@@ -7,7 +7,7 @@ const router = Express.Router();
 
 // ===== Rota GET =====
 router.get("/carrinho/atual", (req, res) => {
-	const id_usuario = 1;
+	const id_usuario = req.id_usuario;
 
 	connection.query(
 		`SELECT 
@@ -44,7 +44,7 @@ router.get("/carrinho/atual", (req, res) => {
 });
 
 router.get("/checkout", async (req, res) => {
-	const id_usuario = 1; // temporário
+	const id_usuario = req.id_usuario; // temporário
 
 	try {
 		connection.query(
@@ -95,7 +95,7 @@ router.get("/checkout", async (req, res) => {
 
 router.post("/carrinho/adicionar", (req, res) => {
 	const { id_produto, quantidade } = req.body;
-	const id_usuario = 1;
+	const id_usuario = req.id_usuario;
 
 	if (!id_produto || !quantidade) {
 		return res.status(400).json({
@@ -213,7 +213,7 @@ router.post("/carrinho/adicionar", (req, res) => {
 // ===== Rota PUT =====
 router.put("/carrinho/atualizar", (req, res) => {
 	const { id_produto, quantidade } = req.body;
-	const id_usuario = 1;
+	const id_usuario = req.id_usuario;
 
 	const quantidadeNum = parseInt(quantidade, 10);
 
@@ -284,7 +284,7 @@ router.put("/carrinho/atualizar", (req, res) => {
 // ===== Rota DELETE =====
 router.delete("/carrinho/remover/:id_produto", isAdmin, (req, res) => {
 	const { id_produto } = req.params;
-	const id_usuario = 1;
+	const id_usuario = req.id_usuario;
 
 	// Pega o carrinho ativo
 	connection.query(

@@ -62,7 +62,7 @@ router.get("/produto/:id", (req, res) => {
 			],
 		});
 	});
-}); 
+});
 
 // ===== Rota de login/registro de usuário =====
 
