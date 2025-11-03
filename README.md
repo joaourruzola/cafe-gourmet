@@ -23,7 +23,7 @@ Este projeto foi construído sobre uma pilha de tecnologias **JavaScript** e fer
 * **Catálogo de Produtos:** Listagem completa de todos os cafés disponíveis.
 * **Páginas de Detalhes do Produto:** Informações, descrição e opções de compra para cada café. (Work in Progress)
 * **Carrinho de Compras:** Funcionalidade para adicionar, remover e gerenciar itens.
-* **Sistema de Autenticação/Autorização:** Cadastro e Login de usuários/administradores. (Work in Progress)
+* **Sistema de Autenticação/Autorização:** Cadastro e Login de usuários/administradores.
 * **Checkout:** Processo simplificado de finalização de compra.
 * **Painel Administrativo:** CRUD de produtos, gerenciamento de pedidos, etc. (Work in Progress)
 
