@@ -402,10 +402,40 @@ function handlerQuantidadePopup() {
 	});
 }
 
+/* --- Página de Detalhes do Produto --- */
+function inicializarPaginaDetalhes() {
+	const page = qs(".product-details-page");
+	if (!page) return;
+
+	page.addEventListener("click", (event) => {
+		const target = event.target;
+
+		if (
+			target.classList.contains("btn-plus") ||
+			target.classList.contains("btn-minus")
+		) {
+			alterarQuantidadeBtn(target);
+		}
+	});
+
+	const form = qs(".add-to-cart-form", page);
+	if (!form) return;
+
+	form.addEventListener("submit", (event) => {
+		event.preventDefault();
+
+		const id_produto = form.dataset.productId;
+		const quantidadeInput = qs(".quantity-input", form);
+		const quantidade = quantidadeInput ? quantidadeInput.value : "1";
+		adicionarCarrinho(id_produto, quantidade);
+	});
+}
+
 /* --- Inicializar helpers depois de carregado DOM --- */
 document.addEventListener("DOMContentLoaded", () => {
 	inicializarPopupCarrinho();
 	listarProdutos();
+	inicializarPaginaDetalhes();
 	handlerRemover();
 	handlerQuantidadePopup();
 	atualizarCarrinho();

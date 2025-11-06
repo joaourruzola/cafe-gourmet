@@ -1,126 +1,143 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Produto: {{produto.nome}}</title>
-    
-    <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/cart-popup.css">
-    {{!-- Adicione um CSS específico para a página de detalhes --}}
-    <link rel="stylesheet" href="/css/product-details.css"> 
-    
-    {{#if pageStyles}}
-        {{#each pageStyles}}
-        <link rel="stylesheet" href="{{this}}">
-        {{/each}}
+<!-- Barra de navegação -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <a href="/produtos">Café Gourmet</a>
+  </div>
+  <!-- Barra de pesquisa -->
+  <div class="nav-search">
+    <input type="text" id="searchInput" placeholder="Pesquisa..." />
+  </div>
+  <!-- Botão de login -->
+  <div class="nav-actions">
+    {{#if isAuthenticated}}
+      <div class="user-account-dropdown">
+        <a href="#" class="account-btn" onclick="toggleDropdown(event)">
+          Olá,
+          <strong>{{userName}}</strong>!
+        </a>
+        <div class="dropdown-content" id="accountDropdown">
+          <a href="/conta/painel">Minha Conta</a>
+          <a href="/auth/logoff">Sair</a>
+        </div>
+      </div>
+    {{else}}
+      <a href="/login" class="login">Login / Cadastre-se</a>
     {{/if}}
-</head>
-<body>
-
-    <header class="navbar">
-        <a href="/" class="logo">Loja Virtual</a>
-        
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Buscar produtos...">
-            <ul id="search-dropdown" class="dropdown-menu">
-                <li class="dropdown-item"><a href="/produto/1">Sugestão 1</a></li>
-                <li class="dropdown-item"><a href="/produto/2">Sugestão 2</a></li>
-            </ul>
+    <a href="#" class="cart">
+      🛒
+      <span class="cart-count">2</span>
+      <!-- Popup carrinho de compras -->
+      <div class="cart-popup">
+        <div class="cart-header">
+          <h4>Meu Carrinho</h4>
+          <button class="close-cart-btn">×</button>
         </div>
+        <div class="free-shipping-tracker">
+          {{! <p>Faltam R$ 100,00 para frete grátis</p> }}
+          <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div class="cart-items"></div>
+        <div class="cart-summary">
+          <div class="summary-line">
+            <span>Total</span>
+            <span id="cart-total">R$ 0,00</span>
+          </div>
+        </div>
+        <button class="checkout-btn">Checkout</button>
+      </div>
+    </a>
+  </div>
+</nav>
 
-        <nav class="nav-links">
-            <a href="/admin/painel" class="nav-link">Admin</a>
-            <div class="cart">
-                <a href="#" class="nav-link cart-icon">
-                    🛒 Carrinho (<span class="cart-count">0</span>)
-                </a>
-                {{ cart_popup}} 
+<main class="product-details-page">
+  <div class="container">
+    <section class="product-main-info">
+      <div class="product-image-area">
+        <img
+          src="/images/{{produto.imagem}}"
+          alt="{{produto.nome}}"
+          class="main-product-image"
+        />
+      </div>
+
+      <div class="product-info-area">
+        <h1 class="product-title">{{produto.nome}}</h1>
+        <p class="product-id">ID: {{produto.id_produto}}</p>
+        <div class="price-container">
+          <span class="product-price">R$ {{produto.valor}}</span>
+            <span class="stock-status {{#if produto.estoque}}in-stock{{else}}out-of-stock{{/if}}">
+                {{#if produto.estoque}}
+                    Em estoque ({{produto.estoque}} unidades)
+                {{else}}
+                    Esgotado
+                {{/if}}
+            </span>
+        </div>
+        <p class="short-description">
+          {{produto.descricao_curta}}
+        </p>
+        <form class="add-to-cart-form" data-product-id="{{produto.id_produto}}">
+          <div class="quantity-and-purchase">
+            <div class="quantity-selector">
+              <button
+                class="quantity-btn btn-minus"
+                type="button"
+                data-id="{{produto.id_produto}}"
+                {{disableIfNoStock produto.estoque}}
+              >
+                -
+              </button>
+              <input
+                type="text"
+                class="quantity-input"
+                value="1"
+                max="{{produto.estoque}}"
+                readonly
+                {{disableIfNoStock produto.estoque}}
+              />
+              <button
+                class="quantity-btn btn-plus"
+                type="button"
+                data-id="{{produto.id_produto}}"
+                {{disableIfNoStock produto.estoque}}
+              >
+                +
+              </button>
             </div>
-        </nav>
-    </header>
+            {{#if produto.estoque}}
+              <button type="submit" class="add-to-cart-btn">
+                <span class="icon">🛒</span>
+                Comprar
+              </button>
+            {{else}}
+              <button type="button" class="add-to-cart-btn disabled" disabled>
+                Produto Esgotado
+              </button>
+            {{/if}}
+          </div>
+        </form>
+      </div>
+    </section>
+    <section class="product-description-details">
+      <h2>Descrição Completa</h2>
+      <div class="description-content">
+        {{!-- Aqui você pode usar {{produto.descricao_longa}} --}}
+        <p>
+          Aqui entra a descrição detalhada do produto, que pode ser longa e
+          incluir listas de características, materiais, dimensões, etc.
+        </p>
+        <h3>Características Técnicas</h3>
+        <ul>
+          <li>Característica 1: Detalhe A</li>
+          <li>Característica 2: Detalhe B</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
 
-    <main class="product-details-page">
-        <div class="container">
-            <section class="product-main-info">
-                <div class="product-image-area">
-                    <img src="/images/{{produto.imagem}}" alt="{{produto.nome}}" class="main-product-image">
-                </div>
+<div id="toast-container"></div>
 
-                <div class="product-info-area">
-                    <h1 class="product-title">{{produto.nome}}</h1>
-                    <p class="product-id">ID: {{produto.id_produto}}</p>
-                    
-                    <div class="price-container">
-                        <span class="product-price">R$ {{produto.valor}}</span>
-                        <span class="stock-status {{#if produto.estoque}}in-stock{{else}}out-of-stock{{/if}}">
-                            {{#if produto.estoque}}
-                                Em estoque ({{produto.estoque}} unidades)
-                            {{else}}
-                                Esgotado
-                            {{/if}}
-                        </span>
-                    </div>
-
-                    <p class="short-description">
-                        {{produto.descricao_curta}}
-                    </p>
-
-                    <form class="add-to-cart-form" data-product-id="{{produto.id_produto}}">
-                        <div class="quantity-and-purchase">
-                            <div class="quantity-selector">
-                                <button type="button" class="quantity-btn btn-minus" data-id="{{produto.id_produto}}">-</button>
-                                <input type="number" class="quantity-input" value="1" min="1" max="{{produto.estoque}}" readonly required>
-                                <button type="button" class="quantity-btn btn-plus" data-id="{{produto.id_produto}}">+</button>
-                            </div>
-                            
-                            {{#if produto.estoque}}
-                                <button type="submit" class="add-to-cart-btn">
-                                    <span class="icon">🛒</span> Comprar
-                                </button>
-                            {{else}}
-                                <button type="button" class="add-to-cart-btn disabled" disabled>
-                                    Produto Esgotado
-                                </button>
-                            {{/if}}
-                        </div>
-                    </form>
-                </div>
-            </section>
-
-            <section class="product-description-details">
-                <h2>Descrição Completa</h2>
-                <div class="description-content">
-                    {{!-- Aqui você pode usar {{produto.descricao_longa}} --}}
-                    <p>
-                        Aqui entra a descrição detalhada do produto, que pode ser longa e incluir listas de características, materiais, dimensões, etc.
-                    </p>
-                    
-                    <h3>Características Técnicas</h3>
-                    <ul>
-                        <li>Característica 1: Detalhe A</li>
-                        <li>Característica 2: Detalhe B</li>
-                    </ul>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <div id="toast-container"></div> 
-    
-    <script src="/js/cart.js"></script>
-    <script>
-        // Adicione lógica específica para o botão 'Comprar' (Add to Cart) se necessário
-        document.querySelector('.add-to-cart-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const form = e.currentTarget;
-            const id_produto = form.dataset.productId;
-            const quantidade = form.querySelector('.quantity-input').value;
-
-            // Chama a função JS de adição ao carrinho (do cart.js)
-            adicionarCarrinho(id_produto, quantidade);
-        });
-    </script>
-</body>
-</html>
+<script src="/js/cart.js"></script>

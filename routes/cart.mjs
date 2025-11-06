@@ -38,7 +38,6 @@ router.get("/carrinho/atual", (req, res) => {
 				mensagem: "Itens do carrinho carregados com sucesso.",
 				itens: results,
 			});
-			console.log(res.json);
 		}
 	);
 });

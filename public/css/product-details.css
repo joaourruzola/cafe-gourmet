@@ -120,3 +120,60 @@
   border-top: 1px solid #eee;
   margin-top: 40px;
 }
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ced4da; /* Cor de borda padrão do Bootstrap */
+  border-radius: 0.25rem; /* Borda arredondada */
+  overflow: hidden; /* Garante que os filhos não passem da borda arredondada */
+  width: fit-content; /* Faz o container ter a largura do conteúdo */
+  margin-bottom: 0.5rem; /* Equivalente ao mb-2 que foi removido */
+}
+
+/* Estilo para os botões de mais e menos */
+.quantity-btn {
+  background-color: #f8f9fa; /* Cor de fundo clara */
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #495057;
+  line-height: 1.2; /* Melhora o alinhamento vertical */
+  transition: background-color 0.2s;
+}
+
+.quantity-btn:hover {
+  background-color: #e9ecef; /* Escurece um pouco no hover */
+}
+
+/* .quantity-btn:disabled {
+  cursor: not-allowed;
+  color: #adb5bd;
+  background-color: #f8f9fa;
+} */
+
+/* Estilo para o campo de input no meio */
+.quantity-input {
+  width: 45px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  /* Adiciona bordas laterais para separar do botão */
+  border-left: 1px solid #ced4da;
+  border-right: 1px solid #ced4da;
+  padding: 0.5rem 0;
+  background-color: #fff;
+  color: #212529;
+}
+
+/* Remove a borda azul que aparece ao focar no input */
+.quantity-input:focus {
+  outline: none;
+}
+
+.quantity-input:disabled {
+  background-color: #e9ecef;
+}

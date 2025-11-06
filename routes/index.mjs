@@ -33,7 +33,6 @@ router.get("/produtos", (req, res) => {
 router.get("/produto/:id", (req, res) => {
 	const id_produto = req.params.id;
 
-	// Consulta segura para buscar o produto pelo ID
 	const sql = `SELECT * FROM produtos WHERE id_produto = ?`;
 
 	connection.query(sql, [id_produto], (erro, retorno) => {
@@ -45,21 +44,15 @@ router.get("/produto/:id", (req, res) => {
 		const produto = retorno[0];
 
 		if (!produto) {
-			// Trata se o produto não for encontrado (404)
 			return res.status(404).render("404", {
 				message: "Produto não encontrado.",
 				pageStyles: ["/css/card-form.css"],
 			});
 		}
 
-		// Renderiza a página de detalhes com os dados do produto
 		res.render("produto-detalhes", {
 			produto: produto,
-			pageStyles: [
-				"/css/cart-popup.css",
-				// Certifique-se de criar este arquivo CSS para a nova página
-				"/css/product-details.css",
-			],
+			pageStyles: ["/css/cart-popup.css", "/css/product-details.css"],
 		});
 	});
 });
