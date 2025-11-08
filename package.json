@@ -6,6 +6,7 @@
   "main": "app.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.mjs",
     "dev": "nodemon --watch public --ext html,css,js --exec \"node app.mjs\"",
     "tailwind:init": "tailwindcss init -p"
   },
