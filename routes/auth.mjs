@@ -10,11 +10,7 @@ router.post("/login", async (req, res) => {
 		const { email, senha } = req.body;
 
 		if (!email || !senha) {
-			return res.status(400).json({
-				status: "erro",
-				codigo: 400,
-				mensagem: "Por favor, preencha seu email e sua senha.",
-			});
+			return res.redirect("/login?error=MissingFields");
 		}
 
 		const sql = `SELECT * FROM usuarios WHERE email = ? LIMIT 1`;
@@ -33,21 +29,13 @@ router.post("/login", async (req, res) => {
 			const usuario = retorno[0];
 
 			if (!usuario) {
-				return res.status(401).json({
-					status: "erro",
-					codigo: 401,
-					mensagem: "Email ou senha inválidos. Tente novamente.",
-				});
+				return res.redirect("/login?error=InvalidCredentials");
 			}
 
 			const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
 
 			if (!senhaCorreta) {
-				return res.status(401).json({
-					status: "erro",
-					codigo: 401,
-					mensagem: "Email ou senha inválidos. Tente novamente.",
-				});
+				return res.redirect("/login?error=InvalidCredentials");
 			}
 
 			// Usuário autenticado! Gerar um Token JWT

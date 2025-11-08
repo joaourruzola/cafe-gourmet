@@ -19,7 +19,12 @@
             <strong>{{userName}}</strong>!
           </a>
           <div class="dropdown-content" id="accountDropdown">
-            <a href="/conta/painel">Minha Conta</a>
+
+            {{#if isAdmin}}
+              <a href="/admin/painel">Painel Administrador</a>
+            {{else}}
+              <a href="/conta/painel">Minha Conta</a>
+            {{/if}}
             <a href="/auth/logoff">Sair</a>
           </div>
         </div>
