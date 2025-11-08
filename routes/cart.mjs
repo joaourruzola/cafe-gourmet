@@ -284,8 +284,6 @@ router.delete("/carrinho/remover/:id_produto", (req, res) => {
 	const { id_produto } = req.params;
 	const id_usuario = req.id_usuario;
 
-    // console.log(id_usuario);
-
 	// Pega o carrinho ativo
 	connection.query(
 		"SELECT id_carrinho FROM carrinhos WHERE id_usuario = ? AND ativo = 1 LIMIT 1",
