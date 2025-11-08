@@ -1,3 +1,4 @@
+<!-- Página de Detalhes do Item -->
 <!-- Barra de navegação -->
 <nav class="navbar">
   <div class="nav-logo">
@@ -50,7 +51,7 @@
     </a>
   </div>
 </nav>
-
+<!-- Container de Detalhes do Produto -->
 <main class="product-details-page">
   <div class="container">
     <section class="product-main-info">
@@ -67,13 +68,14 @@
         <p class="product-id">ID: {{produto.id_produto}}</p>
         <div class="price-container">
           <span class="product-price">R$ {{produto.valor}}</span>
-            <span class="stock-status {{#if produto.estoque}}in-stock{{else}}out-of-stock{{/if}}">
-                {{#if produto.estoque}}
-                    Em estoque ({{produto.estoque}} unidades)
-                {{else}}
-                    Esgotado
-                {{/if}}
-            </span>
+          <span class="stock-status {{#if produto.estoque}}in-stock{{else}}out-of-stock{{/if}}">
+            {{#if produto.estoque}}
+              Em estoque ({{produto.estoque}}
+              unidades)
+            {{else}}
+              Esgotado
+            {{/if}}
+          </span>
         </div>
         <p class="short-description">
           {{produto.descricao_curta}}
