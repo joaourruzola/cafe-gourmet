@@ -21,7 +21,7 @@ Este projeto foi construído sobre uma pilha de tecnologias **JavaScript** e fer
 
 * **Página de Apresentação:** Landing page de redirecionamento.
 * **Catálogo de Produtos:** Listagem completa de todos os cafés disponíveis.
-* **Páginas de Detalhes do Produto:** Informações, descrição e opções de compra para cada café. (Work in Progress)
+* **Páginas de Detalhes do Produto:** Informações, descrição e opções de compra para cada café.
 * **Carrinho de Compras:** Funcionalidade para adicionar, remover e gerenciar itens.
 * **Sistema de Autenticação/Autorização:** Cadastro e Login de usuários/administradores.
 * **Checkout:** Processo simplificado de finalização de compra.
