@@ -4,7 +4,11 @@ const prevBtn = document.querySelector(".carousel-btn.prev");
 const nextBtn = document.querySelector(".carousel-btn.next");
 let currentSlide = 0;
 
-// Atualiza a posição do track
+// Variáveis para a lógica de Swipe
+let touchStartX = 0;
+let touchEndX = 0;
+const minSwipeDistance = 75;
+
 function updateTrack() {
 	track.style.transform = `translateX(-${currentSlide * 33.33}%)`;
 	slides.forEach((slide, i) => {
@@ -24,7 +28,13 @@ function showPrevSlide() {
 	updateTrack();
 }
 
-// Eventos dos botões
+let slideInterval = setInterval(showNextSlide, 5000);
+
+function resetInterval() {
+	clearInterval(slideInterval);
+	slideInterval = setInterval(showNextSlide, 5000);
+}
+
 nextBtn.addEventListener("click", () => {
 	showNextSlide();
 	resetInterval();
@@ -35,11 +45,26 @@ prevBtn.addEventListener("click", () => {
 	resetInterval();
 });
 
-// Intervalo automático
-let slideInterval = setInterval(showNextSlide, 8000);
+// =======================================================
+// === LÓGICA DE SWIPE (TOQUE) ===
+// =======================================================
 
-// Reinicia o intervalo ao clicar nos botões
-function resetInterval() {
-	clearInterval(slideInterval);
-	slideInterval = setInterval(showNextSlide, 8000);
-}
+track.addEventListener("touchstart", (e) => {
+	touchStartX = e.touches[0].clientX;
+});
+
+track.addEventListener("touchend", (e) => {
+	touchEndX = e.changedTouches[0].clientX;
+
+	const difference = touchStartX - touchEndX;
+
+	// Verifica se a distância é válida para um swipe
+	if (Math.abs(difference) >= minSwipeDistance) {
+		if (difference > 0) {
+			showNextSlide();
+		} else {
+			showPrevSlide();
+		}
+		resetInterval();
+	}
+});

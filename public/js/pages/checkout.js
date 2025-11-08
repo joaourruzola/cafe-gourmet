@@ -19,3 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	updatePaymentView();
 });
+
+const itensCarrinho = document.querySelector(".cart-summary");
+
+itensCarrinho.addEventListener("click", function (e) {
+	e.preventDefault();
+	const tituloResumo = this.querySelector("h4");
+	const itemCollapseMobile = document.querySelector(".item-collapse-mobile");
+
+	if (tituloResumo) {
+		itemCollapseMobile.classList.toggle("hidden-default");
+	}
+});
