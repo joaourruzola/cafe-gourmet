@@ -10,12 +10,22 @@ Este projeto foi construído sobre uma pilha de tecnologias **JavaScript** e fer
 | :--- | :--- | :--- |
 | **Backend** | **Node.js** | Ambiente de execução JavaScript *backend*. |
 | **Backend** | **Express.js** | Framework robusto e minimalista para roteamento e gestão de *middlewares*. |
+| **Backend** | **bcryptjs** | Biblioteca para criptografia e comparação segura de senhas. |
+| **Backend** | **jsonwebtoken (JWT)** | Implementação de autenticação baseada em *tokens* (JSON Web Tokens). |
 | **Frontend & Templating** | **Express-Handlebars** | Motor de *templates* para renderização de páginas HTML dinâmicas. |
 | **Frontend & Templating** | **Bootstrap** & **Tailwind CSS** | Frameworks CSS utilizados para um *design* responsivo e moderno. |
 | **Banco de Dados** | **MySQL2** | Driver oficial para conexão com o banco de dados MySQL. |
 | **Utilidades** | **dotenv** | Gerenciamento seguro de variáveis de ambiente. |
 | **Utilidades** | **express-fileupload** | Facilita o *upload* e tratamento de arquivos (como imagens de produtos). |
-| **Utilidades** | **qrcode** | Implementação de geração de códigos QR, para pagamentos. |
+| **Utilidades** | **cookie-parser** | Faz o *parse* de cookies HTTP para autenticação e sessões. |
+| **Utilidades** | **qrcode** | Implementação de geração de códigos QR (ex: pagamentos). |
+| **Utilidades** | **nodemon** | Reinicia automaticamente o servidor durante o desenvolvimento. |
+| **Frontend Avançado / Gráficos** | **OGL (OpenGL Lightweight)** | Biblioteca leve para renderização 3D baseada em WebGL. |
+| **Desenvolvimento / Build** | **postcss** | Processador de CSS para aplicar transformações e otimizações. |
+| **Desenvolvimento / Build** | **autoprefixer** | Adiciona prefixos automáticos de compatibilidade CSS para diferentes navegadores. |
+| **Desenvolvimento / Live Reload** | **livereload** | Atualiza o navegador automaticamente quando há alterações no código. |
+| **Desenvolvimento / Live Reload** | **connect-livereload** | Middleware que integra o *livereload* com o servidor Express. |
+
 
 ## 🔌 Funcionalidades Principais
 
