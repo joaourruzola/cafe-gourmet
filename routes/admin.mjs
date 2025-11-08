@@ -7,6 +7,8 @@ import isAdmin from "../public/js/admin.js";
 
 const router = Express.Router();
 
+router.use(isAdmin);
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -25,13 +27,13 @@ function renderFormWithMessage(res, returnMessage) {
 	});
 }
 
-router.get("/painel", isAdmin, (req, res) => {
+router.get("/painel", (req, res) => {
 	const sql = `SELECT * FROM produtos`;
 
 	connection.query(sql, (erro, retorno) => {
 		res.render("form", {
 			produtos: retorno,
-			pageStyles: ["/css/card-form.css"],
+			pageStyles: ["/css/card-form.css",],
 		});
 	});
 });

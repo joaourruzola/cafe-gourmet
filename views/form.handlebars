@@ -1,5 +1,30 @@
 <main>
 
+  <!-- Barra de navegação -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <a href="/produtos">Painel</a>
+    </div>
+    <!-- Botão de login -->
+    <div class="nav-actions">
+
+      {{#if isAuthenticated}}
+        <div class="user-account-dropdown">
+          <a href="#" class="account-btn" onclick="toggleDropdown(event)">
+            Olá,
+            <strong>{{userName}}</strong>!
+          </a>
+          <div class="dropdown-content" id="accountDropdown">
+            <a href="/admin/painel">Painel Administrador</a>
+            <a href="/auth/logoff">Sair</a>
+          </div>
+        </div>
+      {{else}}
+        <a href="/login" class="login">Login / Cadastre-se</a>
+      {{/if}}
+    </div>
+  </nav>
+
   <!-- Formulário de cadastro -->
   <div class="container">
     <div class="row">
