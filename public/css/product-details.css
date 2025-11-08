@@ -3,14 +3,13 @@
 /* Estilos para a barra de navegação modificada */
 .navbar .search-container {
   position: relative;
-  /* Ajuste o tamanho da barra de pesquisa */
   width: 400px;
 }
 
 /* Estilo para o Dropdown Menu de Pesquisa */
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Fica logo abaixo do input */
+  top: 100%;
   left: 0;
   right: 0;
   background-color: white;
@@ -124,35 +123,29 @@
 .quantity-selector {
   display: flex;
   align-items: center;
-  border: 1px solid #ced4da; /* Cor de borda padrão do Bootstrap */
-  border-radius: 0.25rem; /* Borda arredondada */
-  overflow: hidden; /* Garante que os filhos não passem da borda arredondada */
-  width: fit-content; /* Faz o container ter a largura do conteúdo */
-  margin-bottom: 0.5rem; /* Equivalente ao mb-2 que foi removido */
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  width: fit-content;
+  margin-bottom: 0.5rem;
 }
 
 /* Estilo para os botões de mais e menos */
 .quantity-btn {
-  background-color: #f8f9fa; /* Cor de fundo clara */
+  background-color: #f8f9fa;
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.9rem;
   font-size: 1.1rem;
   font-weight: 500;
   color: #495057;
-  line-height: 1.2; /* Melhora o alinhamento vertical */
+  line-height: 1.2;
   transition: background-color 0.2s;
 }
 
 .quantity-btn:hover {
-  background-color: #e9ecef; /* Escurece um pouco no hover */
+  background-color: #e9ecef;
 }
-
-/* .quantity-btn:disabled {
-  cursor: not-allowed;
-  color: #adb5bd;
-  background-color: #f8f9fa;
-} */
 
 /* Estilo para o campo de input no meio */
 .quantity-input {
