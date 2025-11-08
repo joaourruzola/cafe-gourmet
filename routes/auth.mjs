@@ -10,7 +10,10 @@ router.post("/login", async (req, res) => {
 		const { email, senha } = req.body;
 
 		if (!email || !senha) {
-			return res.redirect("/login?error=MissingFields");
+			return res.status(400).json({
+				status: "erro",
+				mensagem: "Por favor, preencha o email e a senha.",
+			});
 		}
 
 		const sql = `SELECT * FROM usuarios WHERE email = ? LIMIT 1`;
@@ -29,13 +32,21 @@ router.post("/login", async (req, res) => {
 			const usuario = retorno[0];
 
 			if (!usuario) {
-				return res.redirect("/login?error=InvalidCredentials");
+				return res.status(401).json({
+					status: "erro",
+					codigo: 401,
+					mensagem: "Email ou senha inválidos. Tente novamente.",
+				});
 			}
 
 			const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
 
 			if (!senhaCorreta) {
-				return res.redirect("/login?error=InvalidCredentials");
+				return res.status(401).json({
+					status: "erro",
+					codigo: 401,
+					mensagem: "Email ou senha inválidos. Tente novamente.",
+				});
 			}
 
 			// Usuário autenticado! Gerar um Token JWT
@@ -63,7 +74,11 @@ router.post("/login", async (req, res) => {
 					? "/admin/painel"
 					: "/produtos";
 
-			res.status(303).redirect(redirectPath);
+			res.status(200).json({
+				status: "sucesso",
+				mensagem: "Login bem-sucedido!",
+				redirect: redirectPath,
+			});
 		});
 	} catch (error) {
 		console.error("Erro síncrono no login:", error);

@@ -1,7 +1,6 @@
 import Express from "express";
 import connection from "../models/db.js";
 import QRCode from "qrcode";
-import isAdmin from "../public/js/admin.js";
 
 const router = Express.Router();
 
@@ -281,9 +280,11 @@ router.put("/carrinho/atualizar", (req, res) => {
 });
 
 // ===== Rota DELETE =====
-router.delete("/carrinho/remover/:id_produto", isAdmin, (req, res) => {
+router.delete("/carrinho/remover/:id_produto", (req, res) => {
 	const { id_produto } = req.params;
 	const id_usuario = req.id_usuario;
+
+    // console.log(id_usuario);
 
 	// Pega o carrinho ativo
 	connection.query(

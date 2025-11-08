@@ -3,7 +3,7 @@ import connection from "../models/db.js";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import isAdmin from "../public/js/admin.js";
+import isAdmin from "../middlewares/isAdmin.mjs";
 
 const router = Express.Router();
 
@@ -33,7 +33,7 @@ router.get("/painel", (req, res) => {
 	connection.query(sql, (erro, retorno) => {
 		res.render("form", {
 			produtos: retorno,
-			pageStyles: ["/css/card-form.css",],
+			pageStyles: ["/css/card-form.css"],
 		});
 	});
 });

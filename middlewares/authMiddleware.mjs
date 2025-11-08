@@ -6,6 +6,9 @@ const GUEST_USER_ID = 0;
 const authMiddleware = (req, res, next) => {
 	const authToken = req.cookies.auth_token;
 
+	console.log(authToken);
+	console.log(res);
+
 	req.id_usuario = GUEST_USER_ID;
 	req.user = null;
 	res.locals.isAuthenticated = false;
@@ -13,6 +16,7 @@ const authMiddleware = (req, res, next) => {
 	res.locals.isAdmin = false;
 
 	if (!authToken) {
+		req.id_usuario = "0";
 		return next();
 	}
 

@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import path from "path";
 import Express from "express";
-import connection from "./models/db.js";
 import { engine } from "express-handlebars";
 import fileUpload from "express-fileupload";
 import { dirname } from "path";
@@ -39,8 +38,8 @@ app.set("views", "./views");
 
 app.use(connectLivereload());
 app.use(cookieParser());
-app.use(authMiddleware);
 app.use(Express.static("public"));
+app.use(authMiddleware);
 app.use("./css", Express.static("./public/css"));
 app.use("./js", Express.static("./public/js"));
 app.use("/bootstrap", Express.static("./node_modules/bootstrap/dist"));
