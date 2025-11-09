@@ -1,34 +1,53 @@
 <!-- Página de Edição de Cadastro de Produto -->
-<main>
 
 <!-- Formulário de edição de cadastro -->
-  <div class="container">
-    <div class="row">
-      <div class="col-6 offset-3">
-        <form action="/admin/edit" method="post" enctype="multipart/form-data">
-        <img src="/images/{{produto.imagem}}">
-        <input type="hidden" name="nomeImagem" class="btn-number" value="{{produto.imagem}}">
-        <input type="hidden" name="id_produto" class="btn-number" value="{{produto.id_produto}}">
-          <input
-            type="text"
-            name="nome" value="{{produto.nome}}"
-            class="form-control"
-            placeholder="Nome do produto"
-          />
-          <input
-            type="number"
-            name="valor" value="{{produto.valor}}"
-            class="form-control"
-            placeholder="Valor do produto"
-          />
-          <input type="number"
-          name="estoque" value="{{produto.estoque}}"
+<div class="container">
+  <div class="row">
+    <div class="col-6 offset-3">
+      <form action="/admin/edit" method="post" enctype="multipart/form-data">
+        <img src="/images/{{produto.imagem}}" />
+        <input
+          type="hidden"
+          name="nomeImagem"
+          class="btn-number"
+          value="{{produto.imagem}}"
+        />
+        <input
+          type="hidden"
+          name="id_produto"
+          class="btn-number"
+          value="{{produto.id_produto}}"
+        />
+        <input
+          type="text"
+          name="nome"
+          value="{{produto.nome}}"
           class="form-control"
-          placeholder="Quantidade no estoque">
-          <input type="file" name="imagem" class="form-control" />
-          <input type="submit" class="btn btn-primary" value="Alterar" />
-          <a href="/admin/painel" class="btn btn-secondary">Cancelar</a>
-        </form>
-      </div>
+          placeholder="Nome do produto"
+        />
+        <input
+          type="number"
+          name="valor"
+          value="{{produto.valor}}"
+          class="form-control"
+          placeholder="Valor do produto"
+        />
+        <input
+          type="number"
+          name="estoque"
+          value="{{produto.estoque}}"
+          class="form-control"
+          placeholder="Quantidade no estoque"
+        />
+        <textarea
+          name="descricao"
+          class="form-control mb-2"
+          placeholder="Descricão produto"
+        ></textarea>
+        <input type="file" name="imagem" class="form-control" />
+        <input type="submit" class="btn btn-primary" value="Alterar" />
+        <a href="/admin/painel" class="btn btn-secondary">Cancelar</a>
+      </form>
     </div>
   </div>
+</div>

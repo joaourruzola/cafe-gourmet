@@ -65,15 +65,15 @@ a:hover {
 
   /* Cor do Tema Padrão */
   background: var(--color-theme-primary);
-  color: var(--color-text-light);
+  color: var(--color-bg-primary);
   border: 1px solid var(--color-theme-primary);
 }
 
 .btn:hover,
 .checkout-btn:hover,
 .btn-success:hover {
-  background: var(--color-theme-hover);
-  border-color: var(--color-theme-hover);
+  background-color: #333;
+  border-color: #333;
 }
 
 #toast-container {
@@ -106,15 +106,15 @@ a:hover {
 }
 
 .custom-toast.success {
-  background-color: #4caf50; /* Verde */
+  background-color: #4caf50;
 }
 
 .custom-toast.error {
-  background-color: #f44336; /* Vermelho */
+  background-color: #f44336;
 }
 
 .custom-toast.warning {
-  background-color: #ff9800; /* Laranja */
+  background-color: #ff9800;
 }
 
 /* CSS para o Dropdown */

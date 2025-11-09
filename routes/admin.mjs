@@ -44,13 +44,14 @@ router.post("/register", (req, res) => {
 		let valor = req.body.valor;
 		let imagem = req.files.imagem.name;
 		let estoque = req.body.estoque;
+		let descricao = req.body.descricao;
 
 		if (nome == "" || valor == "" || isNaN(valor)) {
 			return res.redirect("/admin/registerFail");
 		}
 
-		let sql = `INSERT INTO produtos (nome, valor, imagem, estoque) VALUES (?, ?, ?, ?)`;
-		let valores = [nome, valor, imagem, estoque];
+		let sql = `INSERT INTO produtos (nome, descricao, valor, imagem, estoque) VALUES (?, ?, ?, ?, ?)`;
+		let valores = [nome, descricao, valor, imagem, estoque];
 
 		connection.query(sql, valores, (erro, retorno) => {
 			if (erro) {
@@ -80,7 +81,7 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/edit", (req, res) => {
-	let { nome, valor, id_produto, nomeImagem, estoque } = req.body;
+	let { nome, valor, id_produto, nomeImagem, estoque, descricao } = req.body;
 
 	if (!req.files || !req.files.imagem) {
 		return res.status(400).send("Imagem não enviada");
@@ -102,8 +103,15 @@ router.post("/edit", (req, res) => {
 		let imagem = req.files.imagem;
 		let estoqueNum = parseInt(estoque, 10);
 
-		let sql = `UPDATE produtos SET nome=?, valor=?, imagem=?, estoque=? WHERE id_produto = ?`;
-		let values = [nome, valor, imagem.name, estoqueNum, id_produto];
+		let sql = `UPDATE produtos SET nome=?, descricao=?, valor=?, imagem=?, estoque=? WHERE id_produto = ?`;
+		let values = [
+			nome,
+			descricao,
+			valor,
+			imagem.name,
+			estoqueNum,
+			id_produto,
+		];
 
 		console.log("Valores para update:", values);
 
