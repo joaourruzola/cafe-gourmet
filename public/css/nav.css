@@ -24,6 +24,22 @@
   letter-spacing: 0.5px;
 }
 
+.nav-logo a {
+  text-decoration: none;
+  color: var(--color-text-light);
+  font-weight: 500;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-logo .logo-img {
+  height: 3.5rem;
+  width: auto;
+  vertical-align: middle;
+}
+
 /* Search Box */
 .nav-search {
   flex: 1;
@@ -110,10 +126,16 @@
   }
 
   .nav-actions {
-    gap: 1rem;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .nav-logo {
-    font-size: 1.3rem;
+    display: grid;
+    grid-column: 2;
+  }
+
+  .nav-logo .logo-img {
+    height: 3rem;
   }
 }

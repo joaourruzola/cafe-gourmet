@@ -60,12 +60,12 @@
   background: transparent;
 }
 
-/* Botões (apenas visuais, JS vem depois) */
+/* Botões */
 .carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--color-text-light);
   border: none;
   font-size: 2rem;

@@ -51,9 +51,23 @@ p {
   min-width: 300px;
 }
 
+.cart-summary > h4 {
+  cursor: pointer;
+}
+
+.cart-summary > h4:hover {
+  color: var(--color-theme-hover);
+}
+
 .payment-section {
   flex: 1.5;
   min-width: 300px;
+}
+
+.item-collapse-mobile {
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 15px;
 }
 
 /* --- Resumo do Carrinho --- */
@@ -94,6 +108,7 @@ p {
   margin-top: 20px;
   border: 1px solid var(--color-border-secondary);
   border-radius: 5px;
+  color: var(--primary-color, #007bff);
 }
 
 /* --- Seção de Pagamento (Formulários) --- */

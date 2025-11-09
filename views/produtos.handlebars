@@ -4,7 +4,10 @@
   <!-- Barra de navegação -->
   <nav class="navbar">
     <div class="nav-logo">
-      <a href="/produtos">Café Gourmet</a>
+      <a href="/produtos">
+        <img src="/images/logo.png" alt="Café Gourmet Logo" class="logo-img" />
+      </a>
+      {{! <a href="/produtos">Café Gourmet</a> }}
     </div>
     <!-- Barra de pesquisa -->
     <div class="nav-search">
@@ -15,7 +18,7 @@
 
       {{#if isAuthenticated}}
         <div class="user-account-dropdown">
-          <a href="#" class="account-btn" onclick="toggleDropdown(event)">
+          <a href="#" class="account-btn">
             Olá,
             <strong>{{userName}}</strong>!
           </a>
@@ -69,7 +72,7 @@
     <div class="carousel-track">
       <div class="slide active">
         <img
-          src="https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1469"
+          src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1522"
           alt="Café 1"
         />
         <div class="slide-content">
@@ -79,7 +82,7 @@
       </div>
       <div class="slide">
         <img
-          src="https://images.unsplash.com/photo-1532529202439-0312ecbf3ae9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470"
+          src="https://images.unsplash.com/photo-1641759677597-15b2422bc0e8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470"
           alt="Café 2"
         />
         <div class="slide-content">
@@ -89,7 +92,7 @@
       </div>
       <div class="slide">
         <img
-          src="https://images.unsplash.com/photo-1442975631115-c4f7b05b8a2c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1633"
+          src="https://images.unsplash.com/photo-1617954096045-2b85d8edfdca?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470"
           alt="Café 3"
         />
         <div class="slide-content">
