@@ -21,8 +21,20 @@ const app = Express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// const liveReloadServer = livereload.createServer();
-// liveReloadServer.watch(path.join(__dirname, "public"));
+const isDevelopment = process.env.NODE_ENV !== "production";
+
+if (isDevelopment) {
+	const liveReloadServer = livereload.createServer();
+	liveReloadServer.watch(path.join(__dirname, "public"));
+
+	app.use(connectLivereload());
+
+	liveReloadServer.server.once("connection", () => {
+		setTimeout(() => {
+			liveReloadServer.refresh("/");
+		}, 100);
+	});
+}
 
 app.use(fileUpload());
 
@@ -94,13 +106,6 @@ app.engine(
 );
 
 app.listen(port, () => {
-	console.log(`Server initialized in centerbeam.proxy.rlwy.net:${port}`);
+	const envStatus = isDevelopment ? "Development" : "Production";
+	console.log(`Server initialized in ${envStatus} mode on port ${port}`);
 });
-
-// Atualiza o browser ao salvar arquivos
-// Script para desenvolvimento local
-// liveReloadServer.server.once("connection", () => {
-// 	setTimeout(() => {
-// 		liveReloadServer.refresh("/");
-// 	}, 100);
-// });
