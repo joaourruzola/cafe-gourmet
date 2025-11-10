@@ -9,8 +9,6 @@ import indexRoute from "./routes/index.mjs";
 import adminRoutes from "./routes/admin.mjs";
 import cartRoutes from "./routes/cart.mjs";
 import authRoutes from "./routes/auth.mjs";
-import livereload from "livereload";
-import connectLivereload from "connect-livereload";
 import cookieParser from "cookie-parser";
 import authMiddleware from "./middlewares/authMiddleware.mjs";
 
@@ -20,21 +18,6 @@ const app = Express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const isDevelopment = process.env.NODE_ENV !== "production";
-
-if (isDevelopment) {
-	const liveReloadServer = livereload.createServer();
-	liveReloadServer.watch(path.join(__dirname, "public"));
-
-	app.use(connectLivereload());
-
-	liveReloadServer.server.once("connection", () => {
-		setTimeout(() => {
-			liveReloadServer.refresh("/");
-		}, 100);
-	});
-}
 
 app.use(fileUpload());
 
@@ -48,7 +31,6 @@ app.use(
 app.set("view engine", "handlebars");
 app.set("views", "./views");
 
-app.use(connectLivereload());
 app.use(cookieParser());
 app.use(Express.static("public"));
 app.use(authMiddleware);
@@ -106,6 +88,5 @@ app.engine(
 );
 
 app.listen(port, () => {
-	const envStatus = isDevelopment ? "Development" : "Production";
-	console.log(`Server initialized in ${envStatus} mode on port ${port}`);
+	console.log(`Server initialized in centerbeam.proxy.rlwy.net:${port}`);
 });
