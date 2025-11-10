@@ -98,8 +98,9 @@ app.listen(port, () => {
 });
 
 // Atualiza o browser ao salvar arquivos
-liveReloadServer.server.once("connection", () => {
-	setTimeout(() => {
-		liveReloadServer.refresh("/");
-	}, 100);
-});
+// Script para desenvolvimento local
+// liveReloadServer.server.once("connection", () => {
+// 	setTimeout(() => {
+// 		liveReloadServer.refresh("/");
+// 	}, 100);
+// });
