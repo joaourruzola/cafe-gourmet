@@ -95,6 +95,8 @@
 /* Estilos para o formulário de compra (Seletor de Quantidade) */
 .quantity-and-purchase {
   display: flex;
+  flex-direction: column;
+  align-self: flex-start;
   gap: 15px;
   margin-top: 20px;
   align-items: center;
@@ -105,9 +107,9 @@
   padding: 12px 24px;
   border-radius: 8px;
   background: var(--color-theme-primary);
+  width: 100%;
   color: var(--color-bg-primary);
   border: 1px solid var(--color-theme-primary);
-  /* border: 1px solid var(--color-theme-primary); */
   text-decoration: none;
   font-weight: 600;
   transition: background 0.2s ease, border-color 0.2s ease;
@@ -142,7 +144,7 @@
 
 /* Estilo para os botões de mais e menos */
 .quantity-btn {
-  background-color: #f8f9fa;
+  background: none;
   border: none;
   cursor: pointer;
   padding: 0.5rem 0.9rem;
@@ -164,9 +166,6 @@
   font-size: 1rem;
   font-weight: 500;
   border: none;
-  /* Adiciona bordas laterais para separar do botão */
-  border-left: 1px solid #ced4da;
-  border-right: 1px solid #ced4da;
   padding: 0.5rem 0;
   background-color: #fff;
   color: #212529;
@@ -179,4 +178,17 @@
 
 .quantity-input:disabled {
   background-color: #e9ecef;
+}
+
+@media (max-width: 768px) {
+  .product-main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 0;
+  }
+
+  .quantity-input {
+    border-top: 1px solid #ced4da;
+  }
 }
