@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import path from "path";
 import Express from "express";
 import { engine } from "express-handlebars";
 import fileUpload from "express-fileupload";
