@@ -343,7 +343,6 @@ router.get("/pedido/status/:id_pedido", async (req, res, next) => {
 		const { id_pedido } = req.params;
 		const id_usuario = req.id_usuario;
 
-		// 1. Busca os dados principais do pedido e pagamento
 		const sqlPedido = `
             SELECT 
                 o.id_ordem, 
@@ -367,15 +366,14 @@ router.get("/pedido/status/:id_pedido", async (req, res, next) => {
 				}
 
 				if (pedidoResult.length === 0) {
-					// Pedido não encontrado ou não pertence ao usuário
+					// Pedido não encontrado
 					const error = new Error("Pedido não encontrado.");
 					error.status = 404;
-					return next(error); // Deixa o middleware de 404 lidar
+					return next(error);
 				}
 
 				const dadosDoPedido = pedidoResult[0];
 
-				// 2. Busca os itens associados a esse pedido
 				const sqlItens = `
                 SELECT 
                     oi.quantidade, 
@@ -398,7 +396,6 @@ router.get("/pedido/status/:id_pedido", async (req, res, next) => {
 					// Adiciona os itens ao objeto principal do pedido
 					dadosDoPedido.itens = itensResult;
 
-					// Formata os valores (opcional, mas bom)
 					dadosDoPedido.totalFormatado =
 						dadosDoPedido.totalFormatado = parseFloat(
 							dadosDoPedido.total
@@ -411,7 +408,6 @@ router.get("/pedido/status/:id_pedido", async (req, res, next) => {
 						year: "numeric",
 					});
 
-					// Mapeia os status (ex: 'pendente' -> 'Aguardando Pagamento')
 					const mapStatusPagamento = {
 						pendente: "Aguardando Pagamento",
 						confirmado: "Pagamento Aprovado",
@@ -424,7 +420,6 @@ router.get("/pedido/status/:id_pedido", async (req, res, next) => {
 					dadosDoPedido.isPendente =
 						dadosDoPedido.status_pagamento === "pendente";
 
-					// 3. Renderiza a página de status com os dados reais
 					res.render("status-pedido", {
 						layout: "main",
 						pageTitle: `Status do Pedido #${dadosDoPedido.id_ordem}`,
@@ -435,13 +430,13 @@ router.get("/pedido/status/:id_pedido", async (req, res, next) => {
 			}
 		);
 	} catch (error) {
-		next(error); // Passa erros síncronos para o middleware
+		next(error);
 	}
 });
 
 router.post("/checkout/pagar", (req, res) => {
 	const id_usuario = req.id_usuario;
-	const { paymentMethod, cardInfo } = req.body; // 'cartao'
+	const { paymentMethod, cardInfo } = req.body;
 
 	if (paymentMethod !== "cartao") {
 		return res.status(400).json({
@@ -450,7 +445,7 @@ router.post("/checkout/pagar", (req, res) => {
 		});
 	}
 
-	// Inicia a transação
+	// inicia a transação
 	connection.beginTransaction((err) => {
 		if (err) {
 			console.error("Erro ao iniciar transação:", err);
@@ -460,7 +455,6 @@ router.post("/checkout/pagar", (req, res) => {
 			});
 		}
 
-		// 1. Buscar o carrinho ativo e seus itens
 		const sqlGetCart = `
             SELECT c.id_carrinho, ci.id_produto, ci.quantidade, ci.valor_unitario, (ci.quantidade * ci.valor_unitario) AS subtotal
             FROM carrinhos c
@@ -483,7 +477,7 @@ router.post("/checkout/pagar", (req, res) => {
 				0
 			);
 
-			// 2. Inserir na tabela 'ordens'
+			// inserir na tabela 'ordens'
 			const sqlInsertOrdem =
 				"INSERT INTO ordens (id_usuario, total, status) VALUES (?, ?, 'pendente')";
 			connection.query(
@@ -500,7 +494,7 @@ router.post("/checkout/pagar", (req, res) => {
 
 					const novoPedidoId = ordemResult.insertId;
 
-					// 3. Inserir na tabela 'pagamentos'
+					// inserir na tabela 'pagamentos'
 					const sqlInsertPagamento =
 						"INSERT INTO pagamentos (id_ordem, metodo, valor, status) VALUES (?, ?, ?, 'pendente')";
 					connection.query(
@@ -515,7 +509,7 @@ router.post("/checkout/pagar", (req, res) => {
 								});
 							}
 
-							// 4. Preparar e Inserir itens em 'ordem_itens'
+							// inserir itens em 'ordem_itens'
 							const ordemItensData = items.map((item) => [
 								novoPedidoId,
 								item.id_produto,
@@ -538,8 +532,7 @@ router.post("/checkout/pagar", (req, res) => {
 										});
 									}
 
-									// 5. Limpar o carrinho (desativar ou deletar)
-									// Aqui vamos deletar o carrinho, o ON DELETE CASCADE cuidará dos itens.
+									// limpar o carrinho
 									const sqlDeleteCart =
 										"DELETE FROM carrinhos WHERE id_carrinho = ? AND id_usuario = ?";
 									connection.query(
@@ -568,7 +561,7 @@ router.post("/checkout/pagar", (req, res) => {
 														});
 												}
 
-												// Finalmente, envia a resposta para o frontend
+												// envia a resposta para o frontend
 												res.status(200).json({
 													status: "sucesso",
 													mensagem:

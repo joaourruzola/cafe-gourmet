@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					body: JSON.stringify(data),
 				});
 
-				// Sucesso
+				// sucesso
 				if (response.status === "sucesso" && response.redirect) {
 					if (typeof showToast === "function") {
 						showToast(
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 					setTimeout(() => {
 						window.location.href = response.redirect;
-					}, 200); // Pequeno delay para o toast aparecer
+					}, 150);
 				} else {
 					if (typeof showToast === "function") {
 						showToast(

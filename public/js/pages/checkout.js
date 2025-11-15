@@ -19,19 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	updatePaymentView();
 
-	// --- CORREÇÃO DO BUG 4 (INÍCIO) ---
+	// --- CORREÇÃO DO BUG 4 ---
 	// Esta é a lógica de validação e envio que estava faltando
 	const paymentForm = document.getElementById("payment-form");
 
 	if (paymentForm) {
 		paymentForm.addEventListener("submit", async (e) => {
-			e.preventDefault(); // Impede o envio padrão do formulário
+			e.preventDefault();
 
 			const selectedMethod = document.querySelector(
 				'input[name="payment"]:checked'
 			).value;
 
-			// Foco no pagamento com cartão, como solicitado
+			// pagamento com cartão
 			if (selectedMethod === "cartao") {
 				const numeroCartao = document.querySelector(
 					'input[name="numero_cartao"]'
@@ -41,13 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
 				).value;
 				const cvv = document.querySelector('input[name="cvv"]').value;
 
-				// Validação simples (apenas verifica se não está vazio)
+				// validação simples (apenas verifica se não está vazio)
 				if (!numeroCartao || !validade || !cvv) {
 					alert("Por favor, preencha todos os dados do cartão.");
 					return; // Para a execução
 				}
 
-				// Envia para o backend (a rota que criamos em cart.mjs)
+				// envia para o backend
 				try {
 					const response = await fetch("/checkout/pagar", {
 						method: "POST",
@@ -63,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
 					const data = await response.json();
 
 					if (response.ok) {
-						// Redireciona para a página de "aguardando"
 						window.location.href = data.redirectUrl;
 					} else {
 						alert(`Erro ao processar pagamento: ${data.mensagem}`);
@@ -76,10 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				}
 			}
 
-			// (Adicione lógica para PIX e Boleto aqui se necessário)
+			// (Adicionar lógica para PIX e Boleto aqui)
 		});
 	}
-	// --- CORREÇÃO DO BUG 4 (FIM) ---
 
 	const numeroCartaoInput = document.querySelector(
 		'input[name="numero_cartao"]'
@@ -91,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (numeroCartaoInput) {
 		numeroCartaoInput.addEventListener("input", (e) => {
 			let value = e.target.value;
+			// Remove tudo que não for dígito
 			let digits = value.replace(/\D/g, "");
 
 			digits = digits.substring(0, 16);
@@ -119,8 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (cvvInput) {
 		cvvInput.addEventListener("input", (e) => {
 			let value = e.target.value;
-			// Remove tudo que não for dígito
 			let digits = value.replace(/\D/g, "");
+
 			digits = digits.substring(0, 3);
 			e.target.value = digits;
 		});
