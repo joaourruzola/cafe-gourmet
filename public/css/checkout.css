@@ -49,6 +49,9 @@ p {
 .cart-summary {
   flex: 1;
   min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
 }
 
 .cart-summary > h4 {
@@ -65,7 +68,8 @@ p {
 }
 
 .item-collapse-mobile {
-  max-height: 350px;
+  /* max-height: 350px; */
+  flex: 1;
   overflow-y: auto;
   padding-right: 15px;
 }
@@ -188,13 +192,15 @@ p {
 }
 
 #pix-form img.qr-pix {
-  width: 220px;
-  height: 220px;
+  max-width: 220px; /* <-- Define o tamanho máximo */
+  width: 100%; /* <-- Torna responsivo */
+  height: auto; /* <-- Mantém a proporção */
   background-color: white;
   padding: 15px;
   border-radius: 5px;
   margin: 15px auto;
   display: block;
+  box-sizing: border-box;
 }
 
 /* --- Inputs e Botões --- */
@@ -219,6 +225,7 @@ p {
   border-radius: 5px;
   color: var(--color-text-light);
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
 .payment-form input[type="text"]:focus {

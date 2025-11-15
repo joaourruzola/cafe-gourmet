@@ -338,4 +338,254 @@ router.delete("/carrinho/remover/:id_produto", (req, res) => {
 	);
 });
 
+router.get("/pedido/status/:id_pedido", async (req, res, next) => {
+	try {
+		const { id_pedido } = req.params;
+		const id_usuario = req.id_usuario;
+
+		// 1. Busca os dados principais do pedido e pagamento
+		const sqlPedido = `
+            SELECT 
+                o.id_ordem, 
+                o.criado_em, 
+                o.total, 
+                o.status AS status_ordem,
+                p.metodo, 
+                p.status AS status_pagamento
+            FROM ordens o
+            JOIN pagamentos p ON o.id_ordem = p.id_ordem
+            WHERE o.id_ordem = ? AND o.id_usuario = ?;
+        `;
+
+		connection.query(
+			sqlPedido,
+			[id_pedido, id_usuario],
+			(err, pedidoResult) => {
+				if (err) {
+					console.error("Erro ao buscar pedido:", err);
+					return next(new Error("Erro ao buscar dados do pedido."));
+				}
+
+				if (pedidoResult.length === 0) {
+					// Pedido não encontrado ou não pertence ao usuário
+					const error = new Error("Pedido não encontrado.");
+					error.status = 404;
+					return next(error); // Deixa o middleware de 404 lidar
+				}
+
+				const dadosDoPedido = pedidoResult[0];
+
+				// 2. Busca os itens associados a esse pedido
+				const sqlItens = `
+                SELECT 
+                    oi.quantidade, 
+                    oi.valor_unitario, 
+                    prod.nome, 
+                    prod.imagem
+                FROM ordem_itens oi
+                JOIN produtos prod ON oi.id_produto = prod.id_produto
+                WHERE oi.id_ordem = ?;
+            `;
+
+				connection.query(sqlItens, [id_pedido], (err, itensResult) => {
+					if (err) {
+						console.error("Erro ao buscar itens do pedido:", err);
+						return next(
+							new Error("Erro ao buscar itens do pedido.")
+						);
+					}
+
+					// Adiciona os itens ao objeto principal do pedido
+					dadosDoPedido.itens = itensResult;
+
+					// Formata os valores (opcional, mas bom)
+					dadosDoPedido.totalFormatado =
+						dadosDoPedido.totalFormatado = parseFloat(
+							dadosDoPedido.total
+						).toFixed(2);
+					dadosDoPedido.dataFormatada = new Date(
+						dadosDoPedido.criado_em
+					).toLocaleDateString("pt-BR", {
+						day: "2-digit",
+						month: "2-digit",
+						year: "numeric",
+					});
+
+					// Mapeia os status (ex: 'pendente' -> 'Aguardando Pagamento')
+					const mapStatusPagamento = {
+						pendente: "Aguardando Pagamento",
+						confirmado: "Pagamento Aprovado",
+						falhou: "Pagamento Falhou",
+					};
+					dadosDoPedido.statusPagamentoFormatado =
+						mapStatusPagamento[dadosDoPedido.status_pagamento] ||
+						"Indefinido";
+
+					dadosDoPedido.isPendente =
+						dadosDoPedido.status_pagamento === "pendente";
+
+					// 3. Renderiza a página de status com os dados reais
+					res.render("status-pedido", {
+						layout: "main",
+						pageTitle: `Status do Pedido #${dadosDoPedido.id_ordem}`,
+						pedido: dadosDoPedido,
+						pageStyles: ["/css/status-pedido.css"],
+					});
+				});
+			}
+		);
+	} catch (error) {
+		next(error); // Passa erros síncronos para o middleware
+	}
+});
+
+router.post("/checkout/pagar", (req, res) => {
+	const id_usuario = req.id_usuario;
+	const { paymentMethod, cardInfo } = req.body; // 'cartao'
+
+	if (paymentMethod !== "cartao") {
+		return res.status(400).json({
+			status: "erro",
+			mensagem: "Método de pagamento não implementado.",
+		});
+	}
+
+	// Inicia a transação
+	connection.beginTransaction((err) => {
+		if (err) {
+			console.error("Erro ao iniciar transação:", err);
+			return res.status(500).json({
+				status: "erro",
+				mensagem: "Erro interno do servidor (Transação).",
+			});
+		}
+
+		// 1. Buscar o carrinho ativo e seus itens
+		const sqlGetCart = `
+            SELECT c.id_carrinho, ci.id_produto, ci.quantidade, ci.valor_unitario, (ci.quantidade * ci.valor_unitario) AS subtotal
+            FROM carrinhos c
+            JOIN carrinho_itens ci ON c.id_carrinho = ci.id_carrinho
+            WHERE c.id_usuario = ? AND c.ativo = 1;
+        `;
+
+		connection.query(sqlGetCart, [id_usuario], (err, items) => {
+			if (err || items.length === 0) {
+				connection.rollback();
+				return res.status(400).json({
+					status: "erro",
+					mensagem: "Carrinho vazio ou erro.",
+				});
+			}
+
+			const id_carrinho_ativo = items[0].id_carrinho;
+			const totalPedido = items.reduce(
+				(sum, item) => sum + parseFloat(item.subtotal),
+				0
+			);
+
+			// 2. Inserir na tabela 'ordens'
+			const sqlInsertOrdem =
+				"INSERT INTO ordens (id_usuario, total, status) VALUES (?, ?, 'pendente')";
+			connection.query(
+				sqlInsertOrdem,
+				[id_usuario, totalPedido],
+				(err, ordemResult) => {
+					if (err) {
+						connection.rollback();
+						return res.status(500).json({
+							status: "erro",
+							mensagem: "Erro ao criar ordem.",
+						});
+					}
+
+					const novoPedidoId = ordemResult.insertId;
+
+					// 3. Inserir na tabela 'pagamentos'
+					const sqlInsertPagamento =
+						"INSERT INTO pagamentos (id_ordem, metodo, valor, status) VALUES (?, ?, ?, 'pendente')";
+					connection.query(
+						sqlInsertPagamento,
+						[novoPedidoId, "cartao", totalPedido],
+						(err) => {
+							if (err) {
+								connection.rollback();
+								return res.status(500).json({
+									status: "erro",
+									mensagem: "Erro ao registrar pagamento.",
+								});
+							}
+
+							// 4. Preparar e Inserir itens em 'ordem_itens'
+							const ordemItensData = items.map((item) => [
+								novoPedidoId,
+								item.id_produto,
+								item.quantidade,
+								item.valor_unitario,
+							]);
+							const sqlInsertItens =
+								"INSERT INTO ordem_itens (id_ordem, id_produto, quantidade, valor_unitario) VALUES ?";
+
+							connection.query(
+								sqlInsertItens,
+								[ordemItensData],
+								(err) => {
+									if (err) {
+										connection.rollback();
+										return res.status(500).json({
+											status: "erro",
+											mensagem:
+												"Erro ao salvar itens do pedido.",
+										});
+									}
+
+									// 5. Limpar o carrinho (desativar ou deletar)
+									// Aqui vamos deletar o carrinho, o ON DELETE CASCADE cuidará dos itens.
+									const sqlDeleteCart =
+										"DELETE FROM carrinhos WHERE id_carrinho = ? AND id_usuario = ?";
+									connection.query(
+										sqlDeleteCart,
+										[id_carrinho_ativo, id_usuario],
+										(err) => {
+											if (err) {
+												connection.rollback();
+												return res.status(500).json({
+													status: "erro",
+													mensagem:
+														"Erro ao limpar carrinho.",
+												});
+											}
+
+											// SUCESSO!
+											connection.commit((err) => {
+												if (err) {
+													connection.rollback();
+													return res
+														.status(500)
+														.json({
+															status: "erro",
+															mensagem:
+																"Erro ao finalizar transação.",
+														});
+												}
+
+												// Finalmente, envia a resposta para o frontend
+												res.status(200).json({
+													status: "sucesso",
+													mensagem:
+														"Pedido criado com sucesso!",
+													redirectUrl: `/pedido/status/${novoPedidoId}`,
+												});
+											});
+										}
+									);
+								}
+							);
+						}
+					);
+				}
+			);
+		});
+	});
+});
+
 export default router;

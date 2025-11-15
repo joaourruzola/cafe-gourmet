@@ -1,0 +1,54 @@
+<div class="checkout-page container">
+
+  <div class="container-flex">
+    <a class="btn-back" href="/produtos">Continuar Comprando</a>
+    <h2>Status do Pedido</h2>
+  </div>
+
+  {{#if pedido}}
+    <div class="checkout-content status-page">
+
+      <div class="status-details">
+        <h4>Detalhes do Pedido</h4>
+        <p><strong>Pedido ID:</strong> #{{pedido.id_ordem}}</p>
+        <p><strong>Data:</strong> {{pedido.dataFormatada}}</p>
+        <p><strong>Método de Pagamento:</strong> {{pedido.metodo}}</p>
+
+        <div class="status-box {{pedido.status_pagamento}}">
+          <p>Status Atual:</p>
+          <h3>{{pedido.statusPagamentoFormatado}}</h3>
+
+          {{#if pedido.isPendente}}
+            <p class="status-descricao">
+              Seu pagamento com cartão de crédito está sendo processado pela
+              operadora. Isso pode levar alguns instantes.
+            </p>
+          {{else}}
+            <p class="status-descricao">
+              O pagamento do seu pedido foi atualizado.
+            </p>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="cart-summary">
+        <h4>Resumo da Compra</h4>
+        <div class="item-collapse-mobile">
+          {{#each pedido.itens}}
+            <div class="checkout-item">
+              <img src="/images/{{this.imagem}}" alt="{{this.nome}}" />
+              <div>
+                <p><strong>{{this.nome}}</strong></p>
+                <p>{{this.quantidade}} x R$ {{this.valor_unitario}}</p>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+        <h3>Total: R$ {{pedido.totalFormatado}}</h3>
+      </div>
+    </div>
+  {{else}}
+    <p>Pedido não encontrado.</p>
+  {{/if}}
+
+</div>
