@@ -1,17 +1,13 @@
-/* ==============================================
-   LAYOUT PRINCIPAL
-   Baseado em .product-main-info
-   ============================================== */
 .checkout-content.status-page {
   display: flex;
-  gap: 40px; /* */
-  padding: 40px 0; /* */
+  gap: 40px;
+  padding: 40px 0;
   align-items: flex-start;
 }
 
 /* Coluna da Esquerda (Detalhes) */
 .status-details {
-  flex: 1.5; /* Ocupa mais espaço */
+  flex: 1.5;
 }
 
 .status-details h4 {
@@ -25,14 +21,10 @@
   color: #555;
 }
 
-/* ==============================================
-   CAIXA DE STATUS
-   Baseado em .stock-status
-   ============================================== */
 .status-box {
   margin-top: 1.5rem;
   padding: 1rem 1.5rem;
-  border-radius: 4px; /* */
+  border-radius: 4px;
   border: none;
 }
 
@@ -47,35 +39,30 @@
   font-weight: 600;
 }
 
-/* --- Modificadores de Cor (Baseado em .in-stock / .out-of-stock) --- */
-
 /* PENDENTE (Amarelo) */
 .status-box.pendente {
-  color: #b38600; /* Cor de texto forte */
-  background-color: #fffbe6; /* Cor de fundo clara */
+  color: #b38600;
+  background-color: #fffbe6;
 }
 
 /* APROVADO (Verde) */
 .status-box.confirmado {
-  color: green; /* */
-  background-color: #e6ffe6; /* */
+  color: green;
+  background-color: #e6ffe6;
 }
 
 /* FALHA (Vermelho) */
 .status-box.falhou {
-  color: red; /* */
-  background-color: #ffe6e6; /* */
+  color: red;
+  background-color: #ffe6e6;
 }
 
-/* ==============================================
-   RESUMO DA COMPRA (CARD DA DIREITA)
-   Baseado em .main-product-image
-   ============================================== */
+/* Coluna da Direita (Resumo do Pedido) */
 .cart-summary {
-  flex: 1; /* Coluna da Direita */
+  flex: 1;
   background: #fff;
-  border-radius: 8px; /* */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 1.5rem 2rem;
 }
 
@@ -107,29 +94,21 @@
   font-size: 0.9rem;
 }
 
-/* ==============================================
-   TOTAL
-   Baseado em .product-price e .product-description-details
-   ============================================== */
 .cart-summary h3 {
-  font-size: 2.2em; /* */
-  font-weight: bold; /* */
-  color: var(--primary-color, #007bff); /* */
+  font-size: 2.2em;
+  font-weight: bold;
+  color: var(--primary-color, #007bff);
   display: block;
   margin: 20px 0 0 0;
   padding-top: 20px;
-  /* Separador inspirado em .product-description-details */
   border-top: 1px solid #eee;
   text-align: right;
 }
 
-/* ==============================================
-   RESPONSIVIDADE
-   Baseado em @media (max-width: 768px)
-   ============================================== */
+/* RESPONSIVIDADE */
 @media (max-width: 768px) {
   .checkout-content.status-page {
-    flex-direction: column; /* */
+    flex-direction: column;
     gap: 0;
   }
 
@@ -140,11 +119,10 @@
 
   .cart-summary {
     width: 100%;
-    /* Separador inspirado em .product-description-details */
     margin-top: 40px;
     padding-top: 20px;
     border-top: 1px solid #eee;
-    box-shadow: none; /* Remove a sombra no mobile */
+    box-shadow: none;
     border-radius: 0;
     padding-left: 0;
     padding-right: 0;

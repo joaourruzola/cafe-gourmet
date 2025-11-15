@@ -68,7 +68,6 @@ p {
 }
 
 .item-collapse-mobile {
-  /* max-height: 350px; */
   flex: 1;
   overflow-y: auto;
   padding-right: 15px;
@@ -104,7 +103,6 @@ p {
 }
 
 .cart-summary h3 {
-  /* Total */
   padding: 5px;
   text-align: left;
   font-size: 1.8rem;
@@ -115,12 +113,10 @@ p {
   color: var(--primary-color, #007bff);
 }
 
-/* --- Seção de Pagamento (Formulários) --- */
 .payment-section h4 {
   margin-bottom: 25px;
 }
 
-/* Esconde os forms de pagamento por padrão */
 .payment-form.hidden {
   display: none;
 }
@@ -153,12 +149,10 @@ p {
   border-color: #6a717d;
 }
 
-/* Esconde o input de rádio original */
 #payment-form input[type="radio"] {
   display: none;
 }
 
-/* Adiciona um indicador de rádio personalizado */
 #payment-form > label::before {
   content: "";
   display: inline-block;
@@ -172,13 +166,11 @@ p {
   transition: all 0.2s ease;
 }
 
-/* Estilo do indicador quando selecionado */
 #payment-form input[type="radio"]:checked + label::before {
   border-color: #6a717d;
   background-color: var(--color-border-secondary);
 }
 
-/* Estilo do label container quando selecionado */
 #payment-form input[type="radio"]:checked + label {
   border-color: var(--color-theme-primary);
   background-color: var(--color-theme-hover);
@@ -186,15 +178,15 @@ p {
   color: #fff;
 }
 
-/* --- Forms Específicos (PIX, Cartão, Boleto) --- */
+/* --- PIX, Cartão, Boleto --- */
 #pix-form {
   text-align: center;
 }
 
 #pix-form img.qr-pix {
-  max-width: 220px; /* <-- Define o tamanho máximo */
-  width: 100%; /* <-- Torna responsivo */
-  height: auto; /* <-- Mantém a proporção */
+  max-width: 220px;
+  width: 100%;
+  height: auto;
   background-color: white;
   padding: 15px;
   border-radius: 5px;

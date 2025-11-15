@@ -1,12 +1,10 @@
 /* product-details.css */
-
-/* Estilos para a barra de navegação modificada */
 .navbar .search-container {
   position: relative;
   width: 400px;
 }
 
-/* Estilo para o Dropdown Menu de Pesquisa */
+/* Dropdown Menu de Pesquisa */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -18,7 +16,7 @@
   padding: 0;
   margin: 0;
   z-index: 10;
-  display: none; /* Inicia oculto e é mostrado via JS */
+  display: none;
 }
 
 .dropdown-menu.active {
@@ -92,7 +90,7 @@
   vertical-align: middle;
 }
 
-/* Estilos para o formulário de compra (Seletor de Quantidade) */
+/* Seletor de Quantidade */
 .quantity-and-purchase {
   display: flex;
   flex-direction: column;
@@ -142,7 +140,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* Estilo para os botões de mais e menos */
 .quantity-btn {
   background: none;
   border: none;
@@ -159,7 +156,6 @@
   background-color: #e9ecef;
 }
 
-/* Estilo para o campo de input no meio */
 .quantity-input {
   width: 45px;
   text-align: center;
@@ -171,7 +167,6 @@
   color: #212529;
 }
 
-/* Remove a borda azul que aparece ao focar no input */
 .quantity-input:focus {
   outline: none;
 }
@@ -180,6 +175,7 @@
   background-color: #e9ecef;
 }
 
+/* RESPONSIVIDADE */
 @media (max-width: 768px) {
   .product-main-info {
     display: flex;

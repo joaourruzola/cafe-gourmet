@@ -16,7 +16,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Lato", sans-serif; /* Usa a fonte importada */
+  font-family: "Lato", sans-serif;
   font-weight: 700;
   color: var(--color-text-light);
 }
@@ -85,7 +85,6 @@ body {
 }
 
 .btn {
-  /* Apenas ajustes que não são de cor, se houver */
   padding: 12px 24px;
   border-radius: 8px;
 }
