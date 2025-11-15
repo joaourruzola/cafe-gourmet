@@ -120,6 +120,19 @@ router.post("/carrinho/adicionar", (req, res) => {
 
 			if (results.length > 0) {
 				id_carrinho = results[0].id_carrinho;
+
+				if (id_usuario == 0) {
+					res.cookie("guest_cart_id", id_carrinho, {
+						httpOnly: true,
+						secure: process.env.NODE_ENV === "production",
+						maxAge: 30 * 24 * 60 * 60 * 1000,
+						sameSite: "strict",
+					});
+					console.log(
+						`>>> Cookie guest_cart_id [${id_carrinho}] DEFINIDO para o convidado.`
+					);
+				}
+
 				adicionarItem();
 			} else {
 				// Cria novo carrinho

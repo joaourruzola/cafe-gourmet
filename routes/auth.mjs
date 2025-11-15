@@ -48,10 +48,10 @@ router.post("/login", async (req, res) => {
 					mensagem: "Email ou senha inválidos. Tente novamente.",
 				});
 			}
-
-			// ----- CORREÇÃO DO BUG 2 INICIA AQUI -----
 			const authenticatedUserId = usuario.id_usuario;
-			const anonymousCartId = req.cookies.guest_cart_id;
+			const anonymousCartId = req.cookies.guest_cart_id; // Pega o carrinho anônimo
+
+			console.log(">>> ID do carrinho: ", req.cookies.guest_cart_id);
 
 			// Função para finalizar o login
 			const finalizeLogin = () => {
@@ -62,21 +62,17 @@ router.post("/login", async (req, res) => {
 					tipo: usuario.tipo_usuario,
 				};
 
-				const token = jwt.sign(
-					payload,
-					process.env.JWT_SECRET,
-					{ expiresIn: "1d" } // Token expira em 1 dia
-				);
+				const token = jwt.sign(payload, process.env.JWT_SECRET, {
+					expiresIn: "1d",
+				});
 
-				// Define o cookie de autenticação
 				res.cookie("auth_token", token, {
 					httpOnly: true,
 					secure: process.env.NODE_ENV === "production",
 					maxAge: 24 * 60 * 60 * 1000,
 					sameSite: "strict",
 				});
-
-				// Limpa o cookie do carrinho anônimo
+				// Limpar o cookie do carrinho anônimo
 				res.clearCookie("guest_cart_id");
 
 				const redirectPath =
@@ -91,16 +87,13 @@ router.post("/login", async (req, res) => {
 				});
 			};
 
-			// Se existe um carrinho anônimo, tente mesclá-lo
+			// Se existe um carrinho anônimo (guest_cart_id), tente mesclá-lo
 			if (anonymousCartId) {
-				// ATENÇÃO: Assumindo que a tabela se chama 'carrinhos' e
-				// o ID do carrinho é 'id_carrinho'.
-				// Esta query transfere a posse do carrinho anônimo para o usuário logado.
 				const mergeSql = `
                     UPDATE carrinhos 
                     SET id_usuario = ? 
                     WHERE id_carrinho = ? 
-                    AND (id_usuario = 0 OR id_usuario IS NULL)
+                    AND id_usuario = 0
                 `;
 
 				connection.query(
@@ -117,6 +110,7 @@ router.post("/login", async (req, res) => {
 								`Carrinho anônimo [${anonymousCartId}] mesclado para o usuário [${authenticatedUserId}]`
 							);
 						}
+
 						finalizeLogin();
 					}
 				);
