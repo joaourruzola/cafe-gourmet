@@ -1,7 +1,5 @@
 /* hero-carousel.css */
 
-/* ========== HERO CAROUSEL ========== */
-
 .hero-carousel {
   position: relative;
   width: 100%;
@@ -13,7 +11,7 @@
 
 .carousel-track {
   display: flex;
-  width: 300%;
+  width: 500%;
   height: 100%;
   transition: transform 0.8s ease-in-out;
 }

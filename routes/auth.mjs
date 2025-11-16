@@ -48,37 +48,75 @@ router.post("/login", async (req, res) => {
 					mensagem: "Email ou senha inválidos. Tente novamente.",
 				});
 			}
+			const authenticatedUserId = usuario.id_usuario;
+			const anonymousCartId = req.cookies.guest_cart_id; // Pega o carrinho anônimo
 
-			// Usuário autenticado! Gerar um Token JWT
-			const payload = {
-				id: usuario.id_usuario,
-				email: usuario.email,
-				tipo: usuario.tipo_usuario,
+			console.log(">>> ID do carrinho: ", req.cookies.guest_cart_id);
+
+			// Função para finalizar o login
+			const finalizeLogin = () => {
+				// Usuário autenticado! Gerar um Token JWT
+				const payload = {
+					id: usuario.id_usuario,
+					email: usuario.email,
+					tipo: usuario.tipo_usuario,
+				};
+
+				const token = jwt.sign(payload, process.env.JWT_SECRET, {
+					expiresIn: "1d",
+				});
+
+				res.cookie("auth_token", token, {
+					httpOnly: true,
+					secure: process.env.NODE_ENV === "production",
+					maxAge: 24 * 60 * 60 * 1000,
+					sameSite: "strict",
+				});
+				// Limpar o cookie do carrinho anônimo
+				res.clearCookie("guest_cart_id");
+
+				const redirectPath =
+					usuario.tipo_usuario === "admin"
+						? "/admin/painel"
+						: "/produtos";
+
+				res.status(200).json({
+					status: "sucesso",
+					mensagem: "Login bem-sucedido!",
+					redirect: redirectPath,
+				});
 			};
 
-			const token = jwt.sign(
-				payload,
-				process.env.JWT_SECRET,
-				{ expiresIn: "1d" } // Token expira em 1 hora
-			);
+			// Se existe um carrinho anônimo (guest_cart_id), tente mesclá-lo
+			if (anonymousCartId) {
+				const mergeSql = `
+                    UPDATE carrinhos 
+                    SET id_usuario = ? 
+                    WHERE id_carrinho = ? 
+                    AND id_usuario = 0
+                `;
 
-			res.cookie("auth_token", token, {
-				httpOnly: true,
-				secure: process.env.NODE_ENV === "production",
-				maxAge: 24 * 60 * 60 * 1000,
-				sameSite: "strict",
-			});
+				connection.query(
+					mergeSql,
+					[authenticatedUserId, anonymousCartId],
+					(mergeErr, mergeResult) => {
+						if (mergeErr) {
+							console.error(
+								"Erro ao tentar mesclar o carrinho anônimo:",
+								mergeErr
+							);
+						} else if (mergeResult.affectedRows > 0) {
+							console.log(
+								`Carrinho anônimo [${anonymousCartId}] mesclado para o usuário [${authenticatedUserId}]`
+							);
+						}
 
-			const redirectPath =
-				usuario.tipo_usuario === "admin"
-					? "/admin/painel"
-					: "/produtos";
-
-			res.status(200).json({
-				status: "sucesso",
-				mensagem: "Login bem-sucedido!",
-				redirect: redirectPath,
-			});
+						finalizeLogin();
+					}
+				);
+			} else {
+				finalizeLogin();
+			}
 		});
 	} catch (error) {
 		console.error("Erro síncrono no login:", error);

@@ -22,10 +22,27 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	});
 
-	searchInput.addEventListener("input", (event) => {
-		const searchTerm = event.target.value.toLowerCase().trim();
+	/**
+	 * BUG 1 CORRIGIDO:
+	 * Função auxiliar para normalizar texto:
+	 * 1. Converte para minúsculas.
+	 * 2. Remove espaços em branco extras (trim).
+	 * 3. Decompõe acentos (NFD).
+	 * 4. Remove os diacríticos (acentos) usando regex.
+	 */
+	const normalizeText = (text) => {
+		if (typeof text !== "string") return "";
+		return text
+			.toLowerCase()
+			.trim()
+			.normalize("NFD")
+			.replace(/[\u0300-\u036f]/g, "");
+	};
 
-		// Itera sobre todos os cards de produto
+	searchInput.addEventListener("input", (event) => {
+		// Normaliza o termo de pesquisa
+		const searchTerm = normalizeText(event.target.value);
+
 		productCards.forEach((card) => {
 			const productNameElement = card.querySelector(".textos p");
 
@@ -37,7 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				const productImage = card.querySelector("img");
 				productName = productImage ? productImage.alt : productName;
 			}
-			const normalizedProductName = productName.toLowerCase();
+
+			// Normaliza o nome do produto
+			const normalizedProductName = normalizeText(productName);
 
 			if (normalizedProductName.includes(searchTerm)) {
 				card.style.display = "flex";

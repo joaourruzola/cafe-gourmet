@@ -1,9 +1,12 @@
 <!-- Página de Detalhes do Item -->
 <!-- Barra de navegação -->
 <nav class="navbar">
-  <div class="nav-logo">
-    <a href="/produtos">Café Gourmet</a>
-  </div>
+    <div class="nav-logo">
+      <a href="/produtos">
+        <img src="/images/logo.png" alt="Café Gourmet Logo" class="logo-img" />
+      </a>
+      {{! <a href="/produtos">Café Gourmet</a> }}
+    </div>
   <!-- Barra de pesquisa -->
   <div class="nav-search">
     <input type="text" id="searchInput" placeholder="Pesquisa..." />
@@ -110,7 +113,7 @@
             </div>
             {{#if produto.estoque}}
               <button type="submit" class="add-to-cart-btn">
-                <span class="icon">🛒</span>
+                <span class="icon"></span>
                 Comprar
               </button>
             {{else}}

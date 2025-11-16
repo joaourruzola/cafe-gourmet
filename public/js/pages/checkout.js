@@ -18,16 +18,125 @@ document.addEventListener("DOMContentLoaded", () => {
 		radio.addEventListener("change", updatePaymentView);
 	});
 	updatePaymentView();
-});
 
-const itensCarrinho = document.querySelector(".cart-summary");
+	// --- CORREÇÃO DO BUG 4 ---
+	// Esta é a lógica de validação e envio que estava faltando
+	const paymentForm = document.getElementById("payment-form");
 
-itensCarrinho.addEventListener("click", function (e) {
-	e.preventDefault();
-	const tituloResumo = this.querySelector("h4");
-	const itemCollapseMobile = document.querySelector(".item-collapse-mobile");
+	if (paymentForm) {
+		paymentForm.addEventListener("submit", async (e) => {
+			e.preventDefault();
 
-	if (tituloResumo) {
-		itemCollapseMobile.classList.toggle("hidden-default");
+			const selectedMethod = document.querySelector(
+				'input[name="payment"]:checked'
+			).value;
+
+			// pagamento com cartão
+			if (selectedMethod === "cartao") {
+				const numeroCartao = document.querySelector(
+					'input[name="numero_cartao"]'
+				).value;
+				const validade = document.querySelector(
+					'input[name="validade"]'
+				).value;
+				const cvv = document.querySelector('input[name="cvv"]').value;
+
+				// validação simples (apenas verifica se não está vazio)
+				if (!numeroCartao || !validade || !cvv) {
+					alert("Por favor, preencha todos os dados do cartão.");
+					return; // Para a execução
+				}
+
+				// envia para o backend
+				try {
+					const response = await fetch("/checkout/pagar", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							paymentMethod: "cartao",
+							cardInfo: { numeroCartao, validade, cvv },
+						}),
+					});
+
+					const data = await response.json();
+
+					if (response.ok) {
+						window.location.href = data.redirectUrl;
+					} else {
+						alert(`Erro ao processar pagamento: ${data.mensagem}`);
+					}
+				} catch (error) {
+					console.error("Erro no fetch:", error);
+					alert(
+						"Não foi possível conectar ao servidor. Tente novamente."
+					);
+				}
+			}
+
+			// (Adicionar lógica para PIX e Boleto aqui)
+		});
+	}
+
+	const numeroCartaoInput = document.querySelector(
+		'input[name="numero_cartao"]'
+	);
+	const validadeInput = document.querySelector('input[name="validade"]');
+	const cvvInput = document.querySelector('input[name="cvv"]');
+
+	// formatação do Número do Cartão (XXXX XXXX XXXX XXXX)
+	if (numeroCartaoInput) {
+		numeroCartaoInput.addEventListener("input", (e) => {
+			let value = e.target.value;
+			// Remove tudo que não for dígito
+			let digits = value.replace(/\D/g, "");
+
+			digits = digits.substring(0, 16);
+
+			let formatted = digits.match(/.{1,4}/g)?.join(" ") || "";
+			e.target.value = formatted;
+		});
+	}
+
+	// formatação da Validade (MM/AA)
+	if (validadeInput) {
+		validadeInput.addEventListener("input", (e) => {
+			let value = e.target.value;
+			let digits = value.replace(/\D/g, "");
+
+			digits = digits.substring(0, 4);
+
+			if (digits.length > 2) {
+				digits = `${digits.substring(0, 2)}/${digits.substring(2)}`;
+			}
+			e.target.value = digits;
+		});
+	}
+
+	// formatação do CVV (XXX)
+	if (cvvInput) {
+		cvvInput.addEventListener("input", (e) => {
+			let value = e.target.value;
+			let digits = value.replace(/\D/g, "");
+
+			digits = digits.substring(0, 3);
+			e.target.value = digits;
+		});
 	}
 });
+const itensCarrinho = document.querySelector(".cart-summary");
+
+if (itensCarrinho) {
+	itensCarrinho.addEventListener("click", function (e) {
+		e.preventDefault();
+		const tituloResumo = this.querySelector("h4");
+		const itemCollapseMobile = document.querySelector(
+			".item-collapse-mobile"
+		);
+
+		if (tituloResumo && itemCollapseMobile) {
+			itemCollapseMobile.classList.toggle("hidden-default");
+		}
+	});
+}

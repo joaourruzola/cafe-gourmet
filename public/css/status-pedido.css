@@ -1,0 +1,130 @@
+.checkout-content.status-page {
+  display: flex;
+  gap: 40px;
+  padding: 40px 0;
+  align-items: flex-start;
+}
+
+/* Coluna da Esquerda (Detalhes) */
+.status-details {
+  flex: 1.5;
+}
+
+.status-details h4 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.status-details p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.status-box {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+}
+
+.status-box p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.status-box h3 {
+  margin: 0.25rem 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+/* PENDENTE (Amarelo) */
+.status-box.pendente {
+  color: #b38600;
+  background-color: #fffbe6;
+}
+
+/* APROVADO (Verde) */
+.status-box.confirmado {
+  color: green;
+  background-color: #e6ffe6;
+}
+
+/* FALHA (Vermelho) */
+.status-box.falhou {
+  color: red;
+  background-color: #ffe6e6;
+}
+
+/* Coluna da Direita (Resumo do Pedido) */
+.cart-summary {
+  flex: 1;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 2rem;
+}
+
+.cart-summary h4 {
+  font-size: 1.4rem;
+  margin-top: 0;
+}
+
+/* Itens dentro do resumo */
+.checkout-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+.checkout-item:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.checkout-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.checkout-item p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.cart-summary h3 {
+  font-size: 2.2em;
+  font-weight: bold;
+  color: var(--primary-color, #007bff);
+  display: block;
+  margin: 20px 0 0 0;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .checkout-content.status-page {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .status-details {
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .cart-summary {
+    width: 100%;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    box-shadow: none;
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

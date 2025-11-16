@@ -1,6 +1,6 @@
 /* footer.css */
 .footer {
-  background: #0f1115; /* Manter este fundo ligeiramente diferente */
+  background: #0f1115;
   color: #d8d8d8;
   font-family: "lato", sans-serif;
   padding-top: 2rem;
@@ -63,7 +63,7 @@
 }
 
 .footer-bottom strong {
-  color: var(--color-text-light); /* Variável */
+  color: var(--color-text-light);
 }
 
 .footer-bottom p + p {
@@ -73,7 +73,7 @@
   margin-right: auto;
 }
 
-/* Responsive */
+/* RESPONSIVIDADE */
 @media (max-width: 768px) {
   .footer-top {
     flex-direction: column;

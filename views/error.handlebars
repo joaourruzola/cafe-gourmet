@@ -1,0 +1,15 @@
+{{! Arquivo: views/error.handlebars }}
+<div class="container" style="text-align: center; padding-top: 50px;">
+  <h2>{{pageTitle}}</h2>
+  <p>Ocorreu um erro inesperado ao processar sua solicitação.</p>
+
+  {{! Exibe a mensagem de erro específica (que vem do 'errorMessage') }}
+  <p
+    style="color: #8B0000; background: #fff5f5; padding: 10px; border-radius: 5px;"
+  >
+    <strong>Detalhe:</strong>
+    {{errorMessage}}
+  </p>
+
+  <a href="/" class="btn-back" style="margin-top: 20px;">Voltar para Home</a>
+</div>
