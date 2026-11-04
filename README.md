@@ -1,63 +1,86 @@
-# ☕ Café Gourmet 
+# ☕ Café Gourmet
 
-Um e-commerce elegante e funcional para a venda de cafés especiais, desenvolvido utilizando o stack **Node.js, Express.js** e **Handlebars**, com **MySQL** como banco de dados.
+An e-commerce site for selling specialty coffees, built with Node.js, Express and Handlebars, using MySQL as the database.
 
-## ⚙️ Tecnologias Utilizadas
+## Features
 
-Este projeto foi construído sobre uma pilha de tecnologias **JavaScript** e ferramentas focadas em performance e usabilidade:
+- **Landing page** with a hero carousel
+- **Product catalog** with the full list of coffees
+- **Product pages** with description and purchase options
+- **Shopping cart** to add, remove and update items
+- **Checkout** flow, with a QR code for payments
+- **User accounts:** sign up and log in, with JWT-based authentication
+- **Admin area** (work in progress): product management and orders
 
-| Categoria | Tecnologia | Função |
-| :--- | :--- | :--- |
-| **Backend** | **Node.js** | Ambiente de execução JavaScript *backend*. |
-| **Backend** | **Express.js** | Framework robusto e minimalista para roteamento e gestão de *middlewares*. |
-| **Backend** | **bcryptjs** | Biblioteca para criptografia e comparação segura de senhas. |
-| **Backend** | **jsonwebtoken (JWT)** | Implementação de autenticação baseada em *tokens* (JSON Web Tokens). |
-| **Frontend & Templating** | **Express-Handlebars** | Motor de *templates* para renderização de páginas HTML dinâmicas. |
-| **Frontend & Templating** | **Bootstrap** | Frameworks CSS utilizados para um *design* responsivo e moderno. |
-| **Banco de Dados** | **MySQL2** | Driver oficial para conexão com o banco de dados MySQL. |
-| **Utilidades** | **dotenv** | Gerenciamento seguro de variáveis de ambiente. |
-| **Utilidades** | **express-fileupload** | Facilita o *upload* e tratamento de arquivos (como imagens de produtos). |
-| **Utilidades** | **cookie-parser** | Faz o *parse* de cookies HTTP para autenticação e sessões. |
-| **Utilidades** | **qrcode** | Implementação de geração de códigos QR (ex: pagamentos). |
-| **Utilidades** | **nodemon** | Reinicia automaticamente o servidor durante o desenvolvimento. |
-| **Desenvolvimento / Live Reload** | **livereload** | Atualiza o navegador automaticamente quando há alterações no código. |
-| **Desenvolvimento / Live Reload** | **connect-livereload** | Middleware que integra o *livereload* com o servidor Express. |
+## Tech Stack
 
+| Area | Technology | Purpose |
+| --- | --- | --- |
+| Backend | Node.js, Express | Server, routing and middleware |
+| Authentication | bcryptjs, jsonwebtoken, cookie-parser | Password hashing and JWT tokens |
+| Views | Express-Handlebars | Server-side rendered pages |
+| Styling | Bootstrap, Tailwind CSS | Responsive layout and styles |
+| Database | MySQL2 | MySQL driver |
+| Uploads | express-fileupload | Product image uploads |
+| Utilities | dotenv, qrcode | Environment variables and QR codes |
+| Development | nodemon, livereload, connect-livereload | Auto-restart and browser reload |
 
-## 🔌 Funcionalidades Principais
+## Getting Started
 
-* **Página de Apresentação:** Landing page de redirecionamento.
-* **Catálogo de Produtos:** Listagem completa de todos os cafés disponíveis.
-* **Páginas de Detalhes do Produto:** Informações, descrição e opções de compra para cada café.
-* **Carrinho de Compras:** Funcionalidade para adicionar, remover e gerenciar itens.
-* **Sistema de Autenticação/Autorização:** Cadastro e Login de usuários/administradores.
-* **Checkout:** Processo simplificado de finalização de compra.
-* **Painel Administrativo:** CRUD de produtos, gerenciamento de pedidos, etc. (Work in Progress)
+### Prerequisites
 
-## 🌐 Hospedagem e Serviços Utilizados
+- Node.js
+- A MySQL database
 
-### 📍 Railway – Banco de Dados
-A [**Railway**](https://railway.app/) é uma plataforma *cloud* que permite hospedar e gerenciar bancos de dados de forma simples e persistente.  
-No projeto, ela é utilizada para manter o **banco de dados MySQL** acessível remotamente, garantindo **armazenamento seguro e contínuo** mesmo após reinicializações do servidor local.  
+### Installation
 
-Além disso, o Railway facilita a conexão via variáveis de ambiente (`.env`), permitindo integração direta com o backend **Node.js**, simplificando o **desenvolvimento colaborativo** e o **deploy em produção**.
+```bash
+npm install
+```
 
-<img width="477" height="294" alt="image" src="https://github.com/user-attachments/assets/914e8bad-dc0a-435b-8394-f1deb1a2be3c" />
+### Configuration
 
----
+Create a `.env` file in the project root:
 
-### 📍 Render – Servidor Node + Express
-A [**Render**](https://render.com/) é uma plataforma de *deploy* que permite hospedar **aplicações web dinâmicas**, incluindo projetos com **Node.js e Express.js**.  
-Ela oferece suporte à execução contínua de servidores, atualização automática a cada *push* no GitHub e gerenciamento simplificado de variáveis de ambiente.  
+```env
+PORT=3000
+NODE_ENV=development
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=your_user
+DB_PASSWORD=your_password
+DB_NAME=cafe_gourmet
+JWT_SECRET=a_long_random_string
+```
 
-No projeto, o **Render** é utilizado para **publicar o servidor backend**, tornando as rotas e páginas acessíveis na web, conectadas diretamente ao banco hospedado na **Railway**.
+The repository does not include a database schema. Create the tables used by the models in `models/` before starting the app.
 
-<img width="445" height="160" alt="image" src="https://github.com/user-attachments/assets/0970e56f-ccb0-4f8a-82e5-b4271316e2b9" />
+### Running
 
+```bash
+npm start   # production-style start
+npm run dev # development mode with auto-restart and live reload
+```
 
-🧑‍💻 Autor
+## Deployment
 
-João Alberto Braun Urruzola
+- **Database:** [Railway](https://railway.app/) hosts the MySQL database, so it stays available across restarts. The connection is configured with the `DB_*` environment variables.
+- **Server:** [Render](https://render.com/) runs the Node.js and Express backend. It redeploys on each push to GitHub and connects to the Railway database.
 
-* [GitHub](https://github.com/joaourruzola)
-* [Linkedin](https://www.linkedin.com/in/joao-urruzola/)
+## Project Structure
+
+```
+├── app.mjs              # Application entry point
+├── models/db.js         # MySQL connection
+├── routes/              # Routes: index, auth, cart, admin
+├── middlewares/         # Authentication and admin checks
+├── views/               # Handlebars templates and layouts
+└── public/              # Static files (CSS, JavaScript, images)
+```
+
+## Author
+
+**João Alberto Braun Urruzola**
+
+- [GitHub](https://github.com/joaourruzola)
+- [LinkedIn](https://www.linkedin.com/in/joao-urruzola/)
