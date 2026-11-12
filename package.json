@@ -7,6 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.mjs",
+    "db:setup": "node scripts/setup-db.mjs",
+    "db:reset": "node scripts/setup-db.mjs --reset",
     "dev": "nodemon --watch public --ext html,css,js --exec \"node app.mjs\"",
     "tailwind:init": "tailwindcss init -p"
   },

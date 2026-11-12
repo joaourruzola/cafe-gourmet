@@ -40,20 +40,30 @@ npm install
 
 ### Configuration
 
-Create a `.env` file in the project root:
+Copy `.env.example` to `.env` and fill in your local MySQL credentials:
 
 ```env
 PORT=3000
 NODE_ENV=development
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=your_user
-DB_PASSWORD=your_password
+DB_USER=root
+DB_PASSWORD=your_mysql_password
 DB_NAME=cafe_gourmet
 JWT_SECRET=a_long_random_string
 ```
 
-The repository does not include a database schema. Create the tables used by the models in `models/` before starting the app.
+### Local database (MySQL)
+
+With MySQL 8+ running locally, create the database, tables and sample coffees with one command:
+
+```bash
+npm run db:setup   # creates the database, tables (database/schema.sql), products (database/seed.sql) and an admin user
+npm run db:reset   # drops the database and recreates everything from scratch
+```
+
+The default admin is `admin@cafegourmet.local` / `admin123` (override with `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env`).
+You can also run `database/schema.sql` and `database/seed.sql` manually in MySQL Workbench or the `mysql` CLI.
 
 ### Running
 
@@ -71,6 +81,8 @@ npm run dev # development mode with auto-restart and live reload
 
 ```
 ├── app.mjs              # Application entry point
+├── database/            # schema.sql and seed.sql
+├── scripts/setup-db.mjs # Creates the local database
 ├── models/db.js         # MySQL connection
 ├── routes/              # Routes: index, auth, cart, admin
 ├── middlewares/         # Authentication and admin checks

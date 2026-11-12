@@ -87,5 +87,5 @@ app.engine(
 );
 
 app.listen(port, () => {
-	console.log(`Server initialized in centerbeam.proxy.rlwy.net:${port}`);
+	console.log(`Server running on http://localhost:${port}`);
 });
